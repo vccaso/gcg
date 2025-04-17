@@ -1,0 +1,5 @@
+# config.yaml
+app_name: "🧠 AI Avila Assistance"
+version: "1.0.0"
+workflow_path: "workflows"
+debug: true

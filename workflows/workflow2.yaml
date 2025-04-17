@@ -1,0 +1,11 @@
+name: chat example
+description: this workflow chat wiht local model
+
+steps:
+
+  - name: generate_code
+    type: ai
+    agent: ChatAgent
+    model: ModelOllama
+    input:
+      prompt: "Give me 5 ideas about a good starting business with low budget."

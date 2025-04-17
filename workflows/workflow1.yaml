@@ -1,0 +1,50 @@
+name: code_generator_workflow
+description: this workflow generate code for CRUD
+
+steps:
+
+  - name: clone_repo
+    type: git
+    agent: GitHubCloneOrUpdateRepoAgent
+    input:
+      repo_url: https://github.com/vccaso/avila-easychat-goals.git
+      local_repo_dir: ./avila-easychat-goals
+
+  - name: checkout branch
+    type: git
+    agent: GitHubCheckoutBranchAgent
+    input:
+      source_branch: dev
+      local_repo_dir: ./avila-easychat-goals
+
+  - name: create branch
+    type: git
+    agent: GitHubCreateBranchAgent
+    input:
+      branch_name: comments
+      local_repo_dir: ./avila-easychat-goals
+
+  - name: generate_code
+    type: ai
+    agent: GoSwaggerAgent
+    model: ModelGpt35Turbo
+    input:
+      local_repo_dir: ./avila-easychat-goals
+
+  - name: stage_commit_push
+    type: git
+    agent: GitHubCommitAgent
+    input:
+      new_branch: comments
+      local_repo_dir: ./avila-easychat-goals
+      commit_message: "Swagger comments code added"
+
+  - name: stage_commit_push
+    type: git
+    agent: GitHubPRAgent
+    input:
+      repo_name: "avila-easychat-goals"
+      pr_title: "Swagger comments code added"
+      new_branch: comments
+      source_branch: dev
+      pr_body: "Swagger comments code added"

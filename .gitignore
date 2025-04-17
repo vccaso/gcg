@@ -1,0 +1,65 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+venv/
+.env/
+.venv/
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+
+# Pytest cache
+.pytest_cache/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints
+
+# IDEs
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# macOS & system files
+.DS_Store
+Thumbs.db
+
+# MyPy & other linters
+.mypy_cache/
+.dmypy.json
+.pyre/
+.pytype/
+
+# Streamlit cache
+.streamlit/config.toml
+.streamlit/secrets.toml
+
+# VS Code Python extension
+.python-version
+
+# Logs
+*.log
+
+# Secrets or credentials (add your own naming here)
+*.env
+*.secret
+*.key
+
+# custom
+todelete/
