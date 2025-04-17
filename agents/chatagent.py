@@ -8,9 +8,20 @@ class ChatAgent:
         self.llm = llm
         self.prompt_template = prompt_template
 
-    def run(self, prompt):
+    def run(self, prompt: str, save_to_file: bool = False, file_name: str = "chat_output.txt") -> str:
         """
-        Uses the ChatGPT API to chat with local model.
+        Sends the prompt to the LLM and returns the response.
+        If save_to_file is True, appends the response to the given file.
         """
         response = self.llm.get_response(prompt)
+
+        if save_to_file:
+            try:
+                with open(file_name, "a", encoding="utf-8") as f:
+                    f.write(f"Prompt: {prompt}\n")
+                    f.write(f"Response: {response}\n")
+                    f.write("-" * 40 + "\n")
+            except Exception as e:
+                print(f"⚠️ Failed to save response to file '{file_name}': {e}")
+
         return response

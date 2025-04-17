@@ -9,6 +9,8 @@ steps:
     model: ModelOllama
     input:
       prompt: "Create a short story about three siblins named Victoria, Ethan and Eli who find a Dragon named Draco and meke him their best friend"
+      save_to_file: true
+      file_name: story.txt
 
   - name: Chapter 2
     type: ai
@@ -16,6 +18,8 @@ steps:
     model: ModelGpt35Turbo
     input:
       prompt: "Create a short story about three siblins named Victoria, Ethan and Eli with their best friend a Dragon named Draco traveling to the volcano Vesubio"
+      save_to_file: true
+      file_name: story.txt
 
   - name: Chapter 3
     type: ai
@@ -23,3 +27,5 @@ steps:
     model: ModelOllama
     input:
       prompt: "Create a short story about three siblins named Victoria, Ethan and Eli with their best friend a Dragon named Draco traveling to the enchanged city Ocapuna"
+      save_to_file: true
+      file_name: story.txt
