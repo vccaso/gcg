@@ -1,0 +1,69 @@
+name: chat example
+description: this workflow chat wiht local model
+
+steps:
+
+
+- name: build_vector_store
+  type: rag
+  agent: RAGDatabaseBuilderAgent
+  input:
+    source_files:
+      - docs/manual.pdf
+      - docs/README.md
+    collection_name: "product_docs"
+    storage_backend: "chroma"
+
+
+- name: update_knowledge
+  type: rag
+  agent: RAGDatabaseUpdaterAgent
+  input:
+    collection_name: "product_docs"
+    new_docs:
+      - changelog.txt
+    storage_backend: "qdrant"
+
+
+- name: generate_answer
+  type: rag
+  agent: RAGQueryAgent
+  input:
+    collection_name: "product_docs"
+    user_query: "How does the permission system work?"
+    storage_backend: "memory"
+
+
+- name: attach_shared_rag
+  type: rag
+  agent: RAGAttachAgent
+  input:
+    collection_name: "company_knowledge"
+    alias: "shared_rag"
+    storage_backend: "file"
+
+
+- name: attach_shared_rag
+  type: rag
+  agent: RAGAttachAgent
+  input:
+    collection_name: "company_knowledge"
+    alias: "shared_rag"
+    storage_backend: "file"
+
+
+- name: ingest_docs
+  type: rag
+  agent: RAGDatabaseBuilderAgent
+  input:
+    source_files: ["docs/setup.pdf"]
+    collection_name: "setup_docs"
+    storage_backend: "file"
+
+- name: ask_question
+  type: rag
+  agent: RAGQueryAgent
+  input:
+    collection_name: "setup_docs"
+    user_query: "How do I deploy this to Kubernetes?"
+    storage_backend: "file"
