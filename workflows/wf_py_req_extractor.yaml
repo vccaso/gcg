@@ -1,0 +1,27 @@
+name: python requeriment extractor 
+description: The purpose of this agent is to scan a source code repository and automatically identify which dependencies (e.g., Python packages) it uses.
+
+vars:
+  local_repo_dir: ./workspace/taipy
+
+
+steps:
+
+  # - name: clone_repo
+  #   type: git
+  #   agent: GitHubCloneOrUpdateRepoAgent
+  #   input:
+  #     repo_url: https://github.com/Avaiga/taipy
+  #     local_repo_dir: ${local_repo_dir}
+
+  - name: extract_requirements
+    type: git
+    agent: RequirementsExtractorAgent
+    input:
+      repo_path: ${local_repo_dir}
+
+  # - name: generate_requirements_file
+  #   agent: SaveToFileAgent
+  #   input:
+  #     content_from: extract_requirements.requirements
+  #     file_path: ./avila-easychat-goals/requirements.txt

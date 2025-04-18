@@ -30,7 +30,10 @@ def load_agent(agent_name):
         "agents.requirements_extractor",
         "agents.github_integration",
         "agents.goswaggeragent",
-        "agents.chatagent"
+        "agents.chatagent",
+        "agents.file_system",
+        "agents.rag"
+
     ]
     for mod in modules:
         module = importlib.import_module(mod)
@@ -74,12 +77,14 @@ def run_workflow(workflow_path, streamlit_mode=False):
             results[name] = output
             print(output)
 
-        elif step_type == "git":
+        # elif step_type == "git":
+        else: 
             agent = load_agent(agent_name)
 
             if not streamlit_mode:
                 print(f"▶️ {name} using {agent_name}")
             output = agent.run(**inputs)
             results[name] = output
+            print(output)
 
     return results
