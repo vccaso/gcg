@@ -60,7 +60,7 @@ def run_workflow(workflow_path, streamlit_mode=False):
 
     results = {}
 
-    for step in steps # workflow["steps"]:
+    for step in steps: # workflow["steps"]:
         name, step_type, agent_name, input_spec = step["name"], step["type"], step["agent"], step["input"]
         inputs = {k: results.get(v, v) for k, v in input_spec.items()}
         # Printer.success(inputs)
