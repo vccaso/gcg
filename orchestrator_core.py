@@ -5,6 +5,7 @@ from models.modelgpt35turbo import ModelGpt35Turbo
 from models.modellocalollama import ModelOllama
 from agents.goswaggeragent import GoSwaggerAgent
 from agents.chatagent import ChatAgent
+from config import debug
 
 def resolve_vars(obj, variables: dict):
     pattern = re.compile(r"\$\{(.*?)\}")
@@ -23,6 +24,40 @@ def resolve_vars(obj, variables: dict):
         return obj
 
     return obj  # Return original type (int, bool, etc.)
+
+
+def resolve_inputs(input_dict, context, variables=None):
+    resolved = {}
+    variables = variables or {}
+
+    for key, val in input_dict.items():
+        if isinstance(val, str):
+
+            # ✅ Case 1: Variable placeholder like ${my_var}
+            if val.startswith("${") and val.endswith("}"):
+                var_name = val[2:-1]
+                resolved[key] = variables.get(var_name)
+
+            # ✅ Case 2: Step output reference (dot notation) with NO slash or path
+            elif "." in val and not val.startswith("./") and not "/" in val:
+                parts = val.split(".")
+                result = context
+                for part in parts:
+                    result = result.get(part)
+                    if result is None:
+                        break
+                resolved[key] = result
+
+            # ✅ Case 3: Already a normal literal string
+            else:
+                resolved[key] = val
+
+        else:
+            resolved[key] = val
+
+    return resolved
+
+
 
 
 def load_agent(agent_name):
@@ -64,9 +99,9 @@ def run_workflow(workflow_path, streamlit_mode=False):
     results = {}
 
     for step in steps: # workflow["steps"]:
-        name, step_type, agent_name, input_spec = step["name"], step["type"], step["agent"], step["input"]
-        inputs = {k: results.get(v, v) for k, v in input_spec.items()}
-        # Printer.success(inputs)
+        name, step_type, agent_name = step["name"], step["type"], step["agent"]
+        input_spec = resolve_vars(step["input"], vars_dict)
+        inputs = resolve_inputs(input_spec, results, vars_dict)
         if step_type == "ai":
             model = step["model"]   
             llm = get_model(model)
@@ -75,7 +110,8 @@ def run_workflow(workflow_path, streamlit_mode=False):
                 print(f"▶️ {name} using {agent_name}")
             output = agent.run(**inputs)
             results[name] = output
-            print(output)
+            if(debug):
+                print(output)
 
         # elif step_type == "git":
         else: 
@@ -85,6 +121,7 @@ def run_workflow(workflow_path, streamlit_mode=False):
                 print(f"▶️ {name} using {agent_name}")
             output = agent.run(**inputs)
             results[name] = output
-            print(output)
+            if(debug):
+                print(output)
 
     return results

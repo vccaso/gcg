@@ -3,7 +3,7 @@ import os, re
 
 class RequirementsExtractorAgent(BaseAgent):
 
-    def run(self, repo_path):
+    def run(self, repo_path, key):
         print(f"[extract] Scanning repo at {repo_path}")
         packages = set()
 
@@ -19,4 +19,4 @@ class RequirementsExtractorAgent(BaseAgent):
                                 if pkg:
                                     packages.add(pkg)
 
-        return {"requirements": sorted(packages)}
+        return {key: sorted(packages)}

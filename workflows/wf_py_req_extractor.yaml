@@ -15,13 +15,15 @@ steps:
   #     local_repo_dir: ${local_repo_dir}
 
   - name: extract_requirements
-    type: git
+    type: req
     agent: RequirementsExtractorAgent
     input:
       repo_path: ${local_repo_dir}
+      key: requirements
 
-  # - name: generate_requirements_file
-  #   agent: SaveToFileAgent
-  #   input:
-  #     content_from: extract_requirements.requirements
-  #     file_path: ./avila-easychat-goals/requirements.txt
+  - name: generate_requirements_file
+    type: file
+    agent: SaveToFileAgent
+    input:
+      content: extract_requirements.requirements
+      file_path: ./workspace/taipy.txt
