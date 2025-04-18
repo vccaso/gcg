@@ -1,9 +1,29 @@
 import yaml, importlib
+import re
 from utils.printer import Printer
 from models.modelgpt35turbo import ModelGpt35Turbo
 from models.modellocalollama import ModelOllama
 from agents.goswaggeragent import GoSwaggerAgent
 from agents.chatagent import ChatAgent
+
+def resolve_vars(obj, variables: dict):
+    pattern = re.compile(r"\$\{(.*?)\}")
+
+    if isinstance(obj, dict):
+        return {k: resolve_vars(v, variables) for k, v in obj.items()}
+
+    elif isinstance(obj, list):
+        return [resolve_vars(i, variables) for i in obj]
+
+    elif isinstance(obj, str):
+        matches = pattern.findall(obj)
+        for match in matches:
+            if match in variables:
+                obj = obj.replace(f"${{{match}}}", variables[match])
+        return obj
+
+    return obj  # Return original type (int, bool, etc.)
+
 
 def load_agent(agent_name):
     modules = [
@@ -35,9 +55,12 @@ def run_workflow(workflow_path, streamlit_mode=False):
     with open(workflow_path) as f:
         workflow = yaml.safe_load(f)
 
+    vars_dict = workflow.get("vars", {})
+    steps = resolve_vars(workflow["steps"], vars_dict)
+
     results = {}
 
-    for step in workflow["steps"]:
+    for step in steps # workflow["steps"]:
         name, step_type, agent_name, input_spec = step["name"], step["type"], step["agent"], step["input"]
         inputs = {k: results.get(v, v) for k, v in input_spec.items()}
         # Printer.success(inputs)
