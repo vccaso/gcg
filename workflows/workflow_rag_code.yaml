@@ -5,38 +5,73 @@ vars:
   local_repo_dir: ./avila-easychat-goals
   source_branch: dev
   repo_url: https://github.com/vccaso/avila-easychat-goals.git
+  storage_path: ./workspace/rag_db
 
 steps:
-  - name: clone_repo
-    type: git
-    agent: GitHubCloneOrUpdateRepoAgent
-    input:
-      repo_url: ${repo_url}
-      local_repo_dir: ${local_repo_dir}
+  # - name: clone_repo
+  #   type: git
+  #   agent: GitHubCloneOrUpdateRepoAgent
+  #   input:
+  #     repo_url: ${repo_url}
+  #     local_repo_dir: ${local_repo_dir}
 
-  - name: checkout_branch
-    type: git
-    agent: GitHubCheckoutBranchAgent
-    input:
-      source_branch: ${source_branch}
-      local_repo_dir: ${local_repo_dir}
+  # - name: checkout_branch
+  #   type: git
+  #   agent: GitHubCheckoutBranchAgent
+  #   input:
+  #     source_branch: ${source_branch}
+  #     local_repo_dir: ${local_repo_dir}
 
-  - name: build_knowledge_db
+
+
+
+  - name: create_rag_db
     type: rag
     agent: RAGDatabaseBuilderAgent
+    collection_name: project_docs
+    storage_path: ${storage_path}
     input:
       source_files:
-        - ./avila-easychat-goals/README.md
-        - ./avila-easychat-goals/model/goal.go
-      collection_name: goals_knowledge
-      storage_backend: file
+        - ./docs/documentation.txt
+        - ./docs/landing_page.txt
 
-  - name: generate_crud
-    type: llm
-    agent: RAGQueryAgent
+
+  - name: update_rag_db
+    type: rag
+    agent: RAGDatabaseUpdaterAgent
+    collection_name: project_docs
+    storage_path: ${storage_path}
     input:
-      collection_name: goals_knowledge
-      user_query: Generate Go CRUD endpoints for the Goal model.
-      storage_backend: file
-      save_to_file: true
-      file_name: ./output/generated_crud.go
+      source_files:
+        - ./docs/workflows.txt
+
+  - name: query_rag_db
+    type: rag
+    agent: RAGQueryAgent
+    collection_name: project_docs
+    storage_path: ${storage_path}
+    input:
+      user_query: "How to create a workflow?"
+
+
+
+
+  # - name: build_knowledge_db
+  #   type: rag
+  #   agent: RAGDatabaseBuilderAgent
+  #   input:
+  #     source_files:
+  #       - ./avila-easychat-goals/README.md
+  #       - ./avila-easychat-goals/model/goal.go
+  #     collection_name: goals_knowledge
+  #     storage_backend: file
+
+  # - name: generate_crud
+  #   type: llm
+  #   agent: RAGQueryAgent
+  #   input:
+  #     collection_name: goals_knowledge
+  #     user_query: Generate Go CRUD endpoints for the Goal model.
+  #     storage_backend: file
+  #     save_to_file: true
+  #     file_name: ./output/generated_crud.go

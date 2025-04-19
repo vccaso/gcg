@@ -4,6 +4,7 @@ from chromadb.config import Settings
 from chromadb.utils import embedding_functions
 from agents.base import BaseAgent
 from utils.printer import Printer
+from textwrap import wrap
 
 class RAGDatabaseBuilderAgent(BaseAgent):
     
@@ -21,6 +22,9 @@ class RAGDatabaseBuilderAgent(BaseAgent):
         )
 
     def run(self, source_files: list[str]) -> str:
+        """
+        Create a vector database collection (ChromaDB) by embedding documents from local files.
+        """
         try:
             documents = []
             ids = []
@@ -32,8 +36,12 @@ class RAGDatabaseBuilderAgent(BaseAgent):
 
                 with open(file_path, "r", encoding="utf-8") as f:
                     text = f.read()
-                    documents.append(text)
-                    ids.append(f"doc-{idx}")
+                    # documents.append(text)
+                    # ids.append(f"doc-{idx}")
+                    chunks = wrap(text, 200)  # 500-character chunks (adjust for tokens)
+                    for i, chunk in enumerate(chunks):
+                        documents.append(chunk)
+                        ids.append(f"{file_path}-chunk-{i}")
 
             if documents:
                 self.collection.add(documents=documents, ids=ids)
@@ -62,6 +70,9 @@ class RAGQueryAgent(BaseAgent):
             # Retrieve top 3 documents
             result = self.collection.query(query_texts=[user_query], n_results=3)
             docs = result["documents"][0]
+            docs = result.get("documents", [[]])[0]
+            if not docs:
+                return "No relevant documents found."
 
             context = "\n---\n".join(docs)
             prompt = f"Using the following context, answer the user's question:\n{context}\n\nQuestion: {user_query}"
@@ -86,21 +97,25 @@ class RAGDatabaseUpdaterAgent(BaseAgent):
         self.client = chromadb.PersistentClient(path=os.path.join(self.storage_path))
         self.collection = self.client.get_collection(name=self.collection_name, embedding_function=ef)
 
-    def run(self, new_docs: list[str]) -> str:
+    def run(self, source_files: list[str]) -> str:
         try:
             documents = []
             ids = []
             start_index = len(self.collection.get()['ids'])
 
-            for i, file_path in enumerate(new_docs):
+            for i, file_path in enumerate(source_files):
                 if not os.path.exists(file_path):
                     Printer.warn(f"File not found: {file_path}")
                     continue
 
                 with open(file_path, "r", encoding="utf-8") as f:
                     text = f.read()
-                    documents.append(text)
-                    ids.append(f"doc-{start_index + i}")
+                    chunks = wrap(text, 200)  # 500-character chunks (adjust for tokens)
+                    for i, chunk in enumerate(chunks):
+                        documents.append(chunk)
+                        ids.append(f"{file_path}-chunk-{i}")
+                    # documents.append(text)
+                    # ids.append(f"doc-{start_index + i}")
 
             if documents:
                 self.collection.add(documents=documents, ids=ids)

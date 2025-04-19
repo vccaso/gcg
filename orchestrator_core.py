@@ -5,6 +5,7 @@ from models.modelgpt35turbo import ModelGpt35Turbo
 from models.modellocalollama import ModelOllama
 from agents.goswaggeragent import GoSwaggerAgent
 from agents.chatagent import ChatAgent
+from agents.rag import RAGDatabaseBuilderAgent, RAGQueryAgent, RAGDatabaseUpdaterAgent
 from config import debug
 
 def resolve_vars(obj, variables: dict):
@@ -58,9 +59,8 @@ def resolve_inputs(input_dict, context, variables=None):
     return resolved
 
 
-
-
 def load_agent(agent_name):
+
     modules = [
         "agents.requirements_extractor",
         "agents.github_integration",
@@ -82,11 +82,22 @@ def get_model(model_name):
     if model_name=="ModelOllama":   
         return ModelOllama()
 
-def get_agent(llm, agent_name):
+def get_ai_agent(llm, agent_name):
     if agent_name=="GoSwaggerAgent": 
         return GoSwaggerAgent(llm, "You are an expert Go programmer specialized in OpenAPI (Swagger) documentation. Please analyze the following Go code and insert the appropriate swagger-compatible comment blocks (e.g., @Summary, @Description, @Param, @Success, etc.) for each function, struct, and endpoint. Preserve all existing code exactly as it is; do not remove or alter the package declaration, import statements, or any other lines. Only add Swagger comments where relevant. Return only the updated code with the new Swagger documentation.\n\n```go\n{original_code}\n``")
     if agent_name=="ChatAgent":   
         return ChatAgent(llm,"You are a helpful assistant.")
+
+
+
+def get_rag_agent(agent_name, collection_name, storage_path):
+    if agent_name=="RAGDatabaseBuilderAgent": 
+        return RAGDatabaseBuilderAgent(collection_name,storage_path)
+    if agent_name=="RAGQueryAgent":
+        return RAGQueryAgent(collection_name,storage_path)
+    if agent_name=="RAGDatabaseUpdaterAgent":
+        return RAGDatabaseUpdaterAgent(collection_name,storage_path)
+
 
 
 def run_workflow(workflow_path, streamlit_mode=False):
@@ -105,7 +116,7 @@ def run_workflow(workflow_path, streamlit_mode=False):
         if step_type == "ai":
             model = step["model"]   
             llm = get_model(model)
-            agent = get_agent(llm, agent_name)
+            agent = get_ai_agent(llm, agent_name)
             if not streamlit_mode:
                 print(f"▶️ {name} using {agent_name}")
             output = agent.run(**inputs)
@@ -113,7 +124,14 @@ def run_workflow(workflow_path, streamlit_mode=False):
             if(debug):
                 print(output)
 
-        # elif step_type == "git":
+        elif step_type == "rag":
+            agent = get_rag_agent(agent_name, step["collection_name"], step["storage_path"])
+            if not streamlit_mode:
+                print(f"▶️ {name} using {agent_name}")
+            output = agent.run(**inputs)
+            results[name] = output
+            if(debug):
+                print(output)
         else: 
             agent = load_agent(agent_name)
 
