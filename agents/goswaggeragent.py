@@ -2,6 +2,47 @@ import os
 from models.modelbase import ModelBase
 from utils.printer import Printer
 
+
+class GoCRUDAgent:
+    def __init__(self, llm: ModelBase, prompt_template: str):
+        if not isinstance(llm, ModelBase):
+            raise ValueError("LLM model must be an instance of ModelBase")
+        self.llm = llm
+        self.prompt_template = prompt_template
+
+    def generate_prompt(self, **kwargs) -> str:
+        """
+        Fills in the prompt template using keyword arguments.
+        Example:
+            prompt_template = "Generate CRUD for model {model} with fields {fields}"
+            kwargs = { "model": "Product", "fields": "ID, Name, Price" }
+        """
+        try:
+            return self.prompt_template.format(**kwargs)
+        except KeyError as e:
+            raise ValueError(f"Missing placeholder in template: {e}")
+
+    def run(self, **kwargs) -> str:
+        """
+        Generates the final CRUD code from provided keyword arguments to fill the prompt.
+        Returns clean Go code without markdown artifacts.
+        """
+        final_prompt = self.generate_prompt(**kwargs)
+        crud_code = self.llm.get_response(final_prompt)
+
+        # Strip code block formatting if present
+        crud_code = self._strip_markdown_formatting(crud_code)
+        return crud_code
+
+    def _strip_markdown_formatting(self, text: str) -> str:
+        if text.startswith("```go"):
+            text = text.replace("```go", "", 1)
+        if text.endswith("```"):
+            text = text[:-3]
+        return text.strip()
+
+
+
 class GoSwaggerAgent:
     def __init__(self, llm: ModelBase, prompt_template):
         if not isinstance(llm, ModelBase):
