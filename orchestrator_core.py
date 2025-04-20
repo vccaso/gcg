@@ -34,13 +34,16 @@ def resolve_inputs(input_dict, context, variables=None):
     for key, val in input_dict.items():
         if isinstance(val, str):
 
-            # ✅ Case 1: Variable placeholder like ${my_var}
+            # Case 1: Variable placeholder like ${my_var}
             if val.startswith("${") and val.endswith("}"):
                 var_name = val[2:-1]
                 resolved[key] = variables.get(var_name)
 
-            # ✅ Case 2: Step output reference (dot notation) with NO slash or path
-            elif "." in val and not val.startswith("./") and not "/" in val:
+            # Case 2: Step output reference like step_name.output_key
+            elif (
+                "." in val and not val.startswith("./") and "/" not in val
+                and not val.strip().endswith(".") and val.count(".") == 1
+            ):
                 parts = val.split(".")
                 result = context
                 for part in parts:
@@ -49,7 +52,7 @@ def resolve_inputs(input_dict, context, variables=None):
                         break
                 resolved[key] = result
 
-            # ✅ Case 3: Already a normal literal string
+            # Case 3: Regular literal string (safe default)
             else:
                 resolved[key] = val
 
@@ -57,6 +60,7 @@ def resolve_inputs(input_dict, context, variables=None):
             resolved[key] = val
 
     return resolved
+
 
 def load_agent(agent_name):
 
@@ -82,15 +86,16 @@ def get_model(model_name):
     if model_name=="ModelOllama":   
         return ModelOllama()
 
-def get_ai_agent(llm, agent_name):
+def get_ai_agent(llm, agent_name, name="default"):
     prompt_loader = PromptLoader()
+    prompt_template = prompt_loader.load_prompt(agent_name, name)
+    
     if agent_name=="GoSwaggerAgent": 
-        return GoSwaggerAgent(llm, "You are an expert Go programmer specialized in OpenAPI (Swagger) documentation. Please analyze the following Go code and insert the appropriate swagger-compatible comment blocks (e.g., @Summary, @Description, @Param, @Success, etc.) for each function, struct, and endpoint. Preserve all existing code exactly as it is; do not remove or alter the package declaration, import statements, or any other lines. Only add Swagger comments where relevant. Return only the updated code with the new Swagger documentation.\n\n```go\n{original_code}\n``")
+        return GoSwaggerAgent(llm, prompt_template)
     if agent_name=="ChatAgent":   
-        return ChatAgent(llm,"You are a helpful assistant.")
+        return ChatAgent(llm,prompt_template)
     if agent_name=="GoCRUDAgent":
-        prompt = prompt_loader.load_prompt(agent_name)
-        return GoCRUDAgent(llm=llm, prompt_template=prompt)
+        return GoCRUDAgent(llm=llm, prompt_template=prompt_template)
 
 
 
@@ -117,10 +122,13 @@ def run_workflow(workflow_path, streamlit_mode=False):
         name, step_type, agent_name = step["name"], step["type"], step["agent"]
         input_spec = resolve_vars(step["input"], vars_dict)
         inputs = resolve_inputs(input_spec, results, vars_dict)
+
+
         if step_type == "ai":
+            template_name = step.get("template_name", "default")
             model = step["model"]   
             llm = get_model(model)
-            agent = get_ai_agent(llm, agent_name)
+            agent = get_ai_agent(llm, agent_name, template_name)
             if not streamlit_mode:
                 print(f"▶️ {name} using {agent_name}")
             output = agent.run(**inputs)

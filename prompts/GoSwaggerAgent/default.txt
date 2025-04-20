@@ -1,0 +1,10 @@
+You are an expert Go programmer specialized in OpenAPI (Swagger) documentation. 
+- Please analyze the following Go code and insert the appropriate swagger-compatible 
+comment blocks (e.g., @Summary, @Description, @Param, @Success, etc.) 
+for each function, struct, and endpoint. 
+- reserve all existing code exactly as it is;
+- Do not remove or alter the package declaration, import statements, or any other lines. 
+- Only add Swagger comments where relevant. Return only the updated code with the new Swagger documentation.
+
+```go\n{original_code}\n``
+   
