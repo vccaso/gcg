@@ -153,3 +153,23 @@ Step result	step_name.result	context (workflow results)
 Jinja-style variable	{{ my_var }}	variables
 Jinja-style step result	{{ step_name.result }}	context
 Mixed literals	Start of prompt: {{ step.result }}	Interpolated
+
+
+
+🚀 5. Build & Run the Container
+Build the Docker image:
+bash
+Copy
+Edit
+docker build -t gcg-agent .
+Run it:
+bash
+Copy
+Edit
+docker run --rm \
+  -e OPENAI_API_KEY=sk-... \
+  -v $(pwd)/workflows:/app/workflows \
+  gcg-agent
+-e sets env vars (like your OpenAI key)
+
+-v mounts your local workflows so they can be edited outside Docker
