@@ -1,11 +1,12 @@
 import yaml, importlib
 import re
 from utils.printer import Printer
-from models.modelgpt35turbo import ModelGpt35Turbo
+from models.modelgpt35turbo import ModelGpt35Turbo, ModelGpt4
 from models.modellocalollama import ModelOllama
 from agents.goswaggeragent import GoSwaggerAgent, GoCRUDAgent
 from agents.chatagent import ChatAgent
 from agents.rag import RAGDatabaseBuilderAgent, RAGQueryAgent, RAGDatabaseUpdaterAgent
+from agents.angularappagent import AngularAppAgent
 from config import debug
 from prompt_loader import PromptLoader
 
@@ -27,7 +28,55 @@ def resolve_vars(obj, variables: dict):
 
     return obj  # Return original type (int, bool, etc.)
 
+
 def resolve_inputs(input_dict, context, variables=None):
+    resolved = {}
+    variables = variables or {}
+
+    jinja_pattern = re.compile(r"{{\s*([^}]+)\s*}}")
+    var_pattern = re.compile(r"^\${(\w+)}$")  # matches full strings like ${var}
+
+    for key, val in input_dict.items():
+        if isinstance(val, str):
+
+            # Case 1: "${my_var}" format → from variables
+            var_match = var_pattern.match(val)
+            if var_match:
+                var_name = var_match.group(1)
+                resolved[key] = variables.get(var_name)
+                continue
+
+            # Case 2: "{{ var }}" or "{{ step.result }}" → Jinja-style resolution
+            if "{{" in val and "}}" in val:
+                def replace(match):
+                    expr = match.group(1).strip()
+                    if "." in expr:
+                        step_name, field = expr.split(".", 1)
+                        return str(context.get(step_name, {}).get(field, ""))
+                    else:
+                        return str(variables.get(expr, ""))
+                resolved[key] = jinja_pattern.sub(replace, val)
+                continue
+
+            # Case 3: Dot-notation step references (e.g., step_name.output)
+            if val.count(".") == 1 and not val.startswith("./") and "/" not in val:
+                step, field = val.split(".")
+                # Check if it's a real reference — otherwise treat as literal
+                if step in context and field in context[step]:
+                    resolved[key] = context[step][field]
+                    continue
+
+            # Case 4: Fallback — treat as literal string
+            resolved[key] = val
+
+        else:
+            # Non-string input, just use as-is
+            resolved[key] = val
+
+    return resolved
+
+
+def resolve_inputs_original(input_dict, context, variables=None):
     resolved = {}
     variables = variables or {}
 
@@ -79,7 +128,8 @@ def load_agent(agent_name):
         "agents.chatagent",
         "agents.file_system",
         "agents.rag",
-        "agents.gocrudagent"
+        "agents.gocrudagent",
+        "agents.angularappagent"
 
     ]
     for mod in modules:
@@ -93,6 +143,8 @@ def get_model(model_name):
         return ModelGpt35Turbo()
     if model_name=="ModelOllama":   
         return ModelOllama()
+    if model_name == "ModelGpt4":
+        return ModelGpt4()
 
 def get_ai_agent(llm, agent_name, name="default"):
     prompt_loader = PromptLoader()
@@ -104,6 +156,10 @@ def get_ai_agent(llm, agent_name, name="default"):
         return ChatAgent(llm,prompt_template)
     if agent_name=="GoCRUDAgent":
         return GoCRUDAgent(llm=llm, prompt_template=prompt_template)
+    if agent_name=="AngularAppAgent":   
+        return AngularAppAgent(llm,prompt_template)
+
+        
 
 
 
@@ -131,6 +187,7 @@ def run_workflow(workflow_path, streamlit_mode=False):
         input_spec = resolve_vars(step["input"], vars_dict)
         inputs = resolve_inputs(input_spec, results, vars_dict)
 
+        print(inputs)
 
         if step_type == "ai":
             template_name = step.get("template_name", "default")

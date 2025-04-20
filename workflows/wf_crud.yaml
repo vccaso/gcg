@@ -9,18 +9,18 @@ steps:
   - name: Generate_product
     type: ai
     agent: GoCRUDAgent
-    model: ModelGpt35Turbo
+    model: ModelOllama
     template_name: go_crud
     input:
       model: "Product"
       fields: "ID (int), Name (string, required), Price (float64, required)"
       local_repo_dir: ${local_repo_dir}
 
-  # - name: Generate_ticket
-  #   type: ai
-  #   agent: GoCRUDAgent
-  #   model: ModelGpt35Turbo
-  #   input:
-  #     model: "Ticket"
-  #     fields: "ID (int), Name (string, required), REqeustedDate (datetime, required), Status(int, required)"
-  #     local_repo_dir: ${local_repo_dir}
+  - name: Generate_ticket
+    type: ai
+    agent: GoCRUDAgent
+    model: ModelGpt35Turbo
+    input:
+      model: "Ticket"
+      fields: "ID (int), Name (string, required), REqeustedDate (datetime, required), Status(int, required)"
+      local_repo_dir: ${local_repo_dir}

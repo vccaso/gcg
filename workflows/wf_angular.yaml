@@ -1,0 +1,16 @@
+name: angular code generator
+description: this workflow angular code generator
+
+vars:
+  model: ModelGpt4
+
+steps:
+
+  - name: generate_login_feature
+    type: ai
+    agent: AngularAppAgent
+    model: ModelGpt4
+    prompt_template: default
+    input:
+      feature_description: "Create a login form with username and password fields, validation, and a login button."
+      app_base_dir: src/app/features/auth
