@@ -7,6 +7,6 @@ steps:
     type: ai
     agent: ChatAgent
     model: ModelOllama
-    template_name: default
+    template_name: spanish
     input:
-      question: "Give me 5 ideas about a good starting business with low budget."
+      question: "Give me 5 tips to improve my cardio"
