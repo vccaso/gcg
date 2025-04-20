@@ -7,6 +7,7 @@ from agents.goswaggeragent import GoSwaggerAgent, GoCRUDAgent
 from agents.chatagent import ChatAgent
 from agents.rag import RAGDatabaseBuilderAgent, RAGQueryAgent, RAGDatabaseUpdaterAgent
 from config import debug
+from prompt_loader import PromptLoader
 
 def resolve_vars(obj, variables: dict):
     pattern = re.compile(r"\$\{(.*?)\}")
@@ -82,21 +83,14 @@ def get_model(model_name):
         return ModelOllama()
 
 def get_ai_agent(llm, agent_name):
-    prompt_template = """
-Generate a full Go CRUD code for the model `{model}` with the following fields:
-{fields}
-Include:
-- model struct with validation and Swagger
-- data layer functions
-- API handlers
-- route registration
-"""
+    prompt_loader = PromptLoader()
     if agent_name=="GoSwaggerAgent": 
         return GoSwaggerAgent(llm, "You are an expert Go programmer specialized in OpenAPI (Swagger) documentation. Please analyze the following Go code and insert the appropriate swagger-compatible comment blocks (e.g., @Summary, @Description, @Param, @Success, etc.) for each function, struct, and endpoint. Preserve all existing code exactly as it is; do not remove or alter the package declaration, import statements, or any other lines. Only add Swagger comments where relevant. Return only the updated code with the new Swagger documentation.\n\n```go\n{original_code}\n``")
     if agent_name=="ChatAgent":   
         return ChatAgent(llm,"You are a helpful assistant.")
     if agent_name=="GoCRUDAgent":
-        return GoCRUDAgent(llm=llm, prompt_template=prompt_template)
+        prompt = prompt_loader.load_prompt(agent_name)
+        return GoCRUDAgent(llm=llm, prompt_template=prompt)
 
 
 

@@ -1,0 +1,20 @@
+You are an expert Go developer and code generator. 
+Your task is to create Go CRUD code and API handlers for a model named {model}. 
+- You will add comments to all code functions.
+- You will use model struct with validation and Swagger
+
+Based on the model name, please generate four code sections for Model, Data, API handlers and Route registration:
+**Model Definition**:
+- Start this section with this format ==== {local_repo_dir}/model/{model}.go/n<code for models>"
+- Create a file named \"model/{model}.go\" .
+- Define a Go struct with the model name in TitleCase (for example, if the model is 'user', use 'User'). Include with the following fields:
+{fields}
+
+**Data Definition**:
+- Start this section with this format ==== {local_repo_dir}/data/{model}.go/n<code for data>"
+
+**API handlers Definition**:
+- Start this section with this format ==== {local_repo_dir}/http/api/{model}.go/n<code for data>"
+
+**Route registration Definition**:
+- Start this section with this format ==== {local_repo_dir}/http/server.go/n<code for data>"
