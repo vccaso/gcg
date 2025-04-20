@@ -1,5 +1,6 @@
 from models.modelbase import ModelBase
 from utils.printer import Printer
+from config import debug
 
 class ChatAgent:
     def __init__(self, llm: ModelBase, prompt_template):
@@ -18,16 +19,20 @@ class ChatAgent:
         except KeyError as e:
             raise ValueError(f"Missing required placeholder in template: {e}")
 
-        print(f"[🧠] Final Prompt:\n{final_prompt}\n")
+        if debug:
+            print(f"[🧠] Final Prompt:\n{final_prompt}\n")
 
         response = self.llm.get_response(final_prompt)
 
         if save_to_file:
             try:
                 with open(file_name, "a", encoding="utf-8") as f:
-                    f.write(f"Prompt: {final_prompt}\n")
-                    f.write(f"Response: {response}\n")
-                    f.write("-" * 40 + "\n")
+                    if debug:
+                        f.write(f"Prompt: {final_prompt}\n")
+                        f.write(f"Response: {response}\n")
+                        f.write("-" * 40 + "\n")
+                    else:
+                        f.write(f"{response}\n\n")
             except Exception as e:
                 print(f"⚠️ Failed to save response to file '{file_name}': {e}")
 

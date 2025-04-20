@@ -2,7 +2,9 @@ name: chat example
 description: this workflow chat wiht local model
 
 vars:
-  file_name: workspace/story_03.txt
+  header: "Create a short story about three siblins named Victoria, Ethan and Eli"
+  dragon: Pititi
+  file_name: workspace/mixing_lang.txt
 
 steps:
 
@@ -10,8 +12,9 @@ steps:
     type: ai
     agent: ChatAgent
     model: ModelOllama
+    template_name: spanish
     input:
-      prompt: "Create a short story about three siblins named Victoria, Ethan and Eli who find a Dragon named Draco and meke him their best friend"
+      question: "{{ header }} who find a Dragon named {{ dragon }} and meke him their best friend"
       save_to_file: true
       file_name: ${file_name}
 
@@ -19,8 +22,9 @@ steps:
     type: ai
     agent: ChatAgent
     model: ModelGpt35Turbo
+    template_name: chinese
     input:
-      prompt: "Create a short story about three siblins named Victoria, Ethan and Eli with their best friend a Dragon named Draco traveling to the volcano Vesubio"
+      question: "{{ header }} with their best friend a Dragon named {{ dragon }} traveling to the volcano Vesubio"
       save_to_file: true
       file_name: ${file_name}
 
@@ -29,6 +33,6 @@ steps:
     agent: ChatAgent
     model: ModelOllama
     input:
-      prompt: "Create a short story about three siblins named Victoria, Ethan and Eli with their best friend a Dragon named Draco traveling to the enchanged city Ocapuna"
+      question: "{{ header }} with their best friend a Dragon named {{ dragon }} traveling to the enchanged city Ocapuna"
       save_to_file: true
       file_name: ${file_name}

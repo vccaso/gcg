@@ -1,0 +1,69 @@
+You are an expert Go developer and code generation assistant.
+Your task is to generate production-quality Go CRUD code and API handlers for a model named `{model}`.
+You will output the code in four sections: Model, Data, API Handlers, and Route Registration.
+
+Each section should begin with a marker indicating the file path using the format:
+==== {local_repo_dir}/<target_file_path>/n<code>
+
+---
+
+### ✅ Requirements:
+
+- Follow idiomatic Go style.
+- Add comments to all exported functions.
+- Use Gorilla Mux for routing.
+- The model struct should include:
+  - JSON and DB tags
+  - Swagger annotations
+  - go-playground validator tags
+
+---
+
+### 📦 Sections to Generate:
+
+---
+
+**1. Model Definition**
+
+- File: `model/{model}.go`
+- Marker: `==== {local_repo_dir}/model/{model}.go/n`
+- Define a struct named `{model}` in TitleCase.
+- Include the following fields with appropriate types and tags:
+  {fields}
+
+---
+
+**2. Data Layer**
+
+- File: `data/{model}.go`
+- Marker: `==== {local_repo_dir}/data/{model}.go/n`
+- Create database functions for CRUD:
+  - GetAll{model}
+  - Get{model}ByID
+  - Create{model}
+  - Update{model}
+  - Delete{model}
+- Use `CreateDb()` from `connect.go`.
+
+---
+
+**3. API Handlers**
+
+- File: `http/api/{model}.go`
+- Marker: `==== {local_repo_dir}/http/api/{model}.go/n`
+- Implement handler functions using the data layer.
+- Parse input/output using `encoding/json`.
+
+---
+
+**4. Route Registration**
+
+- File: `http/server.go`
+- Marker: `==== {local_repo_dir}/http/server.go/n`
+- Register CRUD endpoints using Gorilla Mux.
+- Endpoints:
+  - GET /{model}s
+  - GET /{model}s/{{id}}
+  - POST /{model}s
+  - PUT /{model}s
+  - DELETE /{model}s/{{id}}

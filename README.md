@@ -145,4 +145,11 @@ An extensible, YAML-driven AI Agent Orchestrator built with Python. This tool al
 
 ## 📁 Project Structure
 
+✅ Supported Patterns
 
+Pattern Type	Example	Resolved From
+Variable	${my_var}	variables dict
+Step result	step_name.result	context (workflow results)
+Jinja-style variable	{{ my_var }}	variables
+Jinja-style step result	{{ step_name.result }}	context
+Mixed literals	Start of prompt: {{ step.result }}	Interpolated

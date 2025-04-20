@@ -31,36 +31,44 @@ def resolve_inputs(input_dict, context, variables=None):
     resolved = {}
     variables = variables or {}
 
+    # Regex patterns
+    jinja_pattern = re.compile(r"{{\s*([^}]+)\s*}}")
+    var_pattern = re.compile(r"^\${(\w+)}$")  # full match for ${var}
+
     for key, val in input_dict.items():
         if isinstance(val, str):
 
-            # Case 1: Variable placeholder like ${my_var}
-            if val.startswith("${") and val.endswith("}"):
-                var_name = val[2:-1]
+            # Case 1: Exact variable match (${var})
+            var_match = var_pattern.match(val)
+            if var_match:
+                var_name = var_match.group(1)
                 resolved[key] = variables.get(var_name)
 
-            # Case 2: Step output reference like step_name.output_key
-            elif (
-                "." in val and not val.startswith("./") and "/" not in val
-                and not val.strip().endswith(".") and val.count(".") == 1
-            ):
-                parts = val.split(".")
-                result = context
-                for part in parts:
-                    result = result.get(part)
-                    if result is None:
-                        break
-                resolved[key] = result
+            # Case 2: Pure dot notation (step.output) — strict match
+            elif val.count(".") == 1 and not val.startswith("./") and "/" not in val:
+                step, field = val.split(".")
+                resolved[key] = context.get(step, {}).get(field)
 
-            # Case 3: Regular literal string (safe default)
+            # Case 3: Jinja-style expression(s) — can be embedded in strings
+            elif "{{" in val and "}}" in val:
+                def replace_jinja(match):
+                    expr = match.group(1).strip()
+                    if "." in expr:
+                        step, field = expr.split(".", 1)
+                        return str(context.get(step, {}).get(field, ""))
+                    else:
+                        return str(variables.get(expr, ""))
+                resolved[key] = jinja_pattern.sub(replace_jinja, val)
+
+            # Case 4: Literal string
             else:
                 resolved[key] = val
 
         else:
+            # Not a string — pass through unchanged
             resolved[key] = val
 
     return resolved
-
 
 def load_agent(agent_name):
 

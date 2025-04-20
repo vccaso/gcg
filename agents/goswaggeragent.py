@@ -1,6 +1,7 @@
 import os
 from models.modelbase import ModelBase
 from utils.printer import Printer
+from config import debug
 
 
 class GoCRUDAgent:
@@ -32,6 +33,8 @@ class GoCRUDAgent:
 
         # Strip code block formatting if present
         crud_code = self._strip_markdown_formatting(crud_code)
+        if debug:
+            print(crud_code)
         return crud_code
 
     def _strip_markdown_formatting(self, text: str) -> str:

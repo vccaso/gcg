@@ -1,7 +1,0 @@
-Generate a full Go CRUD code for the model `{model}` with the following fields:
-{fields}
-Include:
-- model struct with validation and Swagger
-- data layer functions
-- API handlers
-- route registration

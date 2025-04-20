@@ -10,6 +10,7 @@ steps:
     type: ai
     agent: GoCRUDAgent
     model: ModelGpt35Turbo
+    template_name: go_crud
     input:
       model: "Product"
       fields: "ID (int), Name (string, required), Price (float64, required)"

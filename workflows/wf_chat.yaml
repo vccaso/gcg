@@ -1,12 +1,22 @@
 name: chat example
 description: this workflow chat wiht local model
 
+vars:
+  model: ModelOllama
+  topic: Aerospace Engineering
 steps:
 
-  - name: generate_code
+  - name: tips
     type: ai
     agent: ChatAgent
-    model: ModelOllama
+    model: ${model}
     template_name: spanish
     input:
-      question: "Give me 5 tips to improve my cardio"
+      question: "Give me 1 tip to improve my cardio"
+
+  - name: tips2
+    type: ai
+    agent: ChatAgent
+    model: ${model}
+    input:
+      question: "tell me about {{ topic }}"
