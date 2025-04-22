@@ -6,6 +6,7 @@ vars:
   source_branch: dev
   branch_name: code-generated
   repo_name: avila-easychat-goals
+  additional_model: gpt-4o-mini
 
 steps:
 
