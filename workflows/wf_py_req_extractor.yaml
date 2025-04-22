@@ -26,4 +26,4 @@ steps:
     agent: SaveToFileAgent
     input:
       content: extract_requirements.requirements
-      file_path: ./workspace/taipy.txt
+      file_path: ./workspace/avila-goals.txt

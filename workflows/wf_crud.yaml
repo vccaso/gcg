@@ -3,24 +3,67 @@ description: this workflow generate GO code
 
 vars:
   local_repo_dir: ./workspace/avila-easychat-goals
+  source_branch: dev
+  branch_name: code-generated
+  repo_name: avila-easychat-goals
 
 steps:
 
-  - name: Generate_product
+  # - name: clone_repo
+  #   type: git
+  #   agent: GitHubCloneOrUpdateRepoAgent
+  #   input:
+  #     repo_url: https://github.com/vccaso/avila-easychat-goals.git
+  #     local_repo_dir: ${local_repo_dir}
+
+  # - name: checkout_branch
+  #   type: git
+  #   agent: GitHubCheckoutBranchAgent
+  #   input:
+  #     source_branch: ${source_branch}
+  #     local_repo_dir: ${local_repo_dir}
+
+  # - name: create_branch
+  #   type: git
+  #   agent: GitHubCreateBranchAgent
+  #   input:
+  #     branch_name: ${branch_name}
+  #     local_repo_dir: ${local_repo_dir}
+
+  - name: generate_product
     type: ai
     agent: GoCRUDAgent
-    model: ModelOllama
+    model: ModelGpt35Turbo
     template_name: go_crud
     input:
       model: "Product"
       fields: "ID (int), Name (string, required), Price (float64, required)"
       local_repo_dir: ${local_repo_dir}
 
-  - name: Generate_ticket
-    type: ai
-    agent: GoCRUDAgent
-    model: ModelGpt35Turbo
-    input:
-      model: "Ticket"
-      fields: "ID (int), Name (string, required), REqeustedDate (datetime, required), Status(int, required)"
-      local_repo_dir: ${local_repo_dir}
+  # - name: Generate_ticket
+  #   type: ai
+  #   agent: GoCRUDAgent
+  #   model: ModelOllama
+  #   input:
+  #     model: "Ticket"
+  #     fields: "ID (int), Name (string, required), REqeustedDate (datetime, required), Status(int, required)"
+  #     local_repo_dir: ${local_repo_dir}
+
+
+  # - name: stage_commit_push
+  #   type: git
+  #   agent: GitHubCommitAgent
+  #   input:
+  #     new_branch: ${branch_name}
+  #     local_repo_dir: ${local_repo_dir}
+  #     commit_message: "Swagger comments code added"
+
+  # - name: pull_request
+  #   type: git
+  #   agent: GitHubPRAgent
+  #   input:
+  #     repo_name: ${repo_name}
+  #     pr_title: "Swagger comments code added"
+  #     new_branch: ${branch_name}
+  #     source_branch: ${source_branch}
+  #     pr_body: "Swagger comments code added"

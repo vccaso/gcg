@@ -1,4 +1,5 @@
 import os
+import re
 from models.modelbase import ModelBase
 from utils.printer import Printer
 from config import debug
@@ -52,6 +53,35 @@ class GoCRUDAgent:
         self.llm = llm
         self.prompt_template = prompt_template
 
+    def write_files_from_output(self, output: str) -> list:
+        """
+        Parses code output marked with:
+        ==== ./some/path/to/file.go/n
+        and writes the content into the appropriate file.
+        
+        Returns a list of written file paths.
+        """
+        written_files = []
+        
+        # Split on each marker
+        parts = re.split(r"==== (.+?)\/n", output)
+        
+        # Regex split returns: [junk, path1, content1, path2, content2, ...]
+        for i in range(1, len(parts), 2):
+            file_path = parts[i].strip()
+            content = parts[i + 1].strip()
+
+            # Ensure directory exists
+            os.makedirs(os.path.dirname(file_path), exist_ok=True)
+
+            # Write file
+            with open(file_path, "w", encoding="utf-8") as f:
+                f.write(content + "\n")
+
+            written_files.append(file_path)
+
+        return written_files
+
     def generate_prompt(self, **kwargs) -> str:
         """
         Fills in the prompt template using keyword arguments.
@@ -79,7 +109,16 @@ class GoCRUDAgent:
         crud_code = self._strip_markdown_formatting(crud_code)
         if debug:
             print(crud_code)
+
+        # Optional: write to disk
+        written_files = self.write_files_from_output(crud_code)
+
+        # Debug log for visibility
+        if debug:
+            print(f"[📁] Files written:\n- " + "\n- ".join(written_files))
+
         return crud_code
+
 
     def _strip_markdown_formatting(self, text: str) -> str:
         if text.startswith("```go"):
