@@ -1,7 +1,7 @@
 import yaml, importlib
 import re
 from utils.printer import Printer
-from models.modelgpt35turbo import ModelGpt35Turbo, ModelGpt4, ModelGpt4Turbo
+from models.openaimodels import ModelGpt35Turbo, ModelGpt4, ModelGpt4Turbo
 from models.modellocalollama import ModelOllama
 from agents.goswaggeragent import GoSwaggerAgent, GoCRUDAgent, Dalle3Agent, Dalle2Agent, AudioAgent
 from agents.chatagent import ChatAgent
@@ -138,15 +138,15 @@ def load_agent(agent_name):
             return getattr(module, agent_name)()
     raise ImportError(f"Agent {agent_name} not found.")
 
-def get_model(model_name):
+def get_model(model_name, temperature=0.2):
     if model_name=="ModelGpt35Turbo":   
-        return ModelGpt35Turbo()
+        return ModelGpt35Turbo(temperature)
     if model_name=="ModelOllama":   
         return ModelOllama()
     if model_name == "ModelGpt4":
-        return ModelGpt4()
+        return ModelGpt4(temperature)
     if model_name == "ModelGpt4Turbo":
-        return ModelGpt4Turbo()
+        return ModelGpt4Turbo(temperature)
     if model_name == "Dalle3Agent":
         return Dalle3Agent()
 
@@ -193,8 +193,9 @@ def run_workflow(workflow_path, streamlit_mode=False):
 
         if step_type == "ai":
             template_name = step.get("template_name", "default")
+            temperature = step.get("temperature",0.2)
             model = step["model"]   
-            llm = get_model(model)
+            llm = get_model(model, temperature)
             agent = get_ai_agent(llm, agent_name, template_name)
             if not streamlit_mode:
                 print(f"▶️ {name} using {agent_name}")

@@ -3,20 +3,26 @@ description: this workflow chat wiht local model
 
 vars:
   model: ModelOllama
+  model2: ModelGpt35Turbo
+  model3: ModelGpt4Turbo
   topic: Aerospace Engineering
+  color: blue
 steps:
 
   - name: tips
     type: ai
     agent: ChatAgent
-    model: ${model}
-    template_name: spanish
+    model: ${model3}
+    temperature: 1.0
+    template_name: short
     input:
-      question: "Give me 1 tip to improve my cardio"
+      question: "Whay the sky is {{ color }}?"
 
   - name: tips2
     type: ai
     agent: ChatAgent
-    model: ${model}
+    temperature: 0.01
+    template_name: short
+    model: ${model3}
     input:
-      question: "tell me about {{ topic }}"
+      question: "Whay the sky is {{ color }}?"
