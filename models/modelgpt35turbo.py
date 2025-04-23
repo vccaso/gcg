@@ -82,3 +82,5 @@ class ModelGpt4Turbo(ModelBase):
             return
 
         return response.choices[0].message.content.strip()
+    
+

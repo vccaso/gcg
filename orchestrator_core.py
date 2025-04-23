@@ -3,7 +3,7 @@ import re
 from utils.printer import Printer
 from models.modelgpt35turbo import ModelGpt35Turbo, ModelGpt4, ModelGpt4Turbo
 from models.modellocalollama import ModelOllama
-from agents.goswaggeragent import GoSwaggerAgent, GoCRUDAgent
+from agents.goswaggeragent import GoSwaggerAgent, GoCRUDAgent, Dalle3Agent, Dalle2Agent
 from agents.chatagent import ChatAgent
 from agents.rag import RAGDatabaseBuilderAgent, RAGQueryAgent, RAGDatabaseUpdaterAgent
 from agents.angularappagent import AngularAppAgent
@@ -147,6 +147,8 @@ def get_model(model_name):
         return ModelGpt4()
     if model_name == "ModelGpt4Turbo":
         return ModelGpt4Turbo()
+    if model_name == "Dalle3Agent":
+        return Dalle3Agent()
 
 def get_ai_agent(llm, agent_name, name="default"):
     prompt_loader = PromptLoader()
@@ -159,9 +161,7 @@ def get_ai_agent(llm, agent_name, name="default"):
     if agent_name=="GoCRUDAgent":
         return GoCRUDAgent(llm=llm, prompt_template=prompt_template)
     if agent_name=="AngularAppAgent":   
-        return AngularAppAgent(llm,prompt_template)
-
-        
+        return AngularAppAgent(llm,prompt_template)     
 
 
 
@@ -203,6 +203,18 @@ def run_workflow(workflow_path, streamlit_mode=False):
             if(debug):
                 print(output)
 
+        elif step_type == "ai-image":
+            if agent_name=="Dalle2Agent":
+                agent = Dalle2Agent()
+            if agent_name=="Dalle3Agent":
+                agent = Dalle3Agent()
+            result = agent.generate_image(**inputs)
+
+            if "url" in result:
+                print("Image URL:", result["url"])
+                # Optionally download or embed
+            else:
+                print("Error:", result["error"])
         elif step_type == "rag":
             agent = get_rag_agent(agent_name, step["collection_name"], step["storage_path"])
             if not streamlit_mode:

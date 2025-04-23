@@ -1,0 +1,11 @@
+name: image generator
+description: this workflow is to generate images
+
+steps:
+
+  - name: generate_login_feature
+    type: ai-image
+    agent: Dalle3Agent
+    input:
+      prompt: "Create an image in the style of a classic book illustration for 'The Old Man and the Sea': A lone, elderly fisherman in his small skiff fights against a violent sea storm. Rough, dark waves threaten to swamp the boat. Perhaps a thick fishing line is taut, disappearing into the tumultuous water. Focus on the man's resilience against overwhelming nature."
+      image_path: "workspace/images/viejo_y_el_mar.png"
