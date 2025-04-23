@@ -3,7 +3,7 @@ import re
 from utils.printer import Printer
 from models.modelgpt35turbo import ModelGpt35Turbo, ModelGpt4, ModelGpt4Turbo
 from models.modellocalollama import ModelOllama
-from agents.goswaggeragent import GoSwaggerAgent, GoCRUDAgent, Dalle3Agent, Dalle2Agent
+from agents.goswaggeragent import GoSwaggerAgent, GoCRUDAgent, Dalle3Agent, Dalle2Agent, AudioAgent
 from agents.chatagent import ChatAgent
 from agents.rag import RAGDatabaseBuilderAgent, RAGQueryAgent, RAGDatabaseUpdaterAgent
 from agents.angularappagent import AngularAppAgent
@@ -215,6 +215,14 @@ def run_workflow(workflow_path, streamlit_mode=False):
                 # Optionally download or embed
             else:
                 print("Error:", result["error"])
+
+        elif step_type == "ai-audio":
+            agent = AudioAgent()
+            output = agent.run(**inputs)
+            results[name] = output
+            if(debug):
+                print(output)
+
         elif step_type == "rag":
             agent = get_rag_agent(agent_name, step["collection_name"], step["storage_path"])
             if not streamlit_mode:
