@@ -10,31 +10,31 @@ vars:
 
 steps:
 
-  # - name: clone_repo
-  #   type: git
-  #   agent: GitHubCloneOrUpdateRepoAgent
-  #   input:
-  #     repo_url: https://github.com/vccaso/avila-easychat-goals.git
-  #     local_repo_dir: ${local_repo_dir}
+  - name: clone_repo
+    type: git
+    agent: GitHubCloneOrUpdateRepoAgent
+    input:
+      repo_url: https://github.com/vccaso/avila-easychat-goals.git
+      local_repo_dir: ${local_repo_dir}
 
-  # - name: checkout_branch
-  #   type: git
-  #   agent: GitHubCheckoutBranchAgent
-  #   input:
-  #     source_branch: ${source_branch}
-  #     local_repo_dir: ${local_repo_dir}
+  - name: checkout_branch
+    type: git
+    agent: GitHubCheckoutBranchAgent
+    input:
+      source_branch: ${source_branch}
+      local_repo_dir: ${local_repo_dir}
 
-  # - name: create_branch
-  #   type: git
-  #   agent: GitHubCreateBranchAgent
-  #   input:
-  #     branch_name: ${branch_name}
-  #     local_repo_dir: ${local_repo_dir}
+  - name: create_branch
+    type: git
+    agent: GitHubCreateBranchAgent
+    input:
+      branch_name: ${branch_name}
+      local_repo_dir: ${local_repo_dir}
 
   - name: generate_product
     type: ai
     agent: GoCRUDAgent
-    model: ModelGpt35Turbo
+    model: ModelGpt4Turbo
     template_name: go_crud
     input:
       model: "Product"

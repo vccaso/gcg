@@ -1,7 +1,7 @@
 import yaml, importlib
 import re
 from utils.printer import Printer
-from models.modelgpt35turbo import ModelGpt35Turbo, ModelGpt4
+from models.modelgpt35turbo import ModelGpt35Turbo, ModelGpt4, ModelGpt4Turbo
 from models.modellocalollama import ModelOllama
 from agents.goswaggeragent import GoSwaggerAgent, GoCRUDAgent
 from agents.chatagent import ChatAgent
@@ -145,6 +145,8 @@ def get_model(model_name):
         return ModelOllama()
     if model_name == "ModelGpt4":
         return ModelGpt4()
+    if model_name == "ModelGpt4Turbo":
+        return ModelGpt4Turbo()
 
 def get_ai_agent(llm, agent_name, name="default"):
     prompt_loader = PromptLoader()
