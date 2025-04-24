@@ -7,6 +7,9 @@ vars:
   branch_name: code-generated
   repo_name: avila-easychat-goals
   additional_model: gpt-4o-mini
+  model: ModelGpt4Turbo
+  model2: ModelGpt35Turbo
+  model3: ModelOllama
 
 steps:
 
@@ -34,7 +37,7 @@ steps:
   - name: generate_product
     type: ai
     agent: GoCRUDAgent
-    model: ModelGpt4Turbo
+    model: ${model2}
     template_name: go_crud
     input:
       model: "Product"
@@ -44,27 +47,28 @@ steps:
   # - name: Generate_ticket
   #   type: ai
   #   agent: GoCRUDAgent
-  #   model: ModelOllama
+  #   model: ${model2}
+  #   template_name: go_crud
   #   input:
   #     model: "Ticket"
   #     fields: "ID (int), Name (string, required), REqeustedDate (datetime, required), Status(int, required)"
   #     local_repo_dir: ${local_repo_dir}
 
 
-  # - name: stage_commit_push
-  #   type: git
-  #   agent: GitHubCommitAgent
-  #   input:
-  #     new_branch: ${branch_name}
-  #     local_repo_dir: ${local_repo_dir}
-  #     commit_message: "Swagger comments code added"
+  - name: stage_commit_push
+    type: git
+    agent: GitHubCommitAgent
+    input:
+      new_branch: ${branch_name}
+      local_repo_dir: ${local_repo_dir}
+      commit_message: "Code added for Product and Ticket"
 
-  # - name: pull_request
-  #   type: git
-  #   agent: GitHubPRAgent
-  #   input:
-  #     repo_name: ${repo_name}
-  #     pr_title: "Swagger comments code added"
-  #     new_branch: ${branch_name}
-  #     source_branch: ${source_branch}
-  #     pr_body: "Swagger comments code added"
+  - name: pull_request
+    type: git
+    agent: GitHubPRAgent
+    input:
+      repo_name: ${repo_name}
+      pr_title: "Product and Ticket added"
+      new_branch: ${branch_name}
+      source_branch: ${source_branch}
+      pr_body: "ode generated for Product and Ticket"

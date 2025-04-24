@@ -37,13 +37,46 @@ Each section should begin with a marker indicating the file path using the forma
 
 - File: `data/{model}.go`
 - Marker: `==== {local_repo_dir}/data/{model}.go/n`
-- Create database functions for CRUD:
-  - GetAll{model}
-  - Get{model}ByID
-  - Create{model}
-  - Update{model}
-  - Delete{model}
-- Use `CreateDb()` from `connect.go`.
+
+Generate full Go source code that implements the data access layer for the `{model}` model using `database/sql`.
+
+You must write fully implemented CRUD functions (no TODOs, no placeholders). Each function should:
+- Use `db.Query`, `db.QueryRow`, or `db.Exec`
+- Include actual SQL queries as constants (e.g., `var sqlSelectProduct = "SELECT ..."`).
+- Map results to the `model.{model}` struct
+- Use proper `Scan`, error handling, and `defer rows.Close()`
+
+If the model has related data (e.g., agents in `Department`), include inner helper functions and use joins or subqueries as needed.
+
+Use the existing DB connection method `CreateDb()` from `connect.go`.
+
+Here’s a structure to follow:
+
+```go
+var sqlSelectProduct = "SELECT id, name, price FROM product WHERE isdeleted=0"
+
+```go
+var sqlSelectProduct = "SELECT id, name, price FROM product WHERE isdeleted=0"
+
+func GetAllProduct(db *sql.DB) ([]model.Product, error) {{
+    var products []model.Product
+    rows, err := db.Query(sqlSelectProduct)
+    if err != nil {{
+        return products, err
+    }}
+    defer rows.Close()
+
+    for rows.Next() {{
+        var p model.Product
+        err := rows.Scan(&p.ID, &p.Name, &p.Price)
+        if err != nil {{
+            return products, err
+        }}
+        products = append(products, p)
+    }}
+    return products, nil
+}}
+
 
 ---
 
@@ -51,8 +84,8 @@ Each section should begin with a marker indicating the file path using the forma
 
 - File: `http/api/{model}.go`
 - Marker: `==== {local_repo_dir}/http/api/{model}.go/n`
-- Implement handler functions using the data layer.
-- Parse input/output using `encoding/json`.
+- Update the existing API handler file. If it already exists, here is its current content:
+{existing_api}
 
 ---
 
@@ -67,3 +100,5 @@ Each section should begin with a marker indicating the file path using the forma
   - POST /{model}s
   - PUT /{model}s
   - DELETE /{model}s/{{id}}
+- Update the existing server.go file. If it already exists, here is its current content:
+{existing_routes}

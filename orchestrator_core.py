@@ -3,7 +3,7 @@ import re
 from utils.printer import Printer
 from models.openaimodels import ModelGpt35Turbo, ModelGpt4, ModelGpt4Turbo
 from models.modellocalollama import ModelOllama
-from agents.goswaggeragent import GoSwaggerAgent, GoCRUDAgent, Dalle3Agent, Dalle2Agent, AudioAgent
+from agents.gocodeagent import GoSwaggerAgent, GoCRUDAgent, Dalle3Agent, Dalle2Agent, AudioAgent
 from agents.chatagent import ChatAgent
 from agents.rag import RAGDatabaseBuilderAgent, RAGQueryAgent, RAGDatabaseUpdaterAgent
 from agents.angularappagent import AngularAppAgent
@@ -124,7 +124,7 @@ def load_agent(agent_name):
     modules = [
         "agents.requirements_extractor",
         "agents.github_integration",
-        "agents.goswaggeragent",
+        "agents.gocodeagent",
         "agents.chatagent",
         "agents.file_system",
         "agents.rag",
@@ -139,6 +139,7 @@ def load_agent(agent_name):
     raise ImportError(f"Agent {agent_name} not found.")
 
 def get_model(model_name, temperature=0.2):
+    print(f"model: {model_name}")
     if model_name=="ModelGpt35Turbo":   
         return ModelGpt35Turbo(temperature)
     if model_name=="ModelOllama":   
