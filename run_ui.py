@@ -45,13 +45,15 @@ if st.session_state.confirm_ready:
         if st.button("✅ Confirm and Run"):
             with st.spinner("Running workflow..."):
                 result = run_workflow(workflow_path, streamlit_mode=True)
-                st.success("✅ Workflow completed!")
+                # st.success("✅ Workflow completed!")
                 for step, output in result.items():
+                    if step=="_execution_duration":
+                        continue
                     st.subheader(f"Step: {step}")
-                    st.json(output)
+                    st.text(output)
             st.session_state.confirm_ready = False
             if "_execution_duration" in result:
-                st.success(f"✅ Completed in {result['_execution_duration']} seconds.")
+                st.success(f"✅ Workflow completed in {result['_execution_duration']} seconds.")
     with col2:
         if st.button("❌ Cancel"):
             st.session_state.confirm_ready = False
