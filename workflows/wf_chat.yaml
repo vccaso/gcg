@@ -12,7 +12,7 @@ steps:
   - name: tips
     type: ai
     agent: ChatAgent
-    model: ${model3}
+    model: ${model}
     temperature: 1.0
     template_name: short
     input:
@@ -23,6 +23,6 @@ steps:
     agent: ChatAgent
     temperature: 0.01
     template_name: short
-    model: ${model3}
+    model: ${model}
     input:
       question: "Whay the sky is {{ color }}?"

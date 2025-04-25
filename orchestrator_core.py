@@ -1,5 +1,6 @@
 import yaml, importlib
 import re
+import time
 from utils.printer import Printer
 from models.openaimodels import ModelGpt35Turbo, ModelGpt4, ModelGpt4Turbo
 from models.modellocalollama import ModelOllama
@@ -180,6 +181,8 @@ def get_rag_agent(agent_name, collection_name, storage_path):
 
 
 def run_workflow(workflow_path, streamlit_mode=False):
+    start_time = time.time()
+
     with open(workflow_path) as f:
         workflow = yaml.safe_load(f)
 
@@ -244,5 +247,12 @@ def run_workflow(workflow_path, streamlit_mode=False):
             results[name] = output
             if(debug):
                 print(output)
+
+    duration = round(time.time() - start_time, 2)
+    if not streamlit_mode:
+        print(f"\n✅ Workflow completed in {duration} seconds.")
+    else:
+        results["_execution_duration"] = duration  # optionally expose it to UI
+
 
     return results
