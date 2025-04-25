@@ -1,0 +1,43 @@
+name: Generate_User_CRUD
+description: Workflow to generate a Go CRUD code for User with common fields
+
+vars:
+  local_repo_dir: ./workspace/my-app
+
+steps:
+  - name: generate_user_crud
+    type: ai
+    agent: GoCRUDAgent
+    model: ModelGpt4Turbo
+    prompt_template: default
+    input:
+      model: User
+      fields: |
+        ID (int)
+        Name (string, required)
+        Email (string, required)
+        Age (int)
+      local_repo_dir: ${local_repo_dir}
+
+  - name: generate_user_model
+    type: ai
+    agent: GoCRUDModelAgent
+    model: ModelGpt4Turbo
+    prompt_template: default
+    input:
+      model: User
+      fields: |
+        ID (int)
+        Name (string, required)
+        Email (string, required)
+        Age (int)
+      local_repo_dir: ${local_repo_dir}
+
+  - name: generate_user_data
+    type: ai
+    agent: GoCRUDDataAgent
+    model: ModelGpt4Turbo
+    prompt_template: data_only
+    input:
+      model: User
+      local_repo_dir: ${local_repo_dir}

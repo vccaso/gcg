@@ -5,6 +5,7 @@ from utils.printer import Printer
 from models.openaimodels import ModelGpt35Turbo, ModelGpt4, ModelGpt4Turbo
 from models.modellocalollama import ModelOllama
 from agents.gocodeagent import GoSwaggerAgent, GoCRUDAgent, Dalle3Agent, Dalle2Agent, AudioAgent, GoCRUDDataAgent
+from agents.orchestratoragent import OrchestratorAgent
 from agents.chatagent import ChatAgent
 from agents.rag import RAGDatabaseBuilderAgent, RAGQueryAgent, RAGDatabaseUpdaterAgent
 from agents.angularappagent import AngularAppAgent
@@ -130,7 +131,8 @@ def load_agent(agent_name):
         "agents.file_system",
         "agents.rag",
         "agents.gocrudagent",
-        "agents.angularappagent"
+        "agents.angularappagent",
+        "agents.orchestratoragent"
 
     ]
     for mod in modules:
@@ -157,6 +159,8 @@ def get_ai_agent(llm, agent_name, name="default"):
     prompt_loader = PromptLoader()
     prompt_template = prompt_loader.load_prompt(agent_name, name)
     
+    if agent_name == "OrchestratorAgent":
+        return OrchestratorAgent(llm, prompt_template)
     if agent_name=="GoSwaggerAgent": 
         return GoSwaggerAgent(llm, prompt_template)
     if agent_name=="ChatAgent":   

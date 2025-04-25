@@ -1,0 +1,20 @@
+name: Orchestrator
+description: this workflow to orchestrate workflows
+  
+steps:
+
+  - name: questions_worfflows
+    type: ai
+    agent: OrchestratorAgent
+    model: ModelGpt35Turbo
+    input:
+      request: "Create a workflow to ask for tips to improve the cardio and save them in a file"
+      save_path: "workflows/wf_test01.yaml"
+
+  - name: generate_workflows
+    type: ai
+    agent: OrchestratorAgent
+    model: ModelGpt35Turbo
+    input:
+      request: "Create a workflow to do a GO CRUD generator code for User with its most commons fields"
+      save_path: "workflows/wf_test02.yaml"
