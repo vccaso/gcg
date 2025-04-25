@@ -18,3 +18,15 @@ steps:
     input:
       request: "Create a workflow to do a GO CRUD generator code for User with its most commons fields"
       save_path: "workflows/wf_test02.yaml"
+
+  - name: generate_code_workflows
+    type: ai
+    agent: OrchestratorAgent
+    model: ModelGpt35Turbo
+    input:
+      request: |
+        Create a workflow to clone a repository repo_url: https://github.com/vccaso/avila-easychat-goals.git and 
+        then create a new branch named testing
+        then do a GO CRUD generator code for Order and Orderdetail with its most commont fields 
+        and create a Pull request with those changes to dev
+      save_path: "workflows/wf_test03.yaml"

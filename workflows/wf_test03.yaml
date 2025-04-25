@@ -1,0 +1,63 @@
+name: GitHub_Workflow
+description: Workflow to clone a repository, create a new branch, generate Go CRUD code, and create a Pull request
+
+vars:
+  local_repo_dir: ./workspace/my-app
+
+steps:
+  - name: clone_repository
+    type: git
+    agent: GitAgent
+    model: GitCloneModel
+    prompt_template: default
+    input:
+      repo_url: https://github.com/vccaso/avila-easychat-goals.git
+      local_repo_dir: ${local_repo_dir}
+
+  - name: create_branch
+    type: git
+    agent: GitAgent
+    model: GitBranchModel
+    prompt_template: default
+    input:
+      branch_name: testing
+      local_repo_dir: ${local_repo_dir}
+
+  - name: generate_order_crud
+    type: ai
+    agent: GoCRUDAgent
+    model: ModelGpt4Turbo
+    prompt_template: default
+    input:
+      model: Order
+      fields: |
+        ID (int)
+        CustomerID (int)
+        TotalAmount (float64)
+        CreatedAt (datetime)
+      local_repo_dir: ${local_repo_dir}
+
+  - name: generate_orderdetail_crud
+    type: ai
+    agent: GoCRUDAgent
+    model: ModelGpt4Turbo
+    prompt_template: default
+    input:
+      model: Orderdetail
+      fields: |
+        ID (int)
+        OrderID (int)
+        ProductID (int)
+        Quantity (int)
+        Price (float64)
+      local_repo_dir: ${local_repo_dir}
+
+  - name: create_pull_request
+    type: git
+    agent: GitAgent
+    model: GitPullRequestModel
+    prompt_template: default
+    input:
+      branch_name: testing
+      base_branch: dev
+      local_repo_dir: ${local_repo_dir}
