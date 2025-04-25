@@ -28,6 +28,7 @@ class OrchestratorAgent:
 
     def get_model_description(self):
         return """
+    - ModelOllama: Model running locally. It is free and slow.
     - ModelGpt4Turbo: Best for structured code generation and logic-heavy tasks.
     - ModelGpt35Turbo: Fast, lower cost, suitable for simple code tasks.
     - ModelDalle3: For generating images.

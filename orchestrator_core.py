@@ -4,6 +4,7 @@ import time
 from utils.printer import Printer
 from models.openaimodels import ModelGpt35Turbo, ModelGpt4, ModelGpt4Turbo
 from models.modellocalollama import ModelOllama
+from models.modellocaldeepseek import ModelDeepSeek
 from agents.gocodeagent import GoSwaggerAgent, GoCRUDAgent, Dalle3Agent, Dalle2Agent, AudioAgent, GoCRUDDataAgent
 from agents.orchestratoragent import OrchestratorAgent
 from agents.chatagent import ChatAgent
@@ -144,6 +145,8 @@ def load_agent(agent_name):
 def get_model(model_name, temperature=0.2):
 
 
+    if model_name == "ModelDeepSeek":
+        return ModelDeepSeek()
     if model_name=="ModelGpt35Turbo":   
         return ModelGpt35Turbo(temperature)
     if model_name=="ModelOllama":   

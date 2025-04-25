@@ -173,3 +173,14 @@ docker run --rm \
 -e sets env vars (like your OpenAI key)
 
 -v mounts your local workflows so they can be edited outside Docker
+
+
+### 🧠 Model: DeepSeek (Local)
+
+To enable local DeepSeek support:
+
+1. Download and run the DeepSeek model (via Ollama or compatible container).
+2. Ensure it's available on a local endpoint (e.g. `http://localhost:11434`)
+3. Set the following environment variable (optional):
+   ```bash
+   export DEEPSEEK_URL=http://localhost:11434
