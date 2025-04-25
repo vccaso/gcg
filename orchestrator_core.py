@@ -3,7 +3,7 @@ import re
 from utils.printer import Printer
 from models.openaimodels import ModelGpt35Turbo, ModelGpt4, ModelGpt4Turbo
 from models.modellocalollama import ModelOllama
-from agents.gocodeagent import GoSwaggerAgent, GoCRUDAgent, Dalle3Agent, Dalle2Agent, AudioAgent
+from agents.gocodeagent import GoSwaggerAgent, GoCRUDAgent, Dalle3Agent, Dalle2Agent, AudioAgent, GoCRUDDataAgent
 from agents.chatagent import ChatAgent
 from agents.rag import RAGDatabaseBuilderAgent, RAGQueryAgent, RAGDatabaseUpdaterAgent
 from agents.angularappagent import AngularAppAgent
@@ -139,7 +139,8 @@ def load_agent(agent_name):
     raise ImportError(f"Agent {agent_name} not found.")
 
 def get_model(model_name, temperature=0.2):
-    print(f"model: {model_name}")
+
+
     if model_name=="ModelGpt35Turbo":   
         return ModelGpt35Turbo(temperature)
     if model_name=="ModelOllama":   
@@ -162,7 +163,9 @@ def get_ai_agent(llm, agent_name, name="default"):
     if agent_name=="GoCRUDAgent":
         return GoCRUDAgent(llm=llm, prompt_template=prompt_template)
     if agent_name=="AngularAppAgent":   
-        return AngularAppAgent(llm,prompt_template)     
+        return AngularAppAgent(llm,prompt_template)  
+    if agent_name == "GoCRUDDataAgent":
+        return GoCRUDDataAgent(llm,prompt_template)   
 
 
 
@@ -190,7 +193,6 @@ def run_workflow(workflow_path, streamlit_mode=False):
         input_spec = resolve_vars(step["input"], vars_dict)
         inputs = resolve_inputs(input_spec, results, vars_dict)
 
-        print(inputs)
 
         if step_type == "ai":
             template_name = step.get("template_name", "default")

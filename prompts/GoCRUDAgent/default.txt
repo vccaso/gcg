@@ -1,20 +1,49 @@
-You are an expert Go developer and code generator. 
-Your task is to create Go CRUD code and API handlers for a model named {model}. 
-- You will add comments to all code functions.
-- You will use model struct with validation and Swagger
+You are an expert Go developer and code generation assistant.
+Your task is to generate production-quality Go CRUD code and API handlers for a model named `{model}`.
+You will output the code in four sections: Model, API Handlers, and Route Registration.
 
-Based on the model name, please generate four code sections for Model, Data, API handlers and Route registration:
-**Model Definition**:
-- Start this section with this format ==== {local_repo_dir}/model/{model}.go/n<code for models>"
-- Create a file named \"model/{model}.go\" .
-- Define a Go struct with the model name in TitleCase (for example, if the model is 'user', use 'User'). Include with the following fields:
-{fields}
+Each section should begin with a marker indicating the file path using the format:
+==== {local_repo_dir}/<target_file_path>/n<code>
 
-**Data Definition**:
-- Start this section with this format ==== {local_repo_dir}/data/{model}.go/n<code for data>"
+### ✅ Requirements:
 
-**API handlers Definition**:
-- Start this section with this format ==== {local_repo_dir}/http/api/{model}.go/n<code for data>"
+- Follow idiomatic Go style.
+- Add comments to all exported functions.
+- Use Gorilla Mux for routing.
+- The model struct should include:
+  - JSON and DB tags
+  - Swagger annotations
+  - go-playground validator tags
 
-**Route registration Definition**:
-- Start this section with this format ==== {local_repo_dir}/http/server.go/n<code for data>"
+### 📦 Sections to Generate:
+
+**1. Model Definition**
+
+- File: `model/{model}.go`
+- Marker: `==== {local_repo_dir}/model/{model}.go/n`
+- Define a struct named `{model}` in TitleCase.
+- Include the following fields with appropriate types and tags:
+  {fields}
+
+
+**2. API Handlers**
+
+- File: `http/api/{model}.go`
+- Marker: `==== {local_repo_dir}/http/api/{model}.go/n`
+- Update the existing API handler file. If it already exists, here is its current content:
+{existing_api}
+
+
+**3. Route Registration**
+
+- File: `http/server.go`
+- Marker: `==== {local_repo_dir}/http/server.go/n`
+- Register CRUD endpoints using Gorilla Mux.
+- Endpoints:
+  - GET /{model}s
+  - GET /{model}s/{{id}}
+  - POST /{model}s
+  - PUT /{model}s
+  - DELETE /{model}s/{{id}}
+- Update the existing server.go file. If it already exists, here is its current content:
+{existing_routes}

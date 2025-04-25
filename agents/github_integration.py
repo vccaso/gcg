@@ -57,7 +57,7 @@ class GitHubCommitAgent(BaseAgent):
             self.repo.git.commit("-m", commit_message)
             Printer.message("Committed changes.")
         except git.exc.GitCommandError as e:
-            Printer.error("No changes to commit or commit failed:", e)
+            Printer.error(f"No changes to commit or commit failed: {e}")
             return
 
         origin = self.repo.remotes.origin

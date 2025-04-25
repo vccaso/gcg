@@ -4,12 +4,30 @@ description: this workflow generate GO code
 vars:
   local_repo_dir: ./workspace/avila-easychat-goals
   source_branch: dev
-  branch_name: code-generated
+  branch_name: model3turbo
   repo_name: avila-easychat-goals
   additional_model: gpt-4o-mini
-  model: ModelGpt4Turbo
-  model2: ModelGpt35Turbo
+  model2: ModelGpt4Turbo
+  model: ModelGpt35Turbo
   model3: ModelOllama
+
+  product_fields: |
+        ID (int)
+        Name (string, required)
+        Price (float64, required)
+
+  order_fields: |
+        ID (int)
+        OrderDate (datetime, required)
+        EmployeeID (int, required)
+        Status (int, required)
+
+  orderdetail_fields: |
+        ID (int)
+        OrderID (int)
+        ProductID (int)
+        UnitPrice (float64, required)
+        Quantity (int, required)
 
 steps:
 
@@ -37,23 +55,45 @@ steps:
   - name: generate_product
     type: ai
     agent: GoCRUDAgent
-    model: ${model2}
+    model: ${model3}
     template_name: go_crud
     input:
       model: "Product"
-      fields: "ID (int), Name (string, required), Price (float64, required)"
+      fields: ${product_fields}
       local_repo_dir: ${local_repo_dir}
 
-  # - name: Generate_ticket
-  #   type: ai
-  #   agent: GoCRUDAgent
-  #   model: ${model2}
-  #   template_name: go_crud
-  #   input:
-  #     model: "Ticket"
-  #     fields: "ID (int), Name (string, required), REqeustedDate (datetime, required), Status(int, required)"
-  #     local_repo_dir: ${local_repo_dir}
+  - name: generate_data_layer_product
+    type: ai
+    agent: GoCRUDDataAgent
+    model: ${model3}
+    prompt_template: data_only
+    temperature: 0.2
+    input:
+      model: Product
+      fields: ${product_fields}
+      local_repo_dir: ${local_repo_dir}
 
+  - name: generate_data_layer_detail
+    type: ai
+    agent: GoCRUDDataAgent
+    model: ${model3}
+    prompt_template: data_only
+    temperature: 0.2
+    input:
+      model: Order
+      fields: ${order_fields}
+      local_repo_dir: ${local_repo_dir}
+
+  - name: generate_data_layer_detail
+    type: ai
+    agent: GoCRUDDataAgent
+    model: ${model3}
+    prompt_template: data_only
+    temperature: 0.2
+    input:
+      model: OrderDetail
+      fields: ${orderdetail_fields}
+      local_repo_dir: ${local_repo_dir}
 
   - name: stage_commit_push
     type: git
@@ -71,4 +111,4 @@ steps:
       pr_title: "Product and Ticket added"
       new_branch: ${branch_name}
       source_branch: ${source_branch}
-      pr_body: "ode generated for Product and Ticket"
+      pr_body: "Code generated for Product and Ticket"

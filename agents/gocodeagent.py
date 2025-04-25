@@ -2,6 +2,7 @@ import os
 import re
 from models.modelbase import ModelBase
 from utils.printer import Printer
+from utils.gocodeutil import GoCodeUtil
 from config import debug
 import openai
 import requests
@@ -35,17 +36,45 @@ class GoCRUDAgentOriginal:
         crud_code = self.llm.get_response(final_prompt)
 
         # Strip code block formatting if present
-        crud_code = self._strip_markdown_formatting(crud_code)
+        crud_code = GoCodeUtil.strip_markdown_formatting(crud_code)
         if debug:
             print(crud_code)
         return crud_code
 
-    def _strip_markdown_formatting(self, text: str) -> str:
-        if text.startswith("```go"):
-            text = text.replace("```go", "", 1)
-        if text.endswith("```"):
-            text = text[:-3]
-        return text.strip()
+
+
+class GoCRUDDataAgent:
+    def __init__(self, llm: ModelBase, prompt_template: str):
+        self.llm = llm
+        self.prompt_template = prompt_template
+
+    def generate_prompt(self, **kwargs) -> str:
+        model_name = kwargs.get("model")
+        if model_name:
+            kwargs.setdefault("Model", model_name[0].upper() + model_name[1:])
+            kwargs.setdefault("model_lowercase", model_name.lower())
+
+        return self.prompt_template.format(**kwargs)
+
+    def run(self, **kwargs):
+        final_prompt = self.generate_prompt(**kwargs)
+        llm_response = self.llm.get_response(final_prompt).strip()
+        # Write files
+        written_files = self.write_data_file(llm_response)
+        return "\n".join(written_files)
+
+    def write_data_file(self, go_code: str) -> list:
+        parts = re.split(r"==== (.+?)\/n", go_code)
+        written = []
+        for i in range(1, len(parts), 2):
+            path = parts[i].strip()
+            code = parts[i + 1].strip()
+            go_code = GoCodeUtil.extract_go_code_block(code)
+            os.makedirs(os.path.dirname(path), exist_ok=True)
+            with open(path, "w", encoding="utf-8") as f:
+                f.write(go_code + "\n")
+            written.append(path)
+        return written
 
 
 class GoCRUDAgent:
@@ -71,6 +100,7 @@ class GoCRUDAgent:
             file_path = parts[i].strip()
             new_content = parts[i + 1].strip()
 
+            go_code = GoCodeUtil.extract_go_code_block(new_content)
             # Ensure directory exists
             os.makedirs(os.path.dirname(file_path), exist_ok=True)
 
@@ -80,11 +110,11 @@ class GoCRUDAgent:
                 if os.path.exists(file_path):
                     with open(file_path, "a", encoding="utf-8") as f:
                         f.write("\n\n// === AI-generated addition ===\n")
-                        f.write(new_content + "\n")
+                        f.write(go_code + "\n")
                     action = "updated"
                 else:
                     with open(file_path, "w", encoding="utf-8") as f:
-                        f.write(new_content + "\n")
+                        f.write(go_code + "\n")
                     action = "created"
             else:
                 # Default: overwrite
@@ -93,37 +123,6 @@ class GoCRUDAgent:
                 action = "written"
 
             written_files.append(f"{file_path} ({action})")
-
-        return written_files
-
-
-
-    def write_files_from_output_original(self, output: str) -> list:
-        """
-        Parses code output marked with:
-        ==== ./some/path/to/file.go/n
-        and writes the content into the appropriate file.
-        
-        Returns a list of written file paths.
-        """
-        written_files = []
-        
-        # Split on each marker
-        parts = re.split(r"==== (.+?)\/n", output)
-        
-        # Regex split returns: [junk, path1, content1, path2, content2, ...]
-        for i in range(1, len(parts), 2):
-            file_path = parts[i].strip()
-            content = parts[i + 1].strip()
-
-            # Ensure directory exists
-            os.makedirs(os.path.dirname(file_path), exist_ok=True)
-
-            # Write file
-            with open(file_path, "w", encoding="utf-8") as f:
-                f.write(content + "\n")
-
-            written_files.append(file_path)
 
         return written_files
 
@@ -164,10 +163,7 @@ class GoCRUDAgent:
 
         final_prompt = self.generate_prompt(**kwargs)
         crud_code = self.llm.get_response(final_prompt)
-        crud_code = self._strip_markdown_formatting(crud_code)
-
-        if debug:
-            print(crud_code)
+        crud_code = GoCodeUtil.strip_markdown_formatting(crud_code)
 
         written_files = self.write_files_from_output(crud_code)
 
@@ -175,41 +171,6 @@ class GoCRUDAgent:
             print(f"[📁] Files written:\n- " + "\n- ".join(written_files))
 
         return crud_code
-
-
-
-    def run_original(self, **kwargs) -> str:
-        """
-        Generates the final CRUD code from provided keyword arguments to fill the prompt.
-        Returns clean Go code without markdown artifacts.
-        """
-
-        local_repo_dir = kwargs.get("local_repo_dir", ".")
-
-        final_prompt = self.generate_prompt(**kwargs)
-        crud_code = self.llm.get_response(final_prompt)
-
-        # Strip code block formatting if present
-        crud_code = self._strip_markdown_formatting(crud_code)
-        if debug:
-            print(crud_code)
-
-        # Optional: write to disk
-        written_files = self.write_files_from_output(crud_code)
-
-        # Debug log for visibility
-        if debug:
-            print(f"[📁] Files written:\n- " + "\n- ".join(written_files))
-
-        return crud_code
-
-
-    def _strip_markdown_formatting(self, text: str) -> str:
-        if text.startswith("```go"):
-            text = text.replace("```go", "", 1)
-        if text.endswith("```"):
-            text = text[:-3]
-        return text.strip()
 
 
 class GoSwaggerAgent:
