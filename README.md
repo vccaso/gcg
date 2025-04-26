@@ -1,168 +1,158 @@
-# Go Code Generator  (GCG)
+Go Code Generator (GCG) 🛠️
+An extensible AI Agent Orchestrator for generating Go CRUD code, Angular apps, GitHub automations, images, audio, and more — using local and remote LLMs!
 
+Built with:
 
-– To run this script you must install the required Python packages:
-pip install GitPython openai requests
+🧠 Python 3
 
+🖥️ Streamlit (for UI)
 
+🔧 YAML-based workflow definitions
 
-python3 main.py --profile avila-easychat-goals --promt inline-comments
+🌐 OpenAI / Ollama / DeepSeek integrations
 
-python3 -m venv .venv
-. venv/bin/activate
-pip install -r requirements.txt
+📦 Requirements
+Python 3.8+
 
+Docker (optional, for containerized runs)
 
+Access to LLMs (OpenAI API Key or Local Ollama Models)
 
-
-
-# 🤖 Local + Remote LLM Chat Engine
-
-This project includes a modular LLM integration using:
-
-- 🌐 OpenAI GPT-3.5-Turbo (via API)
-- 💻 Ollama (run local models like LLaMA3, Mistral, etc.)
-
-You can switch between providers by instantiating either `ModelGpt35Turbo` or `ModelOllama`, both implementing the same interface.
-
----
-
-## 📦 Requirements
-
-- Python 3.8+
-- Virtual environment (recommended)
-
----
-
-## 🔧 Setup Instructions
-
-### 1. Clone the repo
-
-```bash
+🔧 Setup Instructions
+1. Clone the Repo
+bash
+Copy
+Edit
 git clone https://github.com/your-username/your-repo.git
 cd your-repo
-
-
-#  Create and activate a virtual environment
-python3 -m venv venv
-source venv/bin/activate        # macOS/Linux
+2. Create and Activate Virtual Environment
+bash
+Copy
+Edit
+python3 -m venv .venv
+source .venv/bin/activate          # macOS/Linux
 # OR
-venv\Scripts\activate           # Windows
-
-
-# . Install dependencies
+.venv\Scripts\activate             # Windows
+3. Install Required Packages
+bash
+Copy
+Edit
 pip install -r requirements.txt
+🧠 Supported LLM Models
 
-# Set OpenAI API Key (if using OpenAI GPT)
-export OPENAI_API_KEY=your-api-key   # macOS/Linux
-# OR
-set OPENAI_API_KEY=your-api-key      # Windows
+Model	Best Use	Notes
+ModelOllama	Offline dev, small tasks	Free, slower
+ModelDeepSeekCoder67	Heavy coding (Go, Python, SQL)	Local coding genius
+ModelGpt4Turbo	Structured code, planning	Best, more expensive
+ModelGpt35Turbo	Fast drafts, simple tasks	Cheap, fast
+ModelDalle3	Image generation	Text-to-image
+ModelTTS1	Text-to-Speech	Create voice outputs
+ModelWhisper	Speech-to-Text	Audio transcription
+🧠 Supported AI Agents
 
-# Using Ollama (Local LLMs)
+Agent	Description
+ChatAgent	General chat, Q&A, brainstorming
+GoCRUDAgent	Full Go CRUD generator (model + API)
+GoCRUDModelAgent	Only Go struct model generation
+GoCRUDDataAgent	Only Go data access layer generation
+GoSwaggerAgent	Swagger/OpenAPI doc generation
+AngularAppAgent	Create Angular frontend code
+Dalle3Agent	Generate images from text prompts
+AudioAgent	Text-to-Speech and Speech-to-Text
+SaveToFileAgent	Save content to a file
+GitHubCreateBranchAgent	Create Git branches locally
+GitHubCommitAgent	Make Git commits
+GitHubCheckoutBranchAgent	Checkout Git branches
+GitHubPRAgent	Create GitHub Pull Requests
+GitHubCloneOrUpdateRepoAgent	Clone or update GitHub repos
+🚀 Example Usage
+Run from CLI:
+bash
+Copy
+Edit
+python3 run_cli.py --workflow workflows/wf_example.yaml
+Use --workflow to point to any YAML workflow!
 
-## Install Ollama
-Download from: https://ollama.com/download
-Then install a model, for example:
+Run from Streamlit UI:
+bash
+Copy
+Edit
+streamlit run ui.py
+Browse workflows, select, and launch them visually.
 
+🌐 Using OpenAI Models
+Make sure your API key is set:
+
+bash
+Copy
+Edit
+export OPENAI_API_KEY=your-api-key       # macOS/Linux
+set OPENAI_API_KEY=your-api-key           # Windows
+💻 Using Local Models (Ollama)
+Install Ollama:
+Download Ollama
+
+Pull and Run Models:
+bash
+Copy
+Edit
 ollama pull llama3
-
-
-## Make sure Ollama is running
-Start Ollama in the background if it’s not already running:
-
-```ollama run llama3```
-ollama run llama3.2
-
-You can replace llama3 with any local model like mistral, codellama, etc.
-
-## 🚀 Example Usage
-# Use OpenAI
-```
-from models.model_gpt35 import ModelGpt35Turbo
-model = ModelGpt35Turbo()
-print(model.get_response("Explain recursion."))
-
-# Use Ollama
-
-from models.model_ollama import ModelOllama
-model = ModelOllama("llama3")
-print(model.get_response("What is a hash map?"))
-```
-
-
-## List all downloaded models
-ollama list
-
-## List currently running models
-ps aux | grep ollama
-
-
-##  Start a model manually
 ollama run llama3
+List installed models:
 
-## Remove a downloaded model
-ollama rm llama3
+bash
+Copy
+Edit
+ollama list
+🧠 Using DeepSeek Model Locally
+Install DeepSeek via Ollama:
+bash
+Copy
+Edit
+ollama pull deepseek-coder:6.7b
+Run DeepSeek Server:
+bash
+Copy
+Edit
+ollama run deepseek-coder
+Available at:
 
+bash
+Copy
+Edit
+http://localhost:11434
+Test DeepSeek with Curl:
+bash
+Copy
+Edit
+curl -X POST http://localhost:11434/api/generate -d '{
+  "model": "deepseek-coder",
+  "prompt": "Explain Go channels."
+}'
+Set environment (optional):
 
-## Pull a new model
-ollama pull llama3
-ollama pull mistral
-ollama pull codellama
+bash
+Copy
+Edit
+export DEEPSEEK_URL=http://localhost:11434
+📂 Project Structure Overview
 
-## You can browse available models here: https://ollama.com/library
-
-
-🛠 Optional
-
-Add .env support using python-dotenv if you want to keep secrets out of your shell
-Add streamlit if you're building a UI
-
-🤝 License
-
----
-
-
-
-
-
-
-
-
-# 🤖 AI Agent Orchestrator
-
-An extensible, YAML-driven AI Agent Orchestrator built with Python. This tool allows you to define and run custom workflows using specialized AI agents — perfect for tasks like code generation, GitHub automation, and more.
-
-## ✨ Features
-
-- ⚙️ YAML-based workflow definitions
-- 🧠 Pluggable Python AI agents
-- 🖥️ Streamlit-based UI to visualize and run workflows
-- 💻 Command-line support for automation and CI/CD
-- 🔄 Reusable step results across agents
-- ✅ Easy-to-extend agent system
-
----
-
-## 📁 Project Structure
-
-✅ Supported Patterns
-
-Pattern Type	Example	Resolved From
-Variable	${my_var}	variables dict
-Step result	step_name.result	context (workflow results)
-Jinja-style variable	{{ my_var }}	variables
-Jinja-style step result	{{ step_name.result }}	context
-Mixed literals	Start of prompt: {{ step.result }}	Interpolated
-
-
-
-🚀 5. Build & Run the Container
-Build the Docker image:
+Folder	Purpose
+workflows/	YAML workflow files
+models/	LLM model wrappers (OpenAI, Ollama, etc.)
+agents/	Custom agents for tasks (CRUD, GitHub, etc.)
+http/	Generated Go API handlers and server setup
+data/	Generated Go data access code
+model/	Generated Go model structs
+ui.py	Streamlit user interface
+run_cli.py	CLI runner for workflows
+🛠 Docker Support
+Build Docker Image:
 bash
 Copy
 Edit
 docker build -t gcg-agent .
-Run it:
+Run Container:
 bash
 Copy
 Edit
@@ -170,47 +160,23 @@ docker run --rm \
   -e OPENAI_API_KEY=sk-... \
   -v $(pwd)/workflows:/app/workflows \
   gcg-agent
--e sets env vars (like your OpenAI key)
+Mounts your workflows locally and passes API keys safely.
 
--v mounts your local workflows so they can be edited outside Docker
+📜 Patterns Supported in Workflows
 
+Pattern Type	Example	Resolved From
+Variable	${my_var}	vars section
+Step output	step_name.result	previous step
+Jinja-style variable	{{ my_var }}	vars section
+Jinja-style step output	{{ step_name.result }}	previous step
+🤝 License
+MIT License - Feel free to use and contribute!
 
-### 🧠 Model: DeepSeek (Local)
+🚀 Ready to Generate Code with AI!
+Design YAML workflows
 
-To enable local DeepSeek support:
+Run them locally or remotely
 
-1. Download and run the DeepSeek model (via Ollama or compatible container).
-  ollama run deepseek-coder:6.7b
-2. Ensure it's available on a local endpoint (e.g. `http://localhost:11434`)
-3. Set the following environment variable (optional):
-   ```bash
-   export DEEPSEEK_URL=http://localhost:11434
+Generate Go apps, Angular apps, GitHub automation, images, audio, and more — all orchestrated by your AI agents!
 
-   CLI
-Open the terminal and run ollama run deepseek-coder
-
-API
-Example using curl:
-
-curl -X POST http://localhost:11434/api/generate -d '{
-  "model": "deepseek-coder",
-  "prompt":"Why is the sky blue?"
- }'
-
- Ollama runs models on-demand. But you can run explicitly if needed:
-
-``` ollama run deepseek-coder ```
-
-4️⃣ Use DeepSeek in Your API
-Once running, DeepSeek will be available at:
-
-http://localhost:11434
-
-You can test it via curl:
-
-bash
-curl http://localhost:11434/api/generate -d '{
-  "model": "deepseek-coder",
-  "prompt": "Explain goroutines in Go.",
-  "stream": false
-}'
+🎯 Let's Code Smarter, Not Harder!
