@@ -8,7 +8,17 @@ st.set_page_config(page_title=__app_name__, page_icon="🧠")
 st.title(__app_name__)
 st.markdown(f"<div style='text-align:right; color: gray;'>v{__version__}</div>", unsafe_allow_html=True)
 
-workflow_files = [f for f in os.listdir(__workflow_path__) if f.endswith((".yaml", ".yml"))]
+# workflow_files = [f for f in os.listdir(__workflow_path__) if f.endswith((".yaml", ".yml"))]
+# ✅ Recursive search for all YAML files with folder paths
+workflow_files = []
+for root, _, files in os.walk(__workflow_path__):
+    for file in files:
+        if file.endswith((".yaml", ".yml")):
+            relative_path = os.path.relpath(os.path.join(root, file), __workflow_path__)
+            workflow_files.append(relative_path)
+
+workflow_files.sort()  # Optional: sorted nicely
+
 
 # Store state
 if "confirm_ready" not in st.session_state:
