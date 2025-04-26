@@ -1,0 +1,37 @@
+name: ShortStoryWorkflow
+description: Workflow to create a short story, generate audio, and images related to the story
+
+vars:
+  local_repo_dir: ./workspace/story-app
+
+steps:
+  - name: brainstorm_story_ideas
+    type: ai
+    agent: ChatAgent
+    model: ModelGpt35Turbo
+    prompt_template: default
+    input:
+      question: "Brainstorm ideas for a short story about a magical forest adventure"
+
+  - name: generate_story_audio
+    type: ai
+    agent: AudioAgent
+    model: ModelTTS1
+    prompt_template: default
+    input:
+      mode: tts
+      text: "In the heart of the enchanted forest, a young explorer embarks on a quest to uncover its mysteries."
+      voice: alloy
+      output_path: output/audio/story_intro.wav
+
+  - name: generate_story_images
+    type: ai
+    agent: Dalle3Agent
+    model: ModelDalle3
+    prompt_template: default
+    input:
+      prompt: "A magical forest with ancient trees and glowing fireflies"
+      image_path: "output/images/forest_scene.png"
+
+      prompt: "The young explorer discovering a hidden pathway in the forest"
+      image_path: "output/images/explorer_pathway.png"

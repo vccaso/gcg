@@ -30,3 +30,11 @@ steps:
         then do a GO CRUD generator code for Order and Orderdetail with its most commont fields 
         and create a Pull request with those changes to dev
       save_path: "workflows/wf_test03.yaml"
+
+  - name: questions2_worfflows
+    type: ai
+    agent: OrchestratorAgent
+    model: ModelGpt35Turbo
+    input:
+      request: "Create a workflow to create a short story and generate the audio for that short story and two images related to the story"
+      save_path: "workflows/wf_test04.yaml"
