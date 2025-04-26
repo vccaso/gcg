@@ -180,7 +180,37 @@ docker run --rm \
 To enable local DeepSeek support:
 
 1. Download and run the DeepSeek model (via Ollama or compatible container).
+  ollama run deepseek-coder:6.7b
 2. Ensure it's available on a local endpoint (e.g. `http://localhost:11434`)
 3. Set the following environment variable (optional):
    ```bash
    export DEEPSEEK_URL=http://localhost:11434
+
+   CLI
+Open the terminal and run ollama run deepseek-coder
+
+API
+Example using curl:
+
+curl -X POST http://localhost:11434/api/generate -d '{
+  "model": "deepseek-coder",
+  "prompt":"Why is the sky blue?"
+ }'
+
+ Ollama runs models on-demand. But you can run explicitly if needed:
+
+``` ollama run deepseek-coder ```
+
+4️⃣ Use DeepSeek in Your API
+Once running, DeepSeek will be available at:
+
+http://localhost:11434
+
+You can test it via curl:
+
+bash
+curl http://localhost:11434/api/generate -d '{
+  "model": "deepseek-coder",
+  "prompt": "Explain goroutines in Go.",
+  "stream": false
+}'
