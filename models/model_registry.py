@@ -21,25 +21,59 @@ MODEL_REGISTRY = {
 
 # ✅ Model catalog for UI display
 MODEL_CATALOG = {
-    "ModelGpt35Turbo": {
-        "description": "Fast, cost-efficient model ideal for lightweight code tasks and quick drafts. (OpenAI)",
-    },
-    "ModelGpt4Turbo": {
-        "description": "Powerful model best for structured code generation, logic-heavy workflows, and complex planning. (OpenAI)",
-    },
-    # "ModelDalle3": {
-    #     "description": "Advanced model for generating high-quality images from text prompts. (OpenAI)",
-    # },
-    # "ModelTTS1": {
-    #     "description": "Text-to-speech model for converting text into audio output. (OpenAI)",
-    # },
-    # "ModelWhisper": {
-    #     "description": "Automatic speech recognition (ASR) model for transcribing audio to text. (OpenAI)",
-    # },
     "ModelOllama": {
-        "description": "Local model running via Ollama. Free and offline but slower compared to cloud models.",
+        "short_description": "Local LLM running offline (free but slower).",
+        "detailed_description": [
+            "Local model running on your machine.",
+            "Free to use but slower than cloud models.",
+            "Good for basic chat, small tasks, and offline use."
+        ]
     },
     "ModelDeepSeekCoder67": {
-        "description": "Specialized coding model trained on 2 trillion tokens for heavy coding tasks (Go, Python, SQL). (Local via Ollama)",
+        "short_description": "Specialized local coding model for Go, Python, JavaScript, and SQL.",
+        "detailed_description": [
+            "Specialized coding model trained on 2 trillion code + natural language tokens.",
+            "Excels at generating Go, Python, JavaScript, SQL, and complex algorithms.",
+            "Best choice for large, accurate code generation tasks."
+        ]
     },
+    "ModelGpt4Turbo": {
+        "short_description": "OpenAI's most powerful model for complex tasks and structured code.",
+        "detailed_description": [
+            "Most powerful general model available.",
+            "Best for structured code generation, logic-heavy workflows, and complex planning.",
+            "Highly reliable but higher API cost."
+        ]
+    },
+    "ModelGpt35Turbo": {
+        "short_description": "Fast, cheaper OpenAI model ideal for lightweight coding and brainstorming.",
+        "detailed_description": [
+            "Fast and cost-efficient.",
+            "Good for lightweight code tasks, brainstorming, chatbots, or simple CRUD generation.",
+            "Slightly less accurate on complex tasks."
+        ]
+    },
+    "ModelDalle3": {
+        "short_description": "Generates high-quality images from text prompts (DALL·E 3).",
+        "detailed_description": [
+            "Advanced model for generating high-quality images from text prompts.",
+            "Ideal for creating marketing banners, UI designs, visual content."
+        ]
+    },
+    "ModelTTS1": {
+        "short_description": "Text-to-speech (TTS) model converting text into spoken audio.",
+        "detailed_description": [
+            "Text-to-speech model.",
+            "Converts text into high-fidelity spoken audio (multiple voices available).",
+            "Use for welcome messages, voice notifications, or audio content generation."
+        ]
+    },
+    "ModelWhisper": {
+        "short_description": "Speech-to-text (ASR) model transcribing audio recordings.",
+        "detailed_description": [
+            "Automatic speech recognition (ASR) model.",
+            "Transcribes audio recordings (.mp3, .wav) into text.",
+            "Best for meeting notes, interviews, podcasts, or audio summarization."
+        ]
+    }
 }

@@ -1,6 +1,7 @@
 import yaml
 import os
 from agents.agent_registry import AGENT_CATALOG
+from models.model_registry import MODEL_CATALOG
 
 
 class OrchestratorAgent:
@@ -35,106 +36,26 @@ class OrchestratorAgent:
                 description_lines.append(f"    - {agent_info['short_description']}")
 
         return "\n".join(description_lines)
+
+
+    def get_model_description(self) -> str:
+        """
+        Generate model description dynamically for prompt building.
+        """
+
+        description_lines = []
+        for model_name, model_info in MODEL_CATALOG.items():
+            description_lines.append(f"- {model_name}:")
+            detailed_desc = model_info.get("detailed_description")
+            if detailed_desc:
+                for line in detailed_desc:
+                    description_lines.append(f"    - {line}")
+            else:
+                # fallback to short description
+                description_lines.append(f"    - {model_info['short_description']}")
+
+        return "\n".join(description_lines)
     
-    def get_agent_description_old(self):
-        return """
-        - ChatAgent:
-            - General-purpose conversational AI.
-            - Ideal for brainstorming, answering questions, writing content, or summarization.
-            - Best choice for unstructured tasks or idea generation.
-
-        - GoCRUDAgent:
-            - Full-stack Go CRUD code generator (Model + Data + API + Routes).
-            - Best for quickly scaffolding complete backend services.
-
-        - GoCRUDModelAgent:
-            - Generates Go model structs only.
-            - Adds JSON tags, database tags, validation, and Swagger annotations.
-
-        - GoCRUDDataAgent:
-            - Generates only the SQL-based data access layer (DAO) for Go.
-            - Implements Create, Read, Update, Delete (CRUD) functions with real SQL.
-
-        - GoSwaggerAgent:
-            - Generates Swagger/OpenAPI documentation for Go services.
-            - Useful for API documentation and external integration.
-
-        - AngularAppAgent:
-            - Creates Angular frontend application code.
-            - Can scaffold features, components, services, and routing.
-
-        - Dalle3Agent:
-            - Generates high-quality images from text prompts using DALL·E 3.
-            - Ideal for marketing visuals, UI mockups, creative content.
-
-        - AudioAgent:
-            - Handles both:
-            - Text-to-Speech (TTS): Convert text into audio files
-            - Speech-to-Text (STT): Transcribe audio files into text
-            - Useful for voice messages, podcasts, audio UIs.
-
-        - SaveToFileAgent:
-            - Allows saving generated content, prompts, or outputs into files.
-            - Helpful for logging, exporting, or audit purposes.
-
-        - GitHubCreateBranchAgent:
-            - Creates a new Git branch locally.
-            - Can be used for feature, hotfix, or release branch creation.
-
-        - GitHubPRAgent:
-            - Automates creating a Pull Request (PR) on GitHub.
-            - Useful for code review and collaboration workflows.
-
-        - GitHubCommitAgent:
-            - Creates a commit in a local Git repository.
-            - Supports customizable commit messages.
-
-        - GitHubCheckoutBranchAgent:
-            - Checks out a Git branch locally.
-            - If the branch doesn't exist, attempts to create and track it from `origin`.
-
-        - GitHubCloneOrUpdateRepoAgent:
-            - Clones a GitHub repository if missing or updates it (pull) if already cloned.
-            - Ensures local repositories are always synchronized.
-
-    """.strip()
-
-    def get_model_description(self):
-        return """
-        - ModelOllama:
-            - Local model running on your machine.
-            - Free to use but slower than cloud models.
-            - Good for basic chat, small tasks, and offline use.
-
-        - ModelDeepSeekCoder67:
-            - Specialized coding model trained on 2 trillion code + natural language tokens.
-            - Excels at generating Go, Python, JavaScript, SQL, and complex algorithms.
-            - Best choice for large, accurate code generation tasks.
-
-        - ModelGpt4Turbo:
-            - Most powerful general model available.
-            - Best for structured code generation, logic-heavy workflows, and complex planning.
-            - Highly reliable but higher API cost.
-
-        - ModelGpt35Turbo:
-            - Fast and cost-efficient.
-            - Good for lightweight code tasks, brainstorming, chatbots, or simple CRUD generation.
-            - Slightly less accurate on complex tasks.
-
-        - ModelDalle3:
-            - Advanced model for generating high-quality images from text prompts.
-            - Ideal for creating marketing banners, UI designs, visual content.
-
-        - ModelTTS1:
-            - Text-to-speech model.
-            - Converts text into high-fidelity spoken audio (multiple voices available).
-            - Use for welcome messages, voice notifications, or audio content generation.
-
-        - ModelWhisper:
-            - Automatic speech recognition (ASR) model.
-            - Transcribes audio recordings (.mp3, .wav) into text.
-            - Best for meeting notes, interviews, podcasts, or audio summarization.
-    """.strip()
 
     def run(self, request: str, save_path: str = "workflows/wf_generated.yaml") -> dict:
 

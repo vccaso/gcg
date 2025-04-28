@@ -130,7 +130,7 @@ elif menu == "Models":
 
     for model_name, model_info in MODEL_CATALOG.items():
         st.subheader(f"🔹 {model_name}")
-        st.markdown(f"{model_info['description']}")
+        st.markdown(f"{model_info['short_description']}")
 # ---------------------
 # ⚙️ Config
 # ---------------------
