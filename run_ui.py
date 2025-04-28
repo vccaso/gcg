@@ -2,6 +2,7 @@ import streamlit as st
 import os
 import yaml
 from orchestrator_core import run_workflow
+from models.model_registry import MODEL_CATALOG
 from config import __version__, __app_name__, __workflow_path__
 
 st.set_page_config(page_title=__app_name__, page_icon="🧠")
@@ -116,18 +117,9 @@ elif menu == "Agents":
 elif menu == "Models":
     st.title("🧠 Supported Models")
 
-    st.markdown("""
-    | Model | Best For | Notes |
-    |------|----------|------|
-    | **ModelGpt4Turbo** | Complex codegen, planning | OpenAI |
-    | **ModelGpt35Turbo** | Fast, cheap tasks | OpenAI |
-    | **ModelOllama** | Offline tasks, small prompts | Local |
-    | **ModelDeepSeekCoder67** | Heavy coding, Go/Python | Local |
-    | **ModelDalle3** | Image generation | OpenAI |
-    | **ModelTTS1** | Text-to-Speech | OpenAI |
-    | **ModelWhisper** | Audio transcription | OpenAI |
-    """, unsafe_allow_html=True)
-
+    for model_name, model_info in MODEL_CATALOG.items():
+        st.subheader(f"🔹 {model_name}")
+        st.markdown(f"{model_info['description']}")
 # ---------------------
 # ⚙️ Config
 # ---------------------

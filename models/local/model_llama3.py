@@ -4,9 +4,9 @@ from models.modelbase import ModelBase
 from utils.printer import Printer
 
 class ModelOllama(ModelBase):
-    def __init__(self, model_name="llama3"):
-        self.model_name = model_name
-        super().__init__(model_name)
+    def __init__(self, temperature: float = 0.7):
+        self.model_name = "llama3"
+        super().__init__(self.model_name)
 
     def get_response(self, prompt: str) -> str:
         """

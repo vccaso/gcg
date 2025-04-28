@@ -2,11 +2,10 @@ import yaml, importlib
 import re
 import time
 from utils.printer import Printer
-from models.openai.model_gpt_35_turbo import ModelGpt35Turbo
-from models.openai.model_gpt_4 import ModelGpt4
-from models.openai.model_gpt_4_turbo import ModelGpt4Turbo
-from models.local.model_llama3 import ModelOllama
-from models.local.model_deepseek_coder import ModelDeepSeekCoder67
+
+
+from models.model_registry import MODEL_REGISTRY
+
 from agents.gocodeagent import GoSwaggerAgent, GoCRUDAgent, Dalle3Agent, Dalle2Agent, AudioAgent, GoCRUDDataAgent
 from agents.orchestratoragent import OrchestratorAgent
 from agents.chatagent import ChatAgent
@@ -144,21 +143,14 @@ def load_agent(agent_name):
             return getattr(module, agent_name)()
     raise ImportError(f"Agent {agent_name} not found.")
 
-def get_model(model_name, temperature=0.2):
 
 
-    if model_name == "ModelDeepSeekCoder67":
-        return ModelDeepSeekCoder67(temperature)
-    if model_name=="ModelGpt35Turbo":   
-        return ModelGpt35Turbo(temperature)
-    if model_name=="ModelOllama":   
-        return ModelOllama()
-    if model_name == "ModelGpt4":
-        return ModelGpt4(temperature)
-    if model_name == "ModelGpt4Turbo":
-        return ModelGpt4Turbo(temperature)
-    if model_name == "Dalle3Agent":
-        return Dalle3Agent()
+
+def get_model(model_name: str, temperature):
+    if model_name not in MODEL_REGISTRY:
+        raise ValueError(f"Unknown model '{model_name}'")
+    return MODEL_REGISTRY[model_name](temperature)
+
 
 def get_ai_agent(llm, agent_name, name="default"):
     prompt_loader = PromptLoader()

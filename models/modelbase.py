@@ -1,6 +1,5 @@
 from abc import ABC, abstractmethod
 
-
 class ModelBase(ABC):
 
     def __init__(self, openai_api_key):
@@ -13,3 +12,6 @@ class ModelBase(ABC):
         Uses a model to ask a question. Returns the model response.
         """
         pass
+
+
+    
