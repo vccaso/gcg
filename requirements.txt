@@ -6,3 +6,4 @@ chromadb>=0.4.22
 sentence-transformers>=2.2.2
 tqdm                  # For progress bars during ingestion
 python-dotenv         # For managing environment variables like API keys
+colorama

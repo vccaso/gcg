@@ -7,7 +7,7 @@ steps:
   - name: generate_voice_greeting
     type: ai-audio
     agent: AudioAgent
-    model: ModelOpenAI
+    model: ModelTTS1
     input:
       mode: tts
       text: "A book review is a critical analysis of a book, typically including a summary of the plot or content, an evaluation of the book's strengths and weaknesses, and a recommendation for potential readers. It helps readers decide if they should read a particular book by providing insights into its content, style, and overall quality. "
@@ -17,7 +17,7 @@ steps:
   # - name: transcribe_audio_note
   #   type: ai
   #   agent: AudioAgent
-  #   model: ModelOpenAI
+  #   model: ModelTTS1
   #   input:
   #     mode: stt
   #     audio_file_path: "input/audio/voice_note.mp3"

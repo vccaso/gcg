@@ -47,6 +47,14 @@ AGENT_REGISTRY = {
 
 # ✅ Agent catalog for UI display
 AGENT_CATALOG = {
+    "OrchestratorAgent": {
+        "type": "AI",
+        "short_description": "Orchestrator Agent",
+        "detailed_description": [
+            "Not used"
+        ],
+        "tags": ["AI", "Orchestration"]
+    },
     "ChatAgent": {
         "type": "AI",
         "short_description": "General-purpose conversational AI for brainstorming, Q&A, and idea generation.",

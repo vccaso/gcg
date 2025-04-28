@@ -75,19 +75,6 @@ These are steps worflow examples for different agents:
       Price (float64, required)
     local_repo_dir: ${{local_repo_dir}}
 
-- name: generate_product_model
-  type: ai
-  agent: GoCRUDModelAgent
-  model: ModelGpt4Turbo
-  prompt_template: default
-  input:
-    model: Product
-    fields: |
-      ID (int)
-      Name (string, required)
-      CreatedAt (datetime)
-    local_repo_dir: ${{local_repo_dir}}
-
 - name: generate_product_data
   type: ai
   agent: GoCRUDDataAgent

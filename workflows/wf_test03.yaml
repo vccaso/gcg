@@ -1,14 +1,14 @@
-name: GitHub_Workflow
-description: Workflow to clone a repository, create a new branch, generate Go CRUD code, and create a Pull request
+name: GitHub_Workflow_Clone_Create_PR
+description: Workflow to clone a repository, create a new branch, generate Go CRUD code, and create a Pull Request
 
 vars:
-  local_repo_dir: ./workspace/my-app
+  local_repo_dir: ./workspace/goapp
 
 steps:
   - name: clone_repository
     type: git
-    agent: GitAgent
-    model: GitCloneModel
+    agent: GitHubCloneOrUpdateRepoAgent
+    model: ModelOllama
     prompt_template: default
     input:
       repo_url: https://github.com/vccaso/avila-easychat-goals.git
@@ -16,8 +16,8 @@ steps:
 
   - name: create_branch
     type: git
-    agent: GitAgent
-    model: GitBranchModel
+    agent: GitHubCreateBranchAgent
+    model: ModelOllama
     prompt_template: default
     input:
       branch_name: testing
@@ -26,7 +26,7 @@ steps:
   - name: generate_order_crud
     type: ai
     agent: GoCRUDAgent
-    model: ModelGpt4Turbo
+    model: ModelDeepSeekCoder67
     prompt_template: default
     input:
       model: Order
@@ -34,13 +34,13 @@ steps:
         ID (int)
         CustomerID (int)
         TotalAmount (float64)
-        CreatedAt (datetime)
+        Status (string)
       local_repo_dir: ${local_repo_dir}
 
   - name: generate_orderdetail_crud
     type: ai
     agent: GoCRUDAgent
-    model: ModelGpt4Turbo
+    model: ModelDeepSeekCoder67
     prompt_template: default
     input:
       model: Orderdetail
@@ -49,15 +49,16 @@ steps:
         OrderID (int)
         ProductID (int)
         Quantity (int)
-        Price (float64)
       local_repo_dir: ${local_repo_dir}
 
   - name: create_pull_request
     type: git
-    agent: GitAgent
-    model: GitPullRequestModel
+    agent: GitHubPRAgent
+    model: ModelOllama
     prompt_template: default
     input:
       branch_name: testing
       base_branch: dev
+      title: "Adding Order and Orderdetail CRUD code"
+      description: "Generated CRUD code for Order and Orderdetail models."
       local_repo_dir: ${local_repo_dir}

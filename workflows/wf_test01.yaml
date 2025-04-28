@@ -11,11 +11,18 @@ steps:
     model: ModelGpt35Turbo
     prompt_template: default
     input:
-      question: "What are some effective tips to improve cardio health?"
+      question: "What are 5 effective tips to improve cardio health?"
 
-  - name: save_cardio_tips_to_file
+  - name: save_tips_to_file
     type: utils
     agent: SaveToFileAgent
+    model: N/A
+    prompt_template: default
     input:
-      content: "${output_from_previous_step}"
+      content: |
+        1. Start with a warm-up before cardio exercises.
+        2. Incorporate interval training for high intensity.
+        3. Stay hydrated throughout your workout.
+        4. Include strength training to complement cardio.
+        5. Monitor your heart rate to optimize performance.
       file_path: ${local_repo_dir}/cardio_tips.txt

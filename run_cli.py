@@ -1,8 +1,9 @@
 import argparse
-import os
+import os, sys
 from orchestrator_core import run_workflow
 from config import __version__, __app_name__, __workflow_path__
 from prompt_loader import PromptLoader
+import validate
 
 
 def test_all_prompts():
@@ -51,6 +52,7 @@ def main():
     parser.add_argument("--version", action="store_true", help="Show version and exit")
     parser.add_argument("--prompt_list", action="store_true", help="List all available prompts and exit")
     parser.add_argument("--prompt_test", action="store_true", help="Test all prompt templates with dummy data")
+    parser.add_argument("--validate", action="store_true", help="Validate agents, models, workflows")  # 🔥 NEW
 
 
 
@@ -67,6 +69,11 @@ def main():
     if args.prompt_test:
         test_all_prompts()
         return
+
+    # ✅ Handle Validation Option
+    if args.validate:
+        validate.main()
+        sys.exit(0)
 
     if not args.workflow:
         print("❌ Please provide a workflow file with --workflow <file>")

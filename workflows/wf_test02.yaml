@@ -1,8 +1,8 @@
-name: Generate_User_CRUD
-description: Workflow to generate a Go CRUD code for User with common fields
+name: generate_go_crud_user
+description: Workflow to generate Go CRUD code for User with common fields
 
 vars:
-  local_repo_dir: ./workspace/my-app
+  local_repo_dir: ./workspace/goapp
 
 steps:
   - name: generate_user_crud
@@ -17,20 +17,7 @@ steps:
         Name (string, required)
         Email (string, required)
         Age (int)
-      local_repo_dir: ${local_repo_dir}
-
-  - name: generate_user_model
-    type: ai
-    agent: GoCRUDModelAgent
-    model: ModelGpt4Turbo
-    prompt_template: default
-    input:
-      model: User
-      fields: |
-        ID (int)
-        Name (string, required)
-        Email (string, required)
-        Age (int)
+        Address (string)
       local_repo_dir: ${local_repo_dir}
 
   - name: generate_user_data
@@ -41,3 +28,15 @@ steps:
     input:
       model: User
       local_repo_dir: ${local_repo_dir}
+
+  - name: generate_user_api
+    type: ai
+    agent: GoSwaggerAgent
+    model: ModelGpt4Turbo
+    prompt_template: default
+    input:
+      service_name: UserService
+      models: User
+      routes_file: ${local_repo_dir}/http/server.go
+```
+This workflow will generate Go CRUD code for a User entity with common fields like ID, Name, Email, Age, and Address. It includes steps for generating CRUD operations, data access layer, and API documentation.

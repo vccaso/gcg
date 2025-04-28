@@ -12,7 +12,7 @@ st.set_page_config(page_title=__app_name__, page_icon="🧠")
 # Sidebar menu
 menu = st.sidebar.selectbox(
     "📂 Menu",
-    ("Home", "Workflows", "Agents", "Models", "Config", "Templates", "Docs")
+    ("Home", "Workflows", "Agents", "Models", "Config", "Validate", "Templates", "Docs")
 )
 
 st.sidebar.markdown(f"<div style='text-align:center; color: gray;'>v{__version__}</div>", unsafe_allow_html=True)
@@ -190,6 +190,18 @@ elif menu == "Config":
     - **Workflow Path:** `{__workflow_path__}`
     - **Active Models/Agents:** See respective pages.
     """)
+
+# ---------------------
+# 📄 Validate
+# ---------------------
+elif menu == "Validate":
+    st.title("✅ Validate System Integrity")
+
+    if st.button("🔍 Run Validation"):
+        with st.spinner("Validating..."):
+            from validate import main as run_validation
+            run_validation()
+
 
 # ---------------------
 # 📄 Templates
