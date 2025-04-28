@@ -3,6 +3,7 @@ import os
 import yaml
 from orchestrator_core import run_workflow
 from models.model_registry import MODEL_CATALOG
+from agents.agent_registry import AGENT_CATALOG
 from config import __version__, __app_name__, __workflow_path__
 
 st.set_page_config(page_title=__app_name__, page_icon="🧠")
@@ -96,20 +97,10 @@ elif menu == "Workflows":
 # ---------------------
 elif menu == "Agents":
     st.title("🧠 Available Agents")
-    st.markdown("""
-    | Agent | Purpose |
-    |------|---------|
-    | **ChatAgent** | General conversation, idea generation |
-    | **GoCRUDAgent** | Full Go CRUD backend generator |
-    | **GoCRUDModelAgent** | Go struct model generation |
-    | **GoCRUDDataAgent** | Go SQL data layer generation |
-    | **GoSwaggerAgent** | Swagger/OpenAPI doc generation |
-    | **AngularAppAgent** | Create Angular frontend apps |
-    | **Dalle3Agent** | Generate images from text |
-    | **AudioAgent** | Text-to-Speech and Speech-to-Text |
-    | **SaveToFileAgent** | Save outputs to files |
-    | **GitHub Agents** | Automate GitHub operations |
-    """, unsafe_allow_html=True)
+
+    for agent_name, agent_info in AGENT_CATALOG.items():
+        st.subheader(f"🔹 {agent_name}")
+        st.markdown(f"{agent_info['short_description']}")
 
 # ---------------------
 # 🧠 Models

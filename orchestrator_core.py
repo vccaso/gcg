@@ -6,11 +6,22 @@ from utils.printer import Printer
 
 from models.model_registry import MODEL_REGISTRY
 
-from agents.gocodeagent import GoSwaggerAgent, GoCRUDAgent, Dalle3Agent, Dalle2Agent, AudioAgent, GoCRUDDataAgent
+from agents.agent_registry import AGENT_REGISTRY
+from agents.go_crud_agent import GoCRUDAgent
+from agents.go_crud_data_agent import GoCRUDDataAgent
+from agents.go_swagger_agent import GoSwaggerAgent
+from agents.dalle3_agent import Dalle3Agent
+from agents.dalle2_agent import Dalle2Agent
+from agents.audio_agent import AudioAgent
 from agents.orchestratoragent import OrchestratorAgent
-from agents.chatagent import ChatAgent
-from agents.rag import RAGDatabaseBuilderAgent, RAGQueryAgent, RAGDatabaseUpdaterAgent
-from agents.angularappagent import AngularAppAgent
+from agents.chat_agent import ChatAgent
+from agents.rag.database_updater_agent import RAGDatabaseUpdaterAgent
+from agents.rag.attach_agent import RAGAttachAgent
+from agents.rag.database_builder_agent import RAGDatabaseBuilderAgent
+from agents.rag.query_agent import RAGQueryAgent
+from agents.angularapp_agent import AngularAppAgent
+
+
 from config import debug
 from prompt_loader import PromptLoader
 
@@ -123,7 +134,13 @@ def resolve_inputs_original(input_dict, context, variables=None):
 
     return resolved
 
-def load_agent(agent_name):
+
+def load_agent(agent_name: str):
+    if agent_name not in AGENT_REGISTRY:
+        raise ValueError(f"Unknown agent '{agent_name}'. Check agent_registry.py.")
+    return AGENT_REGISTRY[agent_name]()
+
+def load_agent_old(agent_name):
 
     modules = [
         "agents.requirements_extractor",

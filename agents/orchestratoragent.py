@@ -1,5 +1,7 @@
 import yaml
 import os
+from agents.agent_registry import AGENT_CATALOG
+
 
 class OrchestratorAgent:
     def __init__(self, llm, prompt_template: str = None):
@@ -15,7 +17,26 @@ class OrchestratorAgent:
         )
         return p
 
-    def get_agent_description(self):
+
+    def get_agent_description(self) -> str:
+        """
+        Generate agent description for prompt building.
+        """
+
+        description_lines = []
+        for agent_name, agent_info in AGENT_CATALOG.items():
+            description_lines.append(f"- {agent_name}:")
+            detailed_desc = agent_info.get("detailed_description")
+            if detailed_desc:
+                for line in detailed_desc:
+                    description_lines.append(f"    - {line}")
+            else:
+                # fallback to short description if detailed missing
+                description_lines.append(f"    - {agent_info['short_description']}")
+
+        return "\n".join(description_lines)
+    
+    def get_agent_description_old(self):
         return """
         - ChatAgent:
             - General-purpose conversational AI.
