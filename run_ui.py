@@ -96,11 +96,31 @@ elif menu == "Workflows":
 # 🧠 Agents
 # ---------------------
 elif menu == "Agents":
-    st.title("🧠 Available Agents")
+    st.title("🧠 Available Agents (Grouped by Type)")
+
+    # Prepare groups
+    agent_groups = {
+        "AI": [],
+        "AI-Image": [],
+        "AI-Audio": [],
+        "Git": [],
+        "RAG": [],
+        "Utility": [],
+    }
 
     for agent_name, agent_info in AGENT_CATALOG.items():
-        st.subheader(f"🔹 {agent_name}")
-        st.markdown(f"{agent_info['short_description']}")
+        agent_type = agent_info.get("type", "Utility")  # Default fallback
+        agent_groups.setdefault(agent_type, []).append((agent_name, agent_info))
+
+    # Display groups
+    for group_name, agents in agent_groups.items():
+        if not agents:
+            continue
+
+        with st.expander(f"📂 {group_name} Agents ({len(agents)})", expanded=True):
+            for agent_name, agent_info in agents:
+                st.subheader(f"🔹 {agent_name}")
+                st.markdown(f"{agent_info['short_description']}")
 
 # ---------------------
 # 🧠 Models

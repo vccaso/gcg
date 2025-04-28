@@ -48,6 +48,7 @@ AGENT_REGISTRY = {
 # ✅ Agent catalog for UI display
 AGENT_CATALOG = {
     "ChatAgent": {
+        "type": "AI",
         "short_description": "General-purpose conversational AI for brainstorming, Q&A, and idea generation.",
         "detailed_description": [
             "General-purpose conversational AI.",
@@ -56,6 +57,7 @@ AGENT_CATALOG = {
         ]
     },
     "GoCRUDAgent": {
+        "type": "AI",
         "short_description": "Full-stack Go CRUD generator (models, data layer, API, routes).",
         "detailed_description": [
             "Full-stack Go CRUD code generator (Model + Data + API + Routes).",
@@ -63,6 +65,7 @@ AGENT_CATALOG = {
         ]
     },
     "GoCRUDDataAgent": {
+        "type": "AI",
         "short_description": "Generates Go data access (DAO) layer with SQL queries and CRUD operations.",
         "detailed_description": [
             "Generates only the SQL-based data access layer (DAO) for Go.",
@@ -71,6 +74,7 @@ AGENT_CATALOG = {
         ]
     },
     "GoSwaggerAgent": {
+        "type": "AI",
         "short_description": "Generates Swagger/OpenAPI documentation for Go REST APIs.",
         "detailed_description": [
             "Generates Swagger/OpenAPI documentation for Go services.",
@@ -78,6 +82,7 @@ AGENT_CATALOG = {
         ]
     },
     "AngularAppAgent": {
+        "type": "AI",
         "short_description": "Scaffolds Angular frontend application features, components, and services.",
         "detailed_description": [
             "Creates Angular frontend application code.",
@@ -85,6 +90,7 @@ AGENT_CATALOG = {
         ]
     },
     "Dalle3Agent": {
+        "type": "AI-Image",
         "short_description": "Generates images from text prompts using OpenAI DALL·E 3.",
         "detailed_description": [
             "Generates high-quality images from text prompts using DALL·E 3.",
@@ -92,6 +98,7 @@ AGENT_CATALOG = {
         ]
     },
     "Dalle2Agent": {
+        "type": "AI-Image",
         "short_description": "Generates images from text prompts using OpenAI DALL·E 2.",
         "detailed_description": [
             "Generates high-quality images from text prompts using DALL·E 2.",
@@ -99,6 +106,7 @@ AGENT_CATALOG = {
         ]
     },
     "AudioAgent": {
+        "type": "AI-Audio",
         "short_description": "Handles Text-to-Speech (TTS) and Speech-to-Text (STT) audio tasks.",
         "detailed_description": [
             "Handles both:",
@@ -108,6 +116,7 @@ AGENT_CATALOG = {
         ]
     },
     "SaveToFileAgent": {
+        "type": "Utility",
         "short_description": "Saves output text into files. Useful for logging or exporting results.",
         "detailed_description": [
             "Allows saving generated content, prompts, or outputs into files.",
@@ -115,6 +124,7 @@ AGENT_CATALOG = {
         ]
     },
     "GitHubCreateBranchAgent": {
+        "type": "Git",
         "short_description": "Creates new Git branches locally from workflows.",
         "detailed_description": [
             "Creates a new Git branch locally.",
@@ -122,6 +132,7 @@ AGENT_CATALOG = {
         ]
     },
     "GitHubCommitAgent": {
+        "type": "Git",
         "short_description": "Creates commits in a local Git repository.",
         "detailed_description": [
             "Creates a commit in a local Git repository.",
@@ -129,6 +140,7 @@ AGENT_CATALOG = {
         ]
     },
     "GitHubCheckoutBranchAgent": {
+        "type": "Git",
         "short_description": "Checks out Git branches locally, creating them if needed.",
         "detailed_description": [
             "Checks out a Git branch locally.",
@@ -136,6 +148,7 @@ AGENT_CATALOG = {
         ]
     },
     "GitHubPRAgent": {
+        "type": "Git",
         "short_description": "Creates GitHub Pull Requests automatically from workflows.",
         "detailed_description": [
             "Automates creating a Pull Request (PR) on GitHub.",
@@ -143,6 +156,7 @@ AGENT_CATALOG = {
         ]
     },
     "GitHubCloneOrUpdateRepoAgent": {
+        "type": "Git",
         "short_description": "Clones or updates GitHub repositories from a URL.",
         "detailed_description": [
             "Clones a GitHub repository if missing or updates it (pull) if already cloned.",
@@ -150,14 +164,16 @@ AGENT_CATALOG = {
         ]
     },
    "RequirementsExtractorAgent": {
-    "short_description": "Extracts Python project dependencies (requirements) from a code repository.",
-    "detailed_description": [
-        "Scans a Python project and identifies all external libraries used.",
-        "Generates a valid `requirements.txt` file automatically.",
-        "Useful for preparing projects for deployment or packaging."
-        ]
+        "type": "Utility",
+        "short_description": "Extracts Python project dependencies (requirements) from a code repository.",
+        "detailed_description": [
+            "Scans a Python project and identifies all external libraries used.",
+            "Generates a valid `requirements.txt` file automatically.",
+            "Useful for preparing projects for deployment or packaging."
+            ]
     },
     "RAGDatabaseBuilderAgent": {
+        "type": "RAG",
         "short_description": "Creates a new vector database by embedding and indexing documents for future retrieval (RAG setup step).",
         "detailed_description": [
             "Embeds documents and stores their vector representations into a database.",
@@ -167,6 +183,7 @@ AGENT_CATALOG = {
     },
 
     "RAGQueryAgent": {
+        "type": "RAG",
         "short_description": "Queries the RAG vector database to retrieve relevant context documents based on user input.",
         "detailed_description": [
             "Performs similarity search against the RAG database based on a user's query.",
@@ -176,6 +193,7 @@ AGENT_CATALOG = {
     },
 
     "RAGAttachAgent": {
+        "type": "RAG",
         "short_description": "Attaches document metadata and content to an existing RAG vector database without full rebuild.",
         "detailed_description": [
             "Adds new documents and embeddings to an existing RAG database incrementally.",
@@ -185,6 +203,7 @@ AGENT_CATALOG = {
     },
 
     "RAGDatabaseUpdaterAgent": {
+        "type": "RAG",
         "short_description": "Updates existing entries in a RAG vector database with new or corrected embeddings.",
         "detailed_description": [
             "Replaces or updates outdated document embeddings in an existing database.",
