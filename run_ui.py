@@ -97,31 +97,44 @@ elif menu == "Workflows":
 # 🧠 Agents
 # ---------------------
 elif menu == "Agents":
-    st.title("🧠 Available Agents (Grouped by Type)")
+    st.title("🤖 Available Agents")
 
-    # Prepare groups
-    agent_groups = {
-        "AI": [],
-        "AI-Image": [],
-        "AI-Audio": [],
-        "Git": [],
-        "RAG": [],
-        "Utility": [],
-    }
+    # Collect all unique tags
+    all_tags = set()
+    for agent_info in AGENT_CATALOG.values():
+        all_tags.update(agent_info.get("tags", []))
 
+    selected_tags = st.multiselect("🔎 Filter by Tags", sorted(list(all_tags)))
+
+    st.divider()
+
+    # Group agents by primary tag
+    from collections import defaultdict
+    grouped_agents = defaultdict(list)
     for agent_name, agent_info in AGENT_CATALOG.items():
-        agent_type = agent_info.get("type", "Utility")  # Default fallback
-        agent_groups.setdefault(agent_type, []).append((agent_name, agent_info))
-
-    # Display groups
-    for group_name, agents in agent_groups.items():
-        if not agents:
+        agent_tags = agent_info.get("tags", [])
+        if not agent_tags:
             continue
+        primary_tag = agent_tags[0]
+        grouped_agents[primary_tag].append((agent_name, agent_info))
 
+    for group_name, agents in grouped_agents.items():
         with st.expander(f"📂 {group_name} Agents ({len(agents)})", expanded=True):
             for agent_name, agent_info in agents:
+                agent_tags = agent_info.get("tags", [])
+
+                # Apply filtering
+                if selected_tags:
+                    if not any(tag in agent_tags for tag in selected_tags):
+                        continue
+
                 st.subheader(f"🔹 {agent_name}")
-                st.markdown(f"{agent_info['short_description']}")
+
+                tags_str = ", ".join(f"[{tag}]" for tag in agent_tags)
+                st.markdown(f"**Tags:** {tags_str}")
+
+                st.markdown(agent_info["short_description"])
+                st.divider()
 
 # ---------------------
 # 🧠 Models

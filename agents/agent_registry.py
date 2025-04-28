@@ -54,7 +54,8 @@ AGENT_CATALOG = {
             "General-purpose conversational AI.",
             "Ideal for brainstorming, answering questions, writing content, or summarization.",
             "Best choice for unstructured tasks or idea generation."
-        ]
+        ],
+        "tags": ["AI"]
     },
     "GoCRUDAgent": {
         "type": "AI",
@@ -63,6 +64,8 @@ AGENT_CATALOG = {
             "Full-stack Go CRUD code generator (Model + Data + API + Routes).",
             "Best for quickly scaffolding complete backend services."
         ]
+        ,
+        "tags": ["AI", "Go"]
     },
     "GoCRUDDataAgent": {
         "type": "AI",
@@ -70,8 +73,8 @@ AGENT_CATALOG = {
         "detailed_description": [
             "Generates only the SQL-based data access layer (DAO) for Go.",
             "Implements Create, Read, Update, Delete (CRUD) functions with real SQL."
-
-        ]
+        ],
+        "tags": ["AI", "Go"]
     },
     "GoSwaggerAgent": {
         "type": "AI",
@@ -79,7 +82,8 @@ AGENT_CATALOG = {
         "detailed_description": [
             "Generates Swagger/OpenAPI documentation for Go services.",
             "Useful for API documentation and external integration."
-        ]
+        ],
+        "tags": ["AI", "Go", "Swagger"]
     },
     "AngularAppAgent": {
         "type": "AI",
@@ -87,7 +91,8 @@ AGENT_CATALOG = {
         "detailed_description": [
             "Creates Angular frontend application code.",
             "Can scaffold features, components, services, and routing."
-        ]
+        ],
+        "tags": ["AI", "Frontend", "Angular"]
     },
     "Dalle3Agent": {
         "type": "AI-Image",
@@ -95,7 +100,8 @@ AGENT_CATALOG = {
         "detailed_description": [
             "Generates high-quality images from text prompts using DALL·E 3.",
             "Ideal for marketing visuals, UI mockups, creative content."
-        ]
+        ],
+        "tags": ["AI", "Image"]
     },
     "Dalle2Agent": {
         "type": "AI-Image",
@@ -103,7 +109,8 @@ AGENT_CATALOG = {
         "detailed_description": [
             "Generates high-quality images from text prompts using DALL·E 2.",
             "Ideal for marketing visuals, UI mockups, creative content."
-        ]
+        ],
+        "tags": ["AI", "Image"]
     },
     "AudioAgent": {
         "type": "AI-Audio",
@@ -113,7 +120,8 @@ AGENT_CATALOG = {
             "Text-to-Speech (TTS): Convert text into audio files",
             "Speech-to-Text (STT): Transcribe audio files into text",
             "Useful for voice messages, podcasts, audio UIs."
-        ]
+        ],
+        "tags": ["AI", "Audio"]
     },
     "SaveToFileAgent": {
         "type": "Utility",
@@ -121,7 +129,8 @@ AGENT_CATALOG = {
         "detailed_description": [
             "Allows saving generated content, prompts, or outputs into files.",
             "Helpful for logging, exporting, or audit purposes."
-        ]
+        ],
+        "tags": ["Utility", "File System"]
     },
     "GitHubCreateBranchAgent": {
         "type": "Git",
@@ -129,7 +138,8 @@ AGENT_CATALOG = {
         "detailed_description": [
             "Creates a new Git branch locally.",
             "Can be used for feature, hotfix, or release branch creation."
-        ]
+        ],
+        "tags": ["GitHub"]
     },
     "GitHubCommitAgent": {
         "type": "Git",
@@ -137,7 +147,8 @@ AGENT_CATALOG = {
         "detailed_description": [
             "Creates a commit in a local Git repository.",
             "Supports customizable commit messages."
-        ]
+        ],
+        "tags": ["GitHub"]
     },
     "GitHubCheckoutBranchAgent": {
         "type": "Git",
@@ -145,7 +156,8 @@ AGENT_CATALOG = {
         "detailed_description": [
             "Checks out a Git branch locally.",
             "If the branch doesn't exist, attempts to create and track it from `origin`."
-        ]
+        ],
+        "tags": ["GitHub"]
     },
     "GitHubPRAgent": {
         "type": "Git",
@@ -153,7 +165,8 @@ AGENT_CATALOG = {
         "detailed_description": [
             "Automates creating a Pull Request (PR) on GitHub.",
             "Useful for code review and collaboration workflows."
-        ]
+        ],
+        "tags": ["GitHub"]
     },
     "GitHubCloneOrUpdateRepoAgent": {
         "type": "Git",
@@ -161,7 +174,8 @@ AGENT_CATALOG = {
         "detailed_description": [
             "Clones a GitHub repository if missing or updates it (pull) if already cloned.",
             "Ensures local repositories are always synchronized."
-        ]
+        ],
+        "tags": ["GitHub"]
     },
    "RequirementsExtractorAgent": {
         "type": "Utility",
@@ -170,7 +184,8 @@ AGENT_CATALOG = {
             "Scans a Python project and identifies all external libraries used.",
             "Generates a valid `requirements.txt` file automatically.",
             "Useful for preparing projects for deployment or packaging."
-            ]
+            ],
+        "tags": ["Utility", "Requirements", "Python"]
     },
     "RAGDatabaseBuilderAgent": {
         "type": "RAG",
@@ -179,7 +194,8 @@ AGENT_CATALOG = {
             "Embeds documents and stores their vector representations into a database.",
             "Supports the first-time creation of a RAG (Retrieval-Augmented Generation) database.",
             "Essential for enabling fast, semantic document retrieval during inference."
-        ]
+        ],
+        "tags": ["RAG", "Database"]
     },
 
     "RAGQueryAgent": {
@@ -189,7 +205,8 @@ AGENT_CATALOG = {
             "Performs similarity search against the RAG database based on a user's query.",
             "Returns top-matching documents to enhance AI responses with factual context.",
             "Optimized for semantic retrieval rather than simple keyword search."
-        ]
+        ],
+        "tags": ["RAG", "Retrieval"]
     },
 
     "RAGAttachAgent": {
@@ -199,7 +216,8 @@ AGENT_CATALOG = {
             "Adds new documents and embeddings to an existing RAG database incrementally.",
             "Avoids the need to rebuild the entire database from scratch.",
             "Useful for continuously updating knowledge bases without downtime."
-        ]
+        ],
+        "tags": ["RAG", "Database"]
     },
 
     "RAGDatabaseUpdaterAgent": {
@@ -209,7 +227,8 @@ AGENT_CATALOG = {
             "Replaces or updates outdated document embeddings in an existing database.",
             "Ensures that updated documents reflect the latest content for retrieval.",
             "Maintains database accuracy without full re-ingestion."
-        ]
+        ],
+        "tags": ["RAG", "Database"]
     },
 
 }
