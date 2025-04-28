@@ -1,6 +1,7 @@
 import streamlit as st
 import os
 import yaml
+from collections import defaultdict
 from orchestrator_core import run_workflow
 from models.model_registry import MODEL_CATALOG
 from agents.agent_registry import AGENT_CATALOG
@@ -128,9 +129,43 @@ elif menu == "Agents":
 elif menu == "Models":
     st.title("🧠 Supported Models")
 
+    # Collect all unique tags
+    all_tags = set()
+    for model_info in MODEL_CATALOG.values():
+        all_tags.update(model_info.get("tags", []))
+
+    selected_tags = st.multiselect("🔎 Filter by Tags", sorted(list(all_tags)))
+
+    st.divider()
+
+    # Group models by their primary tag
+    grouped_models = defaultdict(list)
     for model_name, model_info in MODEL_CATALOG.items():
-        st.subheader(f"🔹 {model_name}")
-        st.markdown(f"{model_info['short_description']}")
+        model_tags = model_info.get("tags", [])
+        if not model_tags:
+            continue
+
+        primary_tag = model_tags[0]  # First tag is the grouping key
+        grouped_models[primary_tag].append((model_name, model_info))
+
+    # Display models grouped
+    for group_name, models in grouped_models.items():
+        with st.expander(f"📂 {group_name} Models ({len(models)})", expanded=True):
+            for model_name, model_info in models:
+                model_tags = model_info.get("tags", [])
+
+                # ✅ Filter each model by all selected tags
+                if selected_tags:
+                    if not any(tag in model_tags for tag in selected_tags):
+                        continue  # Skip if no matching tag
+
+                st.subheader(f"🔹 {model_name}")
+
+                tags_str = ", ".join(f"[{tag}]" for tag in model_tags)
+                st.markdown(f"**Tags:** {tags_str}")
+
+                st.markdown(model_info["short_description"])
+                st.divider()
 # ---------------------
 # ⚙️ Config
 # ---------------------
