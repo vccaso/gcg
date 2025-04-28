@@ -2,9 +2,11 @@ import yaml, importlib
 import re
 import time
 from utils.printer import Printer
-from models.openaimodels import ModelGpt35Turbo, ModelGpt4, ModelGpt4Turbo
-from models.modellocalollama import ModelOllama
-from models.modellocaldeepseek import ModelDeepSeekCoder67
+from models.openai.model_gpt_35_turbo import ModelGpt35Turbo
+from models.openai.model_gpt_4 import ModelGpt4
+from models.openai.model_gpt_4_turbo import ModelGpt4Turbo
+from models.local.model_llama3 import ModelOllama
+from models.local.model_deepseek_coder import ModelDeepSeekCoder67
 from agents.gocodeagent import GoSwaggerAgent, GoCRUDAgent, Dalle3Agent, Dalle2Agent, AudioAgent, GoCRUDDataAgent
 from agents.orchestratoragent import OrchestratorAgent
 from agents.chatagent import ChatAgent
