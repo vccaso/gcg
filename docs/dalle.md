@@ -1,5 +1,0 @@
-🧠 TL;DR
-
-DALL·E Version	Sizes Supported
-DALL·E 2	✅ 256x256, 512x512, 1024x1024
-DALL·E 3	✅ 1024x1024, 1024x1792, 1792x1024
