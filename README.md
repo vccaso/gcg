@@ -1,182 +1,243 @@
-Go Code Generator (GCG) 🛠️
+# Go Code Generator (GCG) 🛠️
+
 An extensible AI Agent Orchestrator for generating Go CRUD code, Angular apps, GitHub automations, images, audio, and more — using local and remote LLMs!
 
 Built with:
 
-🧠 Python 3
+- 🧠 Python 3
+- 🖥️ Streamlit (UI)
+- 🔧 YAML-based workflow definitions
+- 🌐 OpenAI / Ollama / DeepSeek integrations
+- 🛠️ Docker optional support
 
-🖥️ Streamlit (for UI)
+---
 
-🔧 YAML-based workflow definitions
+# 📆 Requirements
 
-🌐 OpenAI / Ollama / DeepSeek integrations
+- Python 3.8+
+- Docker (optional, for containerized runs)
+- Access to LLMs (OpenAI API key or local Ollama models)
 
-📦 Requirements
-Python 3.8+
+---
 
-Docker (optional, for containerized runs)
+# 🔧 Setup Instructions
 
-Access to LLMs (OpenAI API Key or Local Ollama Models)
-
-🔧 Setup Instructions
-1. Clone the Repo
-bash
-Copy
-Edit
+### 1. Clone the Repo
+```bash
 git clone https://github.com/your-username/your-repo.git
 cd your-repo
-2. Create and Activate Virtual Environment
-bash
-Copy
-Edit
+```
+
+### 2. Create and Activate Virtual Environment
+```bash
 python3 -m venv .venv
-source .venv/bin/activate          # macOS/Linux
+source .venv/bin/activate   # macOS/Linux
 # OR
-.venv\Scripts\activate             # Windows
-3. Install Required Packages
-bash
-Copy
-Edit
+.venv\Scripts\activate      # Windows
+```
+
+### 3. Install Required Packages
+```bash
 pip install -r requirements.txt
-🧠 Supported LLM Models
+```
 
-Model	Best Use	Notes
-ModelOllama	Offline dev, small tasks	Free, slower
-ModelDeepSeekCoder67	Heavy coding (Go, Python, SQL)	Local coding genius
-ModelGpt4Turbo	Structured code, planning	Best, more expensive
-ModelGpt35Turbo	Fast drafts, simple tasks	Cheap, fast
-ModelDalle3	Image generation	Text-to-image
-ModelTTS1	Text-to-Speech	Create voice outputs
-ModelWhisper	Speech-to-Text	Audio transcription
-🧠 Supported AI Agents
+---
 
-Agent	Description
-ChatAgent	General chat, Q&A, brainstorming
-GoCRUDAgent	Full Go CRUD generator (model + API)
-GoCRUDModelAgent	Only Go struct model generation
-GoCRUDDataAgent	Only Go data access layer generation
-GoSwaggerAgent	Swagger/OpenAPI doc generation
-AngularAppAgent	Create Angular frontend code
-Dalle3Agent	Generate images from text prompts
-AudioAgent	Text-to-Speech and Speech-to-Text
-SaveToFileAgent	Save content to a file
-GitHubCreateBranchAgent	Create Git branches locally
-GitHubCommitAgent	Make Git commits
-GitHubCheckoutBranchAgent	Checkout Git branches
-GitHubPRAgent	Create GitHub Pull Requests
-GitHubCloneOrUpdateRepoAgent	Clone or update GitHub repos
-🚀 Example Usage
-Run from CLI:
-bash
-Copy
-Edit
+# 🧠 Supported LLM Models
+
+| Model | Best Use | Notes | Tags |
+|:-----|:---------|:------|:-----|
+| ModelOllama | Offline dev, small tasks | Free, slower | [Local] |
+| ModelDeepSeekCoder67 | Heavy coding (Go, Python, SQL) | Local coding genius | [Local], [Code] |
+| ModelGpt4Turbo | Structured code, planning | Best, more expensive | [OpenAI] |
+| ModelGpt35Turbo | Fast drafts, simple tasks | Cheap, fast | [OpenAI] |
+| ModelDalle3 | Image generation | Text-to-image | [OpenAI], [Image] |
+| ModelTTS1 | Text-to-Speech | Voice outputs | [OpenAI], [Audio] |
+| ModelWhisper | Speech-to-Text | Audio transcription | [OpenAI], [Audio] |
+
+✅ Dynamic Model Catalog available via UI filtering!
+
+---
+
+# 🤖 Supported AI Agents
+
+| Agent | Description | Tags |
+|:-----|:-------------|:-----|
+| ChatAgent | General chat, Q&A, brainstorming | [AI] |
+| GoCRUDAgent | Full Go CRUD generator (Model + API) | [AI], [Go] |
+| GoCRUDModelAgent | Only Go struct model generation | [AI], [Go] |
+| GoCRUDDataAgent | Only Go data access layer generation | [AI], [Go] |
+| GoSwaggerAgent | Swagger/OpenAPI doc generation | [AI], [Go], [Swagger] |
+| AngularAppAgent | Create Angular frontend code | [AI], [Frontend] |
+| Dalle3Agent | Generate images from text prompts | [AI], [Image] |
+| AudioAgent | Text-to-Speech and Speech-to-Text | [AI], [Audio] |
+| SaveToFileAgent | Save content to a file | [Utility] |
+| GitHubCreateBranchAgent | Create Git branches locally | [GitHub] |
+| GitHubCommitAgent | Make Git commits | [GitHub] |
+| GitHubCheckoutBranchAgent | Checkout Git branches | [GitHub] |
+| GitHubPRAgent | Create GitHub Pull Requests | [GitHub] |
+| GitHubCloneOrUpdateRepoAgent | Clone or update GitHub repos | [GitHub] |
+| RequirementsExtractorAgent | Extract Python project dependencies | [Utility], [Python] |
+| RAGDatabaseBuilderAgent | Build RAG vector database | [RAG], [Database] |
+| RAGQueryAgent | Query a RAG vector database | [RAG], [Retrieval] |
+| RAGAttachAgent | Attach docs to RAG database | [RAG], [Database] |
+| RAGDatabaseUpdaterAgent | Update RAG embeddings | [RAG], [Database] |
+
+✅ Dynamic Agent Catalog available via UI!
+
+---
+
+# 🚀 Example Usage
+
+### Run from CLI:
+```bash
 python3 run_cli.py --workflow workflows/wf_example.yaml
-Use --workflow to point to any YAML workflow!
+```
 
-Run from Streamlit UI:
-bash
-Copy
-Edit
+Other CLI Options:
+```bash
+python3 run_cli.py --prompt_list       # List available prompt templates
+python3 run_cli.py --prompt_test <name> # Test a prompt template
+python3 run_cli.py --validate           # Validate all models, agents, and workflows ✅
+```
+
+### Run from Streamlit UI:
+```bash
 streamlit run ui.py
-Browse workflows, select, and launch them visually.
+```
+- Select **Workflows**
+- Browse **Models** and **Agents** by **Tags**
+- Run with full visibility and logs!
 
-🌐 Using OpenAI Models
+---
+
+# 🌐 Using OpenAI Models
+
 Make sure your API key is set:
 
-bash
-Copy
-Edit
+```bash
 export OPENAI_API_KEY=your-api-key       # macOS/Linux
 set OPENAI_API_KEY=your-api-key           # Windows
-💻 Using Local Models (Ollama)
+```
+
+---
+
+# 💻 Using Local Models (Ollama)
+
 Install Ollama:
-Download Ollama
+- [Download Ollama](https://ollama.com/download)
 
 Pull and Run Models:
-bash
-Copy
-Edit
+```bash
 ollama pull llama3
 ollama run llama3
+```
+
 List installed models:
-
-bash
-Copy
-Edit
+```bash
 ollama list
-🧠 Using DeepSeek Model Locally
-Install DeepSeek via Ollama:
-bash
-Copy
-Edit
+```
+
+---
+
+# 🧠 Using DeepSeek Model Locally
+
+Pull DeepSeek via Ollama:
+```bash
 ollama pull deepseek-coder:6.7b
+```
+
 Run DeepSeek Server:
-bash
-Copy
-Edit
+```bash
 ollama run deepseek-coder
-Available at:
+```
 
-bash
-Copy
-Edit
-http://localhost:11434
-Test DeepSeek with Curl:
-bash
-Copy
-Edit
-curl -X POST http://localhost:11434/api/generate -d '{
-  "model": "deepseek-coder",
-  "prompt": "Explain Go channels."
-}'
-Set environment (optional):
+Test DeepSeek with curl:
+```bash
+curl -X POST http://localhost:11434/api/generate -d '{"model":"deepseek-coder","prompt":"Explain Go channels."}'
+```
 
-bash
-Copy
-Edit
+Set Environment (Optional):
+```bash
 export DEEPSEEK_URL=http://localhost:11434
-📂 Project Structure Overview
+```
 
-Folder	Purpose
-workflows/	YAML workflow files
-models/	LLM model wrappers (OpenAI, Ollama, etc.)
-agents/	Custom agents for tasks (CRUD, GitHub, etc.)
-http/	Generated Go API handlers and server setup
-data/	Generated Go data access code
-model/	Generated Go model structs
-ui.py	Streamlit user interface
-run_cli.py	CLI runner for workflows
-🛠 Docker Support
+---
+
+# 📂 Project Structure Overview
+
+| Folder | Purpose |
+|:-------|:--------|
+| workflows/ | YAML workflow files |
+| models/ | LLM model wrappers (OpenAI, Ollama, etc.) |
+| agents/ | Custom task-specific agents |
+| http/ | Generated Go HTTP server code |
+| data/ | Generated Go data access layer |
+| model/ | Generated Go model structs |
+| ui.py | Streamlit UI application |
+| run_cli.py | Command-line interface |
+| validate.py | System validation tool |
+
+---
+
+# 🛠 Docker Support
+
 Build Docker Image:
-bash
-Copy
-Edit
+```bash
 docker build -t gcg-agent .
+```
+
 Run Container:
-bash
-Copy
-Edit
+```bash
 docker run --rm \
   -e OPENAI_API_KEY=sk-... \
   -v $(pwd)/workflows:/app/workflows \
   gcg-agent
-Mounts your workflows locally and passes API keys safely.
+```
 
-📜 Patterns Supported in Workflows
+✅ Mounts local workflows
+✅ Passes API keys safely
 
-Pattern Type	Example	Resolved From
-Variable	${my_var}	vars section
-Step output	step_name.result	previous step
-Jinja-style variable	{{ my_var }}	vars section
-Jinja-style step output	{{ step_name.result }}	previous step
-🤝 License
-MIT License - Feel free to use and contribute!
+---
 
-🚀 Ready to Generate Code with AI!
-Design YAML workflows
+# 📄 Patterns Supported in Workflows
 
-Run them locally or remotely
+| Pattern Type | Example | Resolved From |
+|:-------------|:--------|:--------------|
+| Variable | `${my_var}` | `vars:` section |
+| Step Output | `step_name.result` | previous step output |
+| Jinja-style Variable | `{{ my_var }}` | `vars:` section |
+| Jinja-style Step Output | `{{ step_name.result }}` | previous step output |
 
-Generate Go apps, Angular apps, GitHub automation, images, audio, and more — all orchestrated by your AI agents!
+---
 
-🎯 Let's Code Smarter, Not Harder!
+# ✅ System Validation
+
+You can now validate your system before scaling up!
+
+Validate Agents, Models, and Workflows easily:
+
+```bash
+python3 run_cli.py --validate
+```
+
+or from **Streamlit UI** (Validation Page).
+
+---
+
+# 🤝 License
+
+MIT License — Feel free to use, fork, and contribute!
+
+---
+
+# 🌟 Final Words
+
+✅ Design YAML Workflows
+✅ Orchestrate AI Agents easily
+✅ Scale to hundreds of tasks: Go Apps, Angular Apps, GitHub Automations, RAG Systems, and more!
+
+---
+
+# 🚀 Let's Code Smarter, Not Harder!
+
