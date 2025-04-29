@@ -243,5 +243,69 @@ MIT License — Feel free to use, fork, and contribute!
 
 ---
 
-# 🚀 Let's Code Smarter, Not Harder!
+# 📊 GCG API (FastAPI)
 
+## Overview
+You can run any YAML-based workflow via an HTTP API using FastAPI. This enables GCG to be used from external tools, UI clients, or integrations.
+
+## Requirements
+- FastAPI
+- Uvicorn
+- (Reuses existing `run_workflow()` from orchestrator_core)
+
+### Install FastAPI and Uvicorn:
+```bash
+pip install fastapi uvicorn
+```
+
+## Running the API Server
+```bash
+python3 api/main.py
+```
+
+Server will be available at:
+```
+http://localhost:8000
+```
+
+## Endpoint: Run Workflow
+**POST /run-workflow**
+
+### Request Body (JSON)
+```json
+{
+  "workflow_file": "wf_example.yaml"
+}
+```
+
+### Response
+```json
+{
+  "status": "success",
+  "result": {
+    "step_name": "...output..."
+  }
+}
+```
+
+## Example with Curl
+```bash
+curl -X POST http://localhost:8000/run-workflow \
+  -H "Content-Type: application/json" \
+  -d '{"workflow_file": "wf_example.yaml"}'
+```
+
+## Deployment Options
+- Local (for dev)
+- Docker container (to deploy to cloud)
+- Behind Nginx or API Gateway (optional auth)
+
+## Roadmap
+- [ ] API key protection
+- [ ] Run dynamic workflow from JSON
+- [ ] Async background execution
+- [ ] Job queue support (Celery/RQ)
+
+---
+
+# 🚀 Let's Code Smarter, Not Harder!
