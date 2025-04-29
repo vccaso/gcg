@@ -186,18 +186,30 @@ export DEEPSEEK_URL=http://localhost:11434
 
 # 🛠 Docker Support
 
-Build Docker Image:
-```bash
+## Build the Docker image
+```
 docker build -t gcg-agent .
 ```
 
-Run Container:
-```bash
-docker run --rm \
-  -e OPENAI_API_KEY=sk-... \
-  -v $(pwd)/workflows:/app/workflows \
+## Run FastAPI Server
+```
+docker run -p 8000:8000 \
+  -e OPENAI_API_KEY=your-real-openai-key \
+  -e GCG_API_KEY=your-real-api-key \
   gcg-agent
 ```
+Your API is now available at http://localhost:8000
+
+## (Optional) Run Streamlit UI
+
+If you want to run the UI instead inside the container, you can override the CMD like this:
+```
+docker run -p 8501:8501 \
+  -e OPENAI_API_KEY=your-real-openai-key \
+  gcg-agent streamlit run ui.py
+```
+Streamlit UI available at http://localhost:8501
+
 
 ✅ Mounts local workflows
 ✅ Passes API keys safely

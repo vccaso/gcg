@@ -1,17 +1,27 @@
-# Use slim Python image
+# Use an official lightweight Python image
 FROM python:3.10-slim
 
-# Set working directory
+# Set workdir
 WORKDIR /app
 
-# Copy project files
-COPY . /app
+# Copy code
+COPY . .
 
 # Install dependencies
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --upgrade pip \
+    && pip install -r requirements.txt \
+    && pip install fastapi uvicorn streamlit
 
-# Set environment variables (override via docker run -e)
-ENV OPENAI_API_KEY=changeme
+# Expose ports
+# 8501 = Streamlit UI
+# 8000 = FastAPI API
+EXPOSE 8501
+EXPOSE 8000
 
-# Default command
-CMD ["python", "run_cli.py", "--workflow", "workflows/wf_angular.yaml"]
+# Set environment variables (optional)
+ENV OPENAI_API_KEY=your-key-here
+ENV GCG_API_KEY=your-api-key-here
+
+# Command to run API by default (can override)
+CMD ["uvicorn", "api.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+
