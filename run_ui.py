@@ -219,7 +219,7 @@ elif menu == "Templates":
     selected_template = st.selectbox("Select a Template File", templates)
 
     if selected_template:
-        with open(os.path.join(templates_dir, selected_template)) as f:
+        with open(os.path.join(templates_dir, selected_template), encoding="utf-8") as f:
             content = f.read()
         st.code(content, language="markdown")
 
@@ -232,7 +232,7 @@ elif menu == "Docs":
     readme_path = "README.md"
 
     if os.path.exists(readme_path):
-        with open(readme_path, "r") as f:
+        with open(readme_path, "r", encoding="utf-8") as f:
             readme_content = f.read()
         st.markdown(readme_content)
     else:

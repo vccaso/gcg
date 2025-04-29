@@ -1,0 +1,28 @@
+name: chat example
+description: this workflow chat wiht local model
+
+vars:
+  header1: "Create a introductory text about the pros and cons of AI in robotic. Not more than 200 words, not less of 50."
+  header2: "develop the importance and risks of AI in robotics. Not more than 300 words, not less of 100."
+  file_name: workspace/blog01.txt
+
+steps:
+
+  - name: Content 1
+    type: ai
+    agent: ChatAgent
+    model: ModelOllama
+    template_name: default
+    input:
+      question: "{{ header1 }}"
+      save_to_file: true
+      file_name: ${file_name}
+
+  - name: Content 2
+    type: ai
+    agent: ChatAgent
+    model: ModelOllama
+    input:
+      question: "{{ header2 }}"
+      save_to_file: true
+      file_name: ${file_name}
