@@ -260,6 +260,7 @@ pip install fastapi uvicorn
 
 ## Running the API Server
 ```bash
+export GCG_API_KEY=your-secure-key
 python3 api/main.py
 ```
 
@@ -270,6 +271,12 @@ http://localhost:8000
 
 ## Endpoint: Run Workflow
 **POST /run-workflow**
+
+### Authentication Required
+Header:
+```http
+x-api-key: your-secure-key
+```
 
 ### Request Body (JSON)
 ```json
@@ -292,20 +299,17 @@ http://localhost:8000
 ```bash
 curl -X POST http://localhost:8000/run-workflow \
   -H "Content-Type: application/json" \
-  -d '{"workflow_file": "wf_example.yaml"}'
+  -H "x-api-key: 1234567890" \
+  -d '{"workflow_file": "examples/content/wf_content.yaml"}'
 ```
 
 ## Deployment Options
 - Local (for dev)
 - Docker container (to deploy to cloud)
-- Behind Nginx or API Gateway (optional auth)
+- Behind Nginx or API Gateway (optional extra auth)
 
 ## Roadmap
-- [ ] API key protection
+- [x] API key protection
 - [ ] Run dynamic workflow from JSON
 - [ ] Async background execution
 - [ ] Job queue support (Celery/RQ)
-
----
-
-# 🚀 Let's Code Smarter, Not Harder!
