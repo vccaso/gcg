@@ -5,6 +5,7 @@ from collections import defaultdict
 from orchestrator_core import run_workflow
 from models.model_registry import MODEL_CATALOG
 from agents.agent_registry import AGENT_CATALOG
+from api.api_catalog import API_CATALOG
 from config import __version__, __app_name__, __workflow_path__
 
 st.set_page_config(page_title=__app_name__, page_icon="🧠")
@@ -12,7 +13,7 @@ st.set_page_config(page_title=__app_name__, page_icon="🧠")
 # Sidebar menu
 menu = st.sidebar.selectbox(
     "📂 Menu",
-    ("Home", "Workflows", "Agents", "Models", "Config", "Validate", "Templates", "Docs")
+    ("Home", "Workflows", "Agents", "Models", "Config", "Validate", "Templates", "API", "Docs")
 )
 
 st.sidebar.markdown(f"<div style='text-align:center; color: gray;'>v{__version__}</div>", unsafe_allow_html=True)
@@ -223,6 +224,23 @@ elif menu == "Templates":
             content = f.read()
         st.code(content, language="markdown")
 
+
+
+# ---------------------
+# 📄 API
+# ---------------------
+elif menu == "API":
+    st.subheader("🔌 API Endpoints")
+    st.markdown("Explore the available HTTP endpoints exposed by the GCG backend API.")
+    for endpoint in API_CATALOG:
+        st.subheader(f"`{endpoint['method']}` {endpoint['path']}")
+        st.markdown(f"**Description:** {endpoint['description']}")
+        if endpoint.get("auth"):
+            st.markdown("**🔐 Requires API Key:** Yes")
+        if endpoint.get("body"):
+            st.markdown("**📦 Request Body Example:**")
+            st.code(endpoint["body"], language="json")
+        st.markdown("---")
 # ---------------------
 # 📚 Docs (Readme)
 # ---------------------
