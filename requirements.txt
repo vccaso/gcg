@@ -9,3 +9,5 @@ python-dotenv         # For managing environment variables like API keys
 colorama
 fastapi
 uvicorn
+moviepy>=1.0.3
+pillow<10

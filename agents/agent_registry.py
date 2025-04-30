@@ -20,6 +20,10 @@ from agents.rag.database_builder_agent import RAGDatabaseBuilderAgent
 from agents.rag.query_agent import RAGQueryAgent
 from agents.rag.attach_agent import RAGAttachAgent
 from agents.rag.database_updater_agent import RAGDatabaseUpdaterAgent
+from agents.video.video_assembler_agent import VideoAssemblerAgent
+
+
+
 
 # ✅ Agent registry for loading agents dynamically
 AGENT_REGISTRY = {
@@ -41,7 +45,8 @@ AGENT_REGISTRY = {
     "RAGDatabaseBuilderAgent": RAGDatabaseBuilderAgent,
     "RAGQueryAgent": RAGQueryAgent,
     "RAGAttachAgent": RAGAttachAgent,
-    "RAGDatabaseUpdaterAgent": RAGDatabaseUpdaterAgent
+    "RAGDatabaseUpdaterAgent": RAGDatabaseUpdaterAgent,
+    "VideoAssemblerAgent": VideoAssemblerAgent
 
 }
 
@@ -138,7 +143,7 @@ AGENT_CATALOG = {
             "Allows saving generated content, prompts, or outputs into files.",
             "Helpful for logging, exporting, or audit purposes."
         ],
-        "tags": ["Utility", "File System"]
+        "tags": ["Utility", "File System", "Tool"]
     },
     "GitHubCreateBranchAgent": {
         "type": "Git",
@@ -147,7 +152,7 @@ AGENT_CATALOG = {
             "Creates a new Git branch locally.",
             "Can be used for feature, hotfix, or release branch creation."
         ],
-        "tags": ["GitHub"]
+        "tags": ["GitHub", "Tool"]
     },
     "GitHubCommitAgent": {
         "type": "Git",
@@ -156,7 +161,7 @@ AGENT_CATALOG = {
             "Creates a commit in a local Git repository.",
             "Supports customizable commit messages."
         ],
-        "tags": ["GitHub"]
+        "tags": ["GitHub", "Tool"]
     },
     "GitHubCheckoutBranchAgent": {
         "type": "Git",
@@ -165,7 +170,7 @@ AGENT_CATALOG = {
             "Checks out a Git branch locally.",
             "If the branch doesn't exist, attempts to create and track it from `origin`."
         ],
-        "tags": ["GitHub"]
+        "tags": ["GitHub", "Tool"]
     },
     "GitHubPRAgent": {
         "type": "Git",
@@ -174,7 +179,7 @@ AGENT_CATALOG = {
             "Automates creating a Pull Request (PR) on GitHub.",
             "Useful for code review and collaboration workflows."
         ],
-        "tags": ["GitHub"]
+        "tags": ["GitHub", "Tool"]
     },
     "GitHubCloneOrUpdateRepoAgent": {
         "type": "Git",
@@ -183,7 +188,7 @@ AGENT_CATALOG = {
             "Clones a GitHub repository if missing or updates it (pull) if already cloned.",
             "Ensures local repositories are always synchronized."
         ],
-        "tags": ["GitHub"]
+        "tags": ["GitHub", "Tool"]
     },
    "RequirementsExtractorAgent": {
         "type": "Utility",
@@ -238,5 +243,28 @@ AGENT_CATALOG = {
         ],
         "tags": ["RAG", "Database"]
     },
+    "VideoAssemblerAgent": {
+        "type": "RAG",
+        "short_description": "Combining a single image and an audio narration into an MP4 video file.",
+        "detailed_description": [
+            "Takes a background image (image_path) which will serve as the static visual throughout the video.",
+            "Takes an audio file (audio_path) which contains the narration or soundtrack.",
+            "Combines them into a video of equal duration to the audio file.",
+            "Optionally allows setting a custom duration (if shorter than the audio).",
+            "Outputs a .mp4 video using standard encoding suitable for platforms like YouTube.",
+            " ## Inputs:",
+            "image_path (string): Path to the image file to use as video background.",
+            "audio_path (string): Path to the audio file to include in the video.",
+            "output_video_path (string): Destination file path for the generated video.",
+            "duration (optional, float): Duration of the video in seconds (defaults to length of audio).",
+            " ## Output:",
+            "A dictionary indicating success or error, and the path to the generated video file if successful.",
+            " ## Use Case Examples:",
+            "Turning a narrated script and a thumbnail image into a publish-ready YouTube video.",
+            "Creating static videos from podcast audio and a branded visual.",
+            "Auto-generating social media content using AI-generated visuals and voiceovers.",
+        ],
+        "tags": ["Tool", "Video", "Audio"]
+    }
 
 }

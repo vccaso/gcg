@@ -67,7 +67,11 @@ def resolve_inputs(input_dict, context, variables=None):
                     expr = match.group(1).strip()
                     if "." in expr:
                         step_name, field = expr.split(".", 1)
-                        return str(context.get(step_name, {}).get(field, ""))
+                        # return str(context.get(step_name, {}).get(field, ""))
+                        step_result = context.get(step_name)
+                        if isinstance(step_result, dict):
+                            return str(step_result.get(field, ""))
+                        return str(step_result) if field == "result" else ""
                     else:
                         return str(variables.get(expr, ""))
                 resolved[key] = jinja_pattern.sub(replace, val)
@@ -225,6 +229,7 @@ def run_workflow(workflow_path, streamlit_mode=False):
                 print(f"▶️ {name} using {agent_name}")
             output = agent.run(**inputs)
             results[name] = output
+            print(f"[DEBUG] Step '{name}' result:", output)
             if(debug):
                 print(output)
 
@@ -245,6 +250,7 @@ def run_workflow(workflow_path, streamlit_mode=False):
             agent = AudioAgent()
             output = agent.run(**inputs)
             results[name] = output
+            print(f"[DEBUG] Step '{name}' result:", output)
             if(debug):
                 print(output)
 
