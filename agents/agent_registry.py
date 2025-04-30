@@ -21,6 +21,7 @@ from agents.rag.query_agent import RAGQueryAgent
 from agents.rag.attach_agent import RAGAttachAgent
 from agents.rag.database_updater_agent import RAGDatabaseUpdaterAgent
 from agents.video.video_assembler_agent import VideoAssemblerAgent
+from agents.video.subtitle_generator_agent import SubtitleGeneratorAgent
 
 
 
@@ -46,7 +47,8 @@ AGENT_REGISTRY = {
     "RAGQueryAgent": RAGQueryAgent,
     "RAGAttachAgent": RAGAttachAgent,
     "RAGDatabaseUpdaterAgent": RAGDatabaseUpdaterAgent,
-    "VideoAssemblerAgent": VideoAssemblerAgent
+    "VideoAssemblerAgent": VideoAssemblerAgent,
+    "SubtitleGeneratorAgent": SubtitleGeneratorAgent
 
 }
 
@@ -244,7 +246,7 @@ AGENT_CATALOG = {
         "tags": ["RAG", "Database"]
     },
     "VideoAssemblerAgent": {
-        "type": "RAG",
+        "type": "video",
         "short_description": "Combining a single image and an audio narration into an MP4 video file.",
         "detailed_description": [
             "Takes a background image (image_path) which will serve as the static visual throughout the video.",
@@ -265,6 +267,22 @@ AGENT_CATALOG = {
             "Auto-generating social media content using AI-generated visuals and voiceovers.",
         ],
         "tags": ["Tool", "Video", "Audio"]
+    },
+    "SubtitleGeneratorAgent": {
+        "type": "Utility",
+        "short_description": "Generates .srt subtitles from a script and duration.",
+        "detailed_description": [
+            "Purpose: Automatically generate .srt subtitle files from a provided script and total video duration.",
+            "This agent takes a block of script text (e.g. from a video narration), splits it into timed chunks based on the total video/audio duration, and outputs a valid .srt subtitle file with precise timestamps.",
+            "# Each subtitle block includes:",
+            " - A sequential number",
+            " - Start and end timestamps",
+            " - A text chunk (split by character length for readability)",
+            " ## Example Use Case",
+            " You have a video narration generated from AudioAgent and want to:",
+            " Auto-generate matching subtitles",
+            "Use those subtitles for accessibility, closed captions, or burning into the video"
+        ],
+        "tags": ["Tool", "Video", "Subtitle"],
     }
-
 }

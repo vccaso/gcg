@@ -1,0 +1,46 @@
+name: youtube_video_with_subtitles
+description: Generates a narrated video with subtitles and a static image
+
+vars:
+  topic: "How to Stay Productive While Working from Home"
+  voice: alloy
+  audio_file: workspace/audio/video_narration.wav
+  image_file: workspace/images/youtube_thumbnail.png
+  video_file: workspace/videos/productivity.mp4
+  srt_file: workspace/captions/productivity.srt
+  duration: 60.0
+
+steps:
+  - name: generate_script
+    type: ai
+    agent: ChatAgent
+    model: ModelOllama
+    input:
+      question: "Write a YouTube script about '${topic}' in a friendly, conversational tone."
+
+  - name: generate_audio
+    type: ai-audio
+    agent: AudioAgent
+    model: ModelTTS1
+    input:
+      mode: tts
+      text: "{{ generate_script.result }}"
+      voice: ${voice}
+      output_path: ${audio_file}
+
+  - name: generate_subtitles
+    type: tool
+    agent: SubtitleGeneratorAgent
+    input:
+      text: "{{ generate_script.result }}"
+      output_path: ${srt_file}
+      duration: ${duration}
+
+  - name: assemble_video
+    type: tool
+    agent: VideoAssemblerAgent
+    input:
+      image_path: ${image_file}
+      audio_path: ${audio_file}
+      output_video_path: ${video_file}
+      duration: ${duration}

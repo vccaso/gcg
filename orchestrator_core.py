@@ -38,7 +38,7 @@ def resolve_vars(obj, variables: dict):
         matches = pattern.findall(obj)
         for match in matches:
             if match in variables:
-                obj = obj.replace(f"${{{match}}}", variables[match])
+                obj = obj.replace(f"${{{match}}}", str(variables[match]))
         return obj
 
     return obj  # Return original type (int, bool, etc.)
