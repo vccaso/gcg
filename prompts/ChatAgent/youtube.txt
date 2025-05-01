@@ -23,16 +23,26 @@ Split the script into the following sections, each clearly labeled:
 
 For each section:
 - Use a friendly, conversational tone
-- Keep each paragraph short and punchy. Not more than 50 words.
+- Keep each paragraph short and punchy (not more than 50 words)
 - Use simple markdown formatting (e.g. **bold**, _italics_, etc.)
 
-Output must be a valid JSON object using **double quotes**, like this:
+Respond with a valid **YAML block** with each section as a top-level key. Use double quotes only if needed.
 
-```json
-{{
-  "intro": "...",
-  "scene1": "...",
-  "scene2": "...",
-  "conclusion": "..."
-}}
-Respond only with the complete JSON object — do not stop early. Make sure the response ends with a closing }}.
+Example:
+
+```yaml
+intro: "Welcome to the video on how to stay motivated..."
+scene1: "Imagine you're stuck halfway through a big project..."
+scene2: "One strategy is to reconnect with your 'why'..."
+scene3: "Try these tips:\n- Break tasks into chunks\n- Set daily goals\n- Reward progress"
+conclusion: "You’ve got this! Remember, progress over perfection."
+```
+
+Respond only with the YAML block — no extra text, explanation, or markdown outside the code block.
+
+---
+
+This version will:
+- Avoid formatting errors
+- Make parsing easier
+- Work natively with `yaml.safe_load()`

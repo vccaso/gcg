@@ -1,8 +1,8 @@
 import os
 from agents.base import BaseAgent
 import openai
-import json
-import re
+import yaml
+from utils.json_util import validate, STRUCTURED_SCRIPT_SCHEMA
 
 class SegmentedAudioAgent(BaseAgent):
     def __init__(self, api_key=None):
@@ -12,32 +12,24 @@ class SegmentedAudioAgent(BaseAgent):
     def run(self, **kwargs):
         raw_sections = kwargs["text_sections"]
 
+        # ✅ Parse YAML or validate dict
         if isinstance(raw_sections, str):
             try:
-                # Step 1: Extract a block starting with "intro" and ending with "conclusion"
-                match = re.search(r'({\s*"intro"[\s\S]*?"conclusion"\s*:\s*".+?"\s*})', raw_sections)
-                if not match:
-                    raise ValueError("No JSON object found in string.")
-                cleaned = match.group(1)
-
-                # Step 2: Balance curly braces if cutoff occurred
-                open_braces = cleaned.count("{")
-                close_braces = cleaned.count("}")
-                if open_braces > close_braces:
-                    cleaned += "}" * (open_braces - close_braces)
-
-                # Step 3: Try to parse
-                text_sections = json.loads(cleaned)
-
+                start = raw_sections.find("intro:")
+                if start == -1:
+                    raise ValueError("YAML must start with 'intro:'")
+                yaml_block = raw_sections[start:]
+                text_sections = yaml.safe_load(yaml_block)
+                validate(instance=text_sections, schema=STRUCTURED_SCRIPT_SCHEMA)
             except Exception as e:
-                raise ValueError(f"Failed to parse 'text_sections': {e}")
+                raise ValueError(f"Failed to parse YAML structured script: {e}")
         elif isinstance(raw_sections, dict):
+            validate(instance=raw_sections, schema=STRUCTURED_SCRIPT_SCHEMA)
             text_sections = raw_sections
         else:
-            raise TypeError("'text_sections' must be a dict or JSON string")
+            raise TypeError("'text_sections' must be a dict or YAML string")
 
-    
-        # text_sections = kwargs["text_sections"]  # Dict of key: text
+        # 🧠 Audio generation per section
         output_dir = kwargs.get("output_dir", "workspace/audio")
         prefix = kwargs.get("filename_prefix", "segment")
         voice = kwargs.get("voice", "alloy")
