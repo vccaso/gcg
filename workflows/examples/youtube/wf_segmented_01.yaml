@@ -6,7 +6,7 @@ vars:
   model1: ModelOllama
   model: ModelGpt35Turbo
   voice: alloy
-  audio_dir: workspace/audio/segments02
+  audio_dir: workspace/audio/segments03
   filename_prefix: productivity
 
 steps:

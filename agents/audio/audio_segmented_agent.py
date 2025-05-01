@@ -36,7 +36,11 @@ class SegmentedAudioAgent(BaseAgent):
         os.makedirs(output_dir, exist_ok=True)
         generated_files = {}
 
-        for key, text in text_sections.items():
+        for key, section in text_sections.items():
+            text = section.get("text", "")
+            if not text:
+                continue
+
             path = os.path.join(output_dir, f"{prefix}_{key}.wav")
             response = openai.audio.speech.create(
                 model=model,

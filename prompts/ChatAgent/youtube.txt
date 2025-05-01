@@ -22,27 +22,30 @@ Split the script into the following sections, each clearly labeled:
    - End with a motivational note or call to action
 
 For each section:
-- Use a friendly, conversational tone
-- Keep each paragraph short and punchy (not more than 50 words)
-- Use simple markdown formatting (e.g. **bold**, _italics_, etc.)
+- Include:
+  - `text`: the spoken narration, friendly and conversational (≤ 50 words)
+  - `image_prompt`: a one-sentence visual scene description for DALL·E (no camera instructions)
+- Use simple markdown formatting (e.g. **bold**, _italics_) in `text`
+- Keep formatting valid for YAML (avoid stray quotes or colons)
 
-Respond with a valid **YAML block** with each section as a top-level key. Use double quotes only if needed.
-
-Example:
+Respond with a valid **YAML block** like this:
 
 ```yaml
-intro: "Welcome to the video on how to stay motivated..."
-scene1: "Imagine you're stuck halfway through a big project..."
-scene2: "One strategy is to reconnect with your 'why'..."
-scene3: "Try these tips:\n- Break tasks into chunks\n- Set daily goals\n- Reward progress"
-conclusion: "You’ve got this! Remember, progress over perfection."
-```
+intro:
+  text: "Welcome to today's video on staying focused while working remotely..."
+  image_prompt: "a cozy home workspace with a focused person and a laptop"
+scene1:
+  text: "We've all been there — juggling deadlines and distractions..."
+  image_prompt: "a person at a messy desk looking stressed"
+scene2:
+  text: "The trick? Break your day into blocks and celebrate small wins."
+  image_prompt: "a calendar with checkmarks and sticky notes"
+scene3:
+  text: "Try these tips:\n- Schedule breaks\n- Set mini goals\n- Avoid multitasking"
+  image_prompt: "a timer, planner, and a person smiling at a screen"
+conclusion:
+  text: "You've got this! Stay balanced, focused, and keep growing."
+  image_prompt: "a happy creator with a video camera and positive energy"
 
-Respond only with the YAML block — no extra text, explanation, or markdown outside the code block.
 
----
-
-This version will:
-- Avoid formatting errors
-- Make parsing easier
-- Work natively with `yaml.safe_load()`
+Respond only with the YAML block — no extra text, headers, or markdown outside the code block.
