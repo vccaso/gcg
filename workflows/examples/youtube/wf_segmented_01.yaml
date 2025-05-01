@@ -8,34 +8,44 @@ vars:
   voice: alloy
   audio_dir: workspace/video01/audio/segments04
   image_dir: workspace/video01/images/segments04
+  video_dir: workspace/video01/videos
   filename_prefix: remote_focus
 
 
 steps:
-  - name: generate_structured_script
-    type: ai
-    agent: ChatAgent
-    model: ${model1}
-    template_name: youtube
-    input:
-      question: ${topic}
+  # - name: generate_structured_script
+  #   type: ai
+  #   agent: ChatAgent
+  #   model: ${model1}
+  #   template_name: youtube
+  #   input:
+  #     question: ${topic}
 
-  - name: generate_audio_segments
-    type: ai-audio
-    agent: SegmentedAudioAgent
-    model: ModelTTS1
-    input:
-      model: tts-1
-      text_sections: "{{ generate_structured_script.result }}"
-      output_dir: ${audio_dir}
-      filename_prefix: ${filename_prefix}
-      voice: ${voice}
+  # - name: generate_audio_segments
+  #   type: ai-audio
+  #   agent: SegmentedAudioAgent
+  #   model: ModelTTS1
+  #   input:
+  #     model: tts-1
+  #     text_sections: "{{ generate_structured_script.result }}"
+  #     output_dir: ${audio_dir}
+  #     filename_prefix: ${filename_prefix}
+  #     voice: ${voice}
 
-  - name: generate_thumbnails
-    type: ai-image
-    agent: SegmentedImageAgent
+  # - name: generate_thumbnails
+  #   type: ai-image
+  #   agent: SegmentedImageAgent
+  #   input:
+  #     model: dall-e-3
+  #     text_sections: "{{ generate_structured_script.result }}"
+  #     output_dir: ${image_dir}
+  #     filename_prefix: ${filename_prefix}
+      
+
+  - name: assemble_video
+    type: tool
+    agent: SegmentedVideoAssemblerAgent
     input:
-      model: dall-e-3
-      text_sections: "{{ generate_structured_script.result }}"
-      output_dir: ${image_dir}
-      filename_prefix: ${filename_prefix}
+      audio_dir: ${audio_dir}
+      image_dir: ${image_dir}
+      output_path: workspace/video01/final_video.mp4
