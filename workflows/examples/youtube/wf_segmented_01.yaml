@@ -13,13 +13,13 @@ vars:
 
 
 steps:
-  # - name: generate_structured_script
-  #   type: ai
-  #   agent: ChatAgent
-  #   model: ${model1}
-  #   template_name: youtube
-  #   input:
-  #     question: ${topic}
+  - name: generate_structured_script
+    type: ai
+    agent: ChatAgent
+    model: ${model1}
+    template_name: youtube
+    input:
+      question: ${topic}
 
   # - name: generate_audio_segments
   #   type: ai-audio
@@ -41,11 +41,19 @@ steps:
   #     output_dir: ${image_dir}
   #     filename_prefix: ${filename_prefix}
       
-
-  - name: assemble_video
+  - name: generate_subtitles
     type: tool
-    agent: SegmentedVideoAssemblerAgent
+    agent: SegmentedSubtitleGeneratorAgent
     input:
-      audio_dir: ${audio_dir}
-      image_dir: ${image_dir}
-      output_path: workspace/video01/final_video.mp4
+      text_sections: "{{ generate_structured_script.result }}"
+      audio_dir: workspace/video01/audio/segments04
+      filename_prefix: remote_focus
+      output_path: workspace/video01/final_subtitles.srt
+
+  # - name: assemble_video
+  #   type: tool
+  #   agent: SegmentedVideoAssemblerAgent
+  #   input:
+  #     audio_dir: ${audio_dir}
+  #     image_dir: ${image_dir}
+  #     output_path: workspace/video01/final_video.mp4

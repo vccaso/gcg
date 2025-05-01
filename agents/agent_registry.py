@@ -25,6 +25,7 @@ from agents.video.subtitle_generator_agent import SubtitleGeneratorAgent
 from agents.audio.audio_segmented_agent import SegmentedAudioAgent
 from agents.images.segmented_image_agent import SegmentedImageAgent
 from agents.video.segmented_video_assembler_agent import SegmentedVideoAssemblerAgent
+from agents.video.segmented_subtitle_generator_agent import SegmentedSubtitleGeneratorAgent
 
 
 
@@ -54,7 +55,8 @@ AGENT_REGISTRY = {
     "SubtitleGeneratorAgent": SubtitleGeneratorAgent,
     "SegmentedAudioAgent": SegmentedAudioAgent,
     "SegmentedImageAgent": SegmentedImageAgent,
-    "SegmentedVideoAssemblerAgent": SegmentedVideoAssemblerAgent
+    "SegmentedVideoAssemblerAgent": SegmentedVideoAssemblerAgent,
+    "SegmentedSubtitleGeneratorAgent": SegmentedSubtitleGeneratorAgent
 
 }
 
@@ -321,5 +323,15 @@ AGENT_CATALOG = {
             "Ideal for automating YouTube video generation from structured scripts."
         ],
         "tags": ["AI", "Video", "Multimodal", "Assembly", "MoviePy"]
+    },
+    "SegmentedSubtitleGeneratorAgent": {
+        "type": "Utility",
+        "short_description": "Generates synchronized subtitle (.srt) files based on structured script and audio segments.",
+        "detailed_description": [
+            "This agent parses a structured script (YAML or dict) with sectioned text and uses corresponding audio segment durations to generate accurate subtitles.",
+            "It outputs a single .srt file with timestamps aligned to the concatenated video timeline.",
+            "Typically used alongside SegmentedAudioAgent and SegmentedVideoAssemblerAgent to enable accessible and captioned video workflows."
+        ],
+        "tags": ["AI", "Subtitle", "SRT", "Multimodal", "Video"]
     }
 }
