@@ -13,7 +13,8 @@ class SegmentedVideoAssemblerAgent(BaseAgent):
 
         clips = []
 
-        for section in ["intro", "scene1", "scene2", "scene3", "conclusion"]:
+        # for section in ["intro", "scene1", "scene2", "scene3", "conclusion"]:
+        for section in ["intro", "background", "key_figures", "turning_point","daily_life", "conflict", "resolution", "impact","reflection", "outro"]:
             audio_glob = glob.glob(os.path.join(audio_dir, f"*{section}.wav"))
             image_glob = glob.glob(os.path.join(image_dir, f"*{section}.png"))
 

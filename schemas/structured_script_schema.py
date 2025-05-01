@@ -12,7 +12,7 @@ STRUCTURED_SCRIPT_SCHEMA_OLD = {
 }
 
 
-STRUCTURED_SCRIPT_SCHEMA = {
+STRUCTURED_SCRIPT_SCHEMA_ORIGINAL = {
     "type": "object",
     "required": ["intro", "scene1", "scene2", "scene3", "conclusion"],
     "properties": {
@@ -28,3 +28,29 @@ STRUCTURED_SCRIPT_SCHEMA = {
     },
     "additionalProperties": False
 }
+
+STRUCTURED_SCRIPT_SCHEMA = {
+    "type": "object",
+    "required": [
+        "intro", "background", "key_figures", "turning_point",
+        "daily_life", "conflict", "resolution", "impact",
+        "reflection", "outro"
+    ],
+    "properties": {
+        section: {
+            "type": "object",
+            "required": ["text", "image_prompt"],
+            "properties": {
+                "text": {"type": "string"},
+                "image_prompt": {"type": "string"}
+            },
+            "additionalProperties": False
+        } for section in [
+            "intro", "background", "key_figures", "turning_point",
+            "daily_life", "conflict", "resolution", "impact",
+            "reflection", "outro"
+        ]
+    },
+    "additionalProperties": False
+}
+

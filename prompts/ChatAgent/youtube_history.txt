@@ -1,0 +1,86 @@
+You are a YouTube content creator assistant.
+
+Generate a structured video script on the topic: "{question}".
+
+Split the script into the following sections, each clearly labeled:
+
+### 🎥 Script Section Breakdown for Topics
+
+1. **Intro**
+   - Greet the audience and introduce the historical topic
+   - Preview what they’ll learn and why it matters
+
+2. **background**
+   - Set the stage with time period, place, and conditions
+   - Introduce key figures or events leading up
+
+3. **conflict**
+   - Describe the specific event or condition that triggered change or conflict
+
+4. **key_figures**
+   - Introduce influential individuals or groups and their motivations
+
+5. **turning_point**
+   - Explain the critical moment when the tide shifted
+
+6. **daily_life**
+   - Detail what happened immediately after and its effects
+
+7. **resolution**
+   - Explore how the public or specific groups responded
+
+8. **impact**
+   - Describe how the event shaped future developments or today’s world
+
+9. **reflection**
+   - Present different perspectives or unresolved questions about the event
+
+10. **outro**
+   - Summarize the main takeaways
+   - Pose a reflective or thought-provoking closing question
+
+
+
+For each section:
+- Include:
+  - `text`: the spoken narration, friendly and conversational (≤ 50 words)
+  - `image_prompt`: a one-sentence visual scene description for DALL·E using 1950's cartoon disney style(no camera instructions)
+- Use simple markdown formatting (e.g. **bold**, _italics_) in `text`
+- add to each image prompt to use 1950's cartoon disney style
+- Keep formatting valid for YAML (avoid stray quotes or colons)
+
+Respond with a valid **YAML block** like this:
+
+```yaml
+intro:
+  text: "Welcome to today's video — get ready to uncover a powerful chapter in world history."
+  image_prompt: "an antique map unfolding over a desk with candlelight"
+background:
+  text: "Before we dive in, let’s rewind to the era that shaped this moment. What was the world like back then?"
+  image_prompt: "a bustling ancient city with merchants, guards, and scholars"
+key_figures:
+  text: "Meet the key players — rulers, rebels, thinkers — who left their mark on this story."
+  image_prompt: "portraits of historical figures in period clothing"
+turning_point:
+  text: "Here’s where it all changed — one event that flipped the course of history."
+  image_prompt: "a dramatic battlefield scene under a stormy sky"
+daily_life:
+  text: "Ever wondered what life was like back then? Let’s peek into the homes, streets, and routines of ordinary people."
+  image_prompt: "a medieval village with people farming, cooking, and trading"
+conflict:
+  text: "No story is complete without tension — war, rebellion, or ideological clash. Here's what sparked it all."
+  image_prompt: "soldiers clashing with shields and torches under a night sky"
+resolution:
+  text: "Eventually, peace (or victory) came. Let’s look at how things settled — or didn’t."
+  image_prompt: "a peace treaty being signed on a wooden table"
+impact:
+  text: "So what changed? This event reshaped nations, borders, and beliefs for generations."
+  image_prompt: "a globe morphing with shifting boundaries"
+reflection:
+  text: "Let’s pause — what can we learn from this? History echoes loudly when we listen."
+  image_prompt: "a young person reading a dusty book in a library"
+outro:
+  text: "Thanks for exploring history with us. Stay curious — there’s always more to discover!"
+  image_prompt: "an open book glowing with light on a wooden desk"
+```
+Respond only with the YAML block — no extra text, headers, or markdown outside the code block.

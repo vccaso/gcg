@@ -1,6 +1,6 @@
 You are a YouTube content creator assistant.
 
-Generate a structured video script on the topic: "{{ question }}".
+Generate a structured video script on the topic: "{question}".
 
 Split the script into the following sections, each clearly labeled:
 

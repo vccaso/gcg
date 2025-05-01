@@ -2,14 +2,15 @@ name: structured_script_audio
 description: Generates a structured YouTube script and converts each section to audio
 
 vars:
-  topic: "How to Stay Productive While Working from Home"
+  topic: "The begining, middle, and end of the Trojan war, as well as the gods that instigated it."
   model1: ModelOllama
   model: ModelGpt35Turbo
   voice: alloy
-  audio_dir: workspace/video01/audio/segments04
-  image_dir: workspace/video01/images/segments04
-  video_dir: workspace/video01/videos
-  filename_prefix: remote_focus
+  audio_dir: workspace/video08/audio
+  image_dir: workspace/video08/images
+  filename_prefix: personal_finance
+  final_video_path: workspace/video08/final_video.mp4
+  final_subtitle_path: workspace/video08/final_video.srt
 
 
 steps:
@@ -17,7 +18,7 @@ steps:
     type: ai
     agent: ChatAgent
     model: ${model1}
-    template_name: youtube
+    template_name: youtube_history
     input:
       question: ${topic}
 
@@ -36,7 +37,7 @@ steps:
     type: ai-image
     agent: SegmentedImageAgent
     input:
-      model: dall-e-3
+      model: dall-e-2
       text_sections: "{{ generate_structured_script.result }}"
       output_dir: ${image_dir}
       filename_prefix: ${filename_prefix}
@@ -46,9 +47,9 @@ steps:
     agent: SegmentedSubtitleGeneratorAgent
     input:
       text_sections: "{{ generate_structured_script.result }}"
-      audio_dir: workspace/video01/audio/segments04
-      filename_prefix: remote_focus
-      output_path: workspace/video01/final_subtitles.srt
+      audio_dir: ${audio_dir}
+      filename_prefix: ${filename_prefix}
+      output_path: ${final_subtitle_path}
 
   - name: assemble_video
     type: tool
@@ -56,4 +57,4 @@ steps:
     input:
       audio_dir: ${audio_dir}
       image_dir: ${image_dir}
-      output_path: workspace/video01/final_video.mp4
+      output_path:  ${final_video_path}
