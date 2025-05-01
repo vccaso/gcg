@@ -1,77 +1,41 @@
-📄 agents.md
+# 📄 agents.md
 
-Supported Agents
+## Supported Agents
 
-Agent
+| Agent                      | Description                                   | Tags                            |
+|----------------------------|-----------------------------------------------|---------------------------------|
+| **ChatAgent**              | Q&A, content generation                       | [AI]                            |
+| **GoCRUDAgent**            | Full-stack Go CRUD                            | [AI], [Go]                      |
+| **GoCRUDModelAgent**       | Go structs only                               | [AI], [Go]                      |
+| **GoCRUDDataAgent**        | Go SQL DAO                                    | [AI], [Go]                      |
+| **GoSwaggerAgent**         | Swagger docs                                  | [AI], [Swagger]                 |
+| **AngularAppAgent**        | Angular frontend code                         | [AI], [Frontend]                |
+| **Dalle3Agent**            | Text-to-image                                 | [AI], [Image]                   |
+| **AudioAgent**             | Audio TTS/STT                                 | [AI], [Audio]                   |
+| **SaveToFileAgent**        | Save output to files                          | [Utility]                       |
+| **GitHub Agents**          | Git automation tasks                          | [GitHub]                        |
+| **SegmentedAudioAgent**    | Segment-wise TTS from structured scripts      | [AI], [Audio], [Multimodal]     |
+| **SegmentedImageAgent**    | Generate images per script section            | [AI], [Image], [DALL-E]         |
+| **SegmentedVideoAssemblerAgent** | Assemble video from segmented audio+image  | [AI], [Video], [Multimodal]     |
+| **SegmentedSubtitleGeneratorAgent** | Generate SRT subtitles for segmented video | [AI], [Subtitle], [Utility]     |
 
-Description
+---
 
-Tags
+### ✨ Extending Agents
 
-ChatAgent
+1. Add a new class in `agents/`
+2. Register it in `agent_registry.py`
+3. Define:
+   - `type`
+   - `short_description`
+   - `detailed_description`
+   - `tags`
 
-Q&A, content generation
+Agents can support types:
+- `ai`, `ai-image`, `ai-audio`, `tool`, `rag`, etc.
 
-[AI]
 
-GoCRUDAgent
+---
 
-Full-stack Go CRUD
+Dynamic agent and model catalog available in the **Streamlit UI**!
 
-[AI], [Go]
-
-GoCRUDModelAgent
-
-Go structs only
-
-[AI], [Go]
-
-GoCRUDDataAgent
-
-Go SQL DAO
-
-[AI], [Go]
-
-GoSwaggerAgent
-
-Swagger docs
-
-[AI], [Swagger]
-
-AngularAppAgent
-
-Angular frontend code
-
-[AI], [Frontend]
-
-Dalle3Agent
-
-Text-to-image
-
-[AI], [Image]
-
-AudioAgent
-
-Audio TTS/STT
-
-[AI], [Audio]
-
-SaveToFileAgent
-
-Save output to files
-
-[Utility]
-
-GitHub Agents
-
-Git automation tasks
-
-[GitHub]
-
-Extending Agents:
-
-Add new agent class in agents/
-
-Register in agent_registry.py
-
-Add short description, detailed description, and tags

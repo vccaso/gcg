@@ -1,59 +1,24 @@
 📄 models.md
 
-Supported Models
+# Supported Models
 
-Model
+| Model                | Best Use                     | Tags                     |
+|----------------------|------------------------------|--------------------------|
+| ModelOllama          | Offline dev, small tasks     | [Local]                  |
+| ModelDeepSeekCoder67 | Heavy coding tasks (Go, SQL) | [Local], [Code]          |
+| ModelGpt4Turbo       | Structured planning, scripts | [OpenAI], [Advanced]     |
+| ModelGpt35Turbo      | Fast drafts, chat, Q&A       | [OpenAI]                 |
+| ModelDalle3          | Image generation             | [OpenAI], [Image]        |
+| ModelTTS1            | Text-to-Speech               | [OpenAI], [Audio]        |
+| ModelWhisper         | Speech-to-Text               | [OpenAI], [Audio]        |
 
-Best Use
+## Extending Models
 
-Tags
+1. Add a new model class in `models/`
+2. Register the model in `model_registry.py`
+3. Include `description` and `tags` in your model's metadata
 
-ModelOllama
+---
 
-Offline dev, small tasks
+✅ New models are auto-discoverable in the UI and CLI.
 
-[Local]
-
-ModelDeepSeekCoder67
-
-Heavy coding tasks
-
-[Local], [Code]
-
-ModelGpt4Turbo
-
-Structured planning
-
-[OpenAI]
-
-ModelGpt35Turbo
-
-Fast drafts
-
-[OpenAI]
-
-ModelDalle3
-
-Image generation
-
-[OpenAI], [Image]
-
-ModelTTS1
-
-Text-to-Speech
-
-[OpenAI], [Audio]
-
-ModelWhisper
-
-Speech-to-Text
-
-[OpenAI], [Audio]
-
-Extending Models:
-
-Add new model class in models/
-
-Register in model_registry.py
-
-Add description and tags
