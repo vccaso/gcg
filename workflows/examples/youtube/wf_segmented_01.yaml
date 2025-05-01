@@ -6,8 +6,10 @@ vars:
   model1: ModelOllama
   model: ModelGpt35Turbo
   voice: alloy
-  audio_dir: workspace/audio/segments03
-  filename_prefix: productivity
+  audio_dir: workspace/video01/audio/segments04
+  image_dir: workspace/video01/images/segments04
+  filename_prefix: remote_focus
+
 
 steps:
   - name: generate_structured_script
@@ -29,3 +31,11 @@ steps:
       filename_prefix: ${filename_prefix}
       voice: ${voice}
 
+  - name: generate_thumbnails
+    type: ai-image
+    agent: SegmentedImageAgent
+    input:
+      model: dall-e-3
+      text_sections: "{{ generate_structured_script.result }}"
+      output_dir: ${image_dir}
+      filename_prefix: ${filename_prefix}

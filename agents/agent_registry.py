@@ -23,6 +23,7 @@ from agents.rag.database_updater_agent import RAGDatabaseUpdaterAgent
 from agents.video.video_assembler_agent import VideoAssemblerAgent
 from agents.video.subtitle_generator_agent import SubtitleGeneratorAgent
 from agents.audio.audio_segmented_agent import SegmentedAudioAgent
+from agents.images.segmented_image_agent import SegmentedImageAgent
 
 
 
@@ -50,7 +51,8 @@ AGENT_REGISTRY = {
     "RAGDatabaseUpdaterAgent": RAGDatabaseUpdaterAgent,
     "VideoAssemblerAgent": VideoAssemblerAgent,
     "SubtitleGeneratorAgent": SubtitleGeneratorAgent,
-    "SegmentedAudioAgent": SegmentedAudioAgent
+    "SegmentedAudioAgent": SegmentedAudioAgent,
+    "SegmentedImageAgent": SegmentedImageAgent
 
 }
 
@@ -296,5 +298,15 @@ AGENT_CATALOG = {
             "These audio files can subsequently be used in video assembly or other multimedia applications."
         ],
         "tags": ["AI", "Audio"]
+    },
+    "SegmentedImageAgent": {
+        "type": "AI-Image",
+        "short_description": "Generates separate images for each section based on structured script prompts.",
+        "detailed_description": [
+            "This agent is typically used after generating a structured script with 'image_prompt' fields.",
+            "The output dictionary from the script generation step is passed to SegmentedImageAgent, which uses each prompt to generate one image per section using a model like DALL·E.",
+            "These images can be used for video thumbnails, scene illustrations, or any visual storytelling component."
+        ],
+        "tags": ["AI", "Image", "DALL-E", "Vision"]
     }
 }

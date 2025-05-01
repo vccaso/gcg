@@ -21,6 +21,7 @@ from agents.rag.attach_agent import RAGAttachAgent
 from agents.rag.database_builder_agent import RAGDatabaseBuilderAgent
 from agents.rag.query_agent import RAGQueryAgent
 from agents.angularapp_agent import AngularAppAgent
+from agents.images.segmented_image_agent import SegmentedImageAgent
 
 
 from config import debug
@@ -234,17 +235,30 @@ def run_workflow(workflow_path, streamlit_mode=False):
                 print(f"[DEBUG] Step '{name}' result:", output)
 
         elif step_type == "ai-image":
-            if agent_name=="Dalle2Agent":
+            if agent_name == "Dalle2Agent":
                 agent = Dalle2Agent()
-            if agent_name=="Dalle3Agent":
+                result = agent.generate_image(**inputs)
+            elif agent_name == "Dalle3Agent":
                 agent = Dalle3Agent()
-            result = agent.generate_image(**inputs)
+                result = agent.generate_image(**inputs)
+            elif agent_name == "SegmentedImageAgent":
+                agent = SegmentedImageAgent()
+                result = agent.run(**inputs)
+            else:
+                raise ValueError(f"Unknown ai-image agent '{agent_name}'")
 
+            # 🖼 Output handling
             if "url" in result:
                 print("Image URL:", result["url"])
-                # Optionally download or embed
-            else:
+            elif "images" in result:
+                print("Generated images:")
+                for section, url in result["images"].items():
+                    print(f"  {section}: {url}")
+            elif "error" in result:
                 print("Error:", result["error"])
+            else:
+                print("Unexpected result format:", result)
+
 
         elif step_type == "ai-audio":
             if agent_name=="AudioAgent":
