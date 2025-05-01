@@ -22,6 +22,7 @@ from agents.rag.attach_agent import RAGAttachAgent
 from agents.rag.database_updater_agent import RAGDatabaseUpdaterAgent
 from agents.video.video_assembler_agent import VideoAssemblerAgent
 from agents.video.subtitle_generator_agent import SubtitleGeneratorAgent
+from agents.audio.audio_segmented_agent import SegmentedAudioAgent
 
 
 
@@ -48,7 +49,8 @@ AGENT_REGISTRY = {
     "RAGAttachAgent": RAGAttachAgent,
     "RAGDatabaseUpdaterAgent": RAGDatabaseUpdaterAgent,
     "VideoAssemblerAgent": VideoAssemblerAgent,
-    "SubtitleGeneratorAgent": SubtitleGeneratorAgent
+    "SubtitleGeneratorAgent": SubtitleGeneratorAgent,
+    "SegmentedAudioAgent": SegmentedAudioAgent
 
 }
 
@@ -284,5 +286,15 @@ AGENT_CATALOG = {
             "Use those subtitles for accessibility, closed captions, or burning into the video"
         ],
         "tags": ["Tool", "Video", "Subtitle"],
+    },
+    "SegmentedAudioAgent": {
+        "type": "AI-Audio",
+        "short_description": "Generates separate audio files from structured script sections.",
+        "detailed_description": [
+            "This agent is typically used after generating a structured script.",
+            "The output dictionary from the script generation step is passed to SegmentedAudioAgent, which then produces individual audio files for each script segment.",
+            "These audio files can subsequently be used in video assembly or other multimedia applications."
+        ],
+        "tags": ["AI", "Audio"]
     }
 }

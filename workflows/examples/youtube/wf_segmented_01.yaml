@@ -1,0 +1,31 @@
+name: structured_script_audio
+description: Generates a structured YouTube script and converts each section to audio
+
+vars:
+  topic: "How to Stay Productive While Working from Home"
+  model1: ModelOllama
+  model: ModelGpt35Turbo
+  voice: alloy
+  audio_dir: workspace/audio/segments
+  filename_prefix: productivity
+
+steps:
+  - name: generate_structured_script
+    type: ai
+    agent: ChatAgent
+    model: ${model1}
+    template_name: youtube
+    input:
+      question: ${topic}
+
+  - name: generate_audio_segments
+    type: ai-audio
+    agent: SegmentedAudioAgent
+    model: ModelTTS1
+    input:
+      model: tts-1
+      text_sections: "{{ generate_structured_script.result }}"
+      output_dir: ${audio_dir}
+      filename_prefix: ${filename_prefix}
+      voice: ${voice}
+

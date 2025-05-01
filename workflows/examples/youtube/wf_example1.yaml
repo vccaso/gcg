@@ -10,7 +10,7 @@ steps:
     agent: ChatAgent
     model: ModelOllama
     input:
-      question: "Write a short YouTube video script about '${script_topic}' in a conversational tone."
+      question: ${script_topic}
 
   - name: generate_audio
     type: ai-audio
@@ -37,11 +37,11 @@ steps:
       image_path: workspace/images/youtube_thumbnail.png
       output_video_path: workspace/videos/${script_topic}.mp4
 
-  # - name: upload_to_youtube
-  #   type: tool
-  #   agent: YouTubeUploaderAgent
-  #   input:
-  #     video_path: workspace/videos/${script_topic}.mp4
-  #     title: "${script_topic}"
-  #     description: "Learn productivity tips and hacks for remote work in this helpful video."
-  #     tags: "productivity, remote work, work from home"
+  - name: upload_to_youtube
+    type: tool
+    agent: YouTubeUploaderAgent
+    input:
+      video_path: workspace/videos/${script_topic}.mp4
+      title: "${script_topic}"
+      description: "Learn productivity tips and hacks for remote work in this helpful video."
+      tags: "productivity, remote work, work from home"

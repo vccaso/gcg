@@ -13,6 +13,7 @@ from agents.go_swagger_agent import GoSwaggerAgent
 from agents.dalle3_agent import Dalle3Agent
 from agents.dalle2_agent import Dalle2Agent
 from agents.audio_agent import AudioAgent
+from agents.audio.audio_segmented_agent import SegmentedAudioAgent
 from agents.orchestratoragent import OrchestratorAgent
 from agents.chat_agent import ChatAgent
 from agents.rag.database_updater_agent import RAGDatabaseUpdaterAgent
@@ -229,9 +230,8 @@ def run_workflow(workflow_path, streamlit_mode=False):
                 print(f"▶️ {name} using {agent_name}")
             output = agent.run(**inputs)
             results[name] = output
-            print(f"[DEBUG] Step '{name}' result:", output)
             if(debug):
-                print(output)
+                print(f"[DEBUG] Step '{name}' result:", output)
 
         elif step_type == "ai-image":
             if agent_name=="Dalle2Agent":
@@ -247,7 +247,10 @@ def run_workflow(workflow_path, streamlit_mode=False):
                 print("Error:", result["error"])
 
         elif step_type == "ai-audio":
-            agent = AudioAgent()
+            if agent_name=="AudioAgent":
+                agent = AudioAgent()
+            if agent_name=="SegmentedAudioAgent":
+                agent = SegmentedAudioAgent()
             output = agent.run(**inputs)
             results[name] = output
             print(f"[DEBUG] Step '{name}' result:", output)
