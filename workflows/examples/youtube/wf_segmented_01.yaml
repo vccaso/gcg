@@ -21,25 +21,25 @@ steps:
     input:
       question: ${topic}
 
-  # - name: generate_audio_segments
-  #   type: ai-audio
-  #   agent: SegmentedAudioAgent
-  #   model: ModelTTS1
-  #   input:
-  #     model: tts-1
-  #     text_sections: "{{ generate_structured_script.result }}"
-  #     output_dir: ${audio_dir}
-  #     filename_prefix: ${filename_prefix}
-  #     voice: ${voice}
+  - name: generate_audio_segments
+    type: ai-audio
+    agent: SegmentedAudioAgent
+    model: ModelTTS1
+    input:
+      model: tts-1
+      text_sections: "{{ generate_structured_script.result }}"
+      output_dir: ${audio_dir}
+      filename_prefix: ${filename_prefix}
+      voice: ${voice}
 
-  # - name: generate_thumbnails
-  #   type: ai-image
-  #   agent: SegmentedImageAgent
-  #   input:
-  #     model: dall-e-3
-  #     text_sections: "{{ generate_structured_script.result }}"
-  #     output_dir: ${image_dir}
-  #     filename_prefix: ${filename_prefix}
+  - name: generate_thumbnails
+    type: ai-image
+    agent: SegmentedImageAgent
+    input:
+      model: dall-e-3
+      text_sections: "{{ generate_structured_script.result }}"
+      output_dir: ${image_dir}
+      filename_prefix: ${filename_prefix}
       
   - name: generate_subtitles
     type: tool
@@ -50,10 +50,10 @@ steps:
       filename_prefix: remote_focus
       output_path: workspace/video01/final_subtitles.srt
 
-  # - name: assemble_video
-  #   type: tool
-  #   agent: SegmentedVideoAssemblerAgent
-  #   input:
-  #     audio_dir: ${audio_dir}
-  #     image_dir: ${image_dir}
-  #     output_path: workspace/video01/final_video.mp4
+  - name: assemble_video
+    type: tool
+    agent: SegmentedVideoAssemblerAgent
+    input:
+      audio_dir: ${audio_dir}
+      image_dir: ${image_dir}
+      output_path: workspace/video01/final_video.mp4
