@@ -2,12 +2,12 @@
 
 # Import all available agents
 from agents.chat_agent import ChatAgent
-from agents.go_crud_agent import GoCRUDAgent
-from agents.go_crud_data_agent import GoCRUDDataAgent
-from agents.go_swagger_agent import GoSwaggerAgent
-from agents.angularapp_agent import AngularAppAgent
-from agents.dalle3_agent import Dalle3Agent
-from agents.dalle2_agent import Dalle2Agent
+from agents.code.go_crud_agent import GoCRUDAgent
+from agents.code.go_crud_data_agent import GoCRUDDataAgent
+from agents.code.go_swagger_agent import GoSwaggerAgent
+from agents.code.angularapp_agent import AngularAppAgent
+from agents.images.dalle3_agent import Dalle3Agent
+from agents.images.dalle2_agent import Dalle2Agent
 from agents.audio.audio_agent import AudioAgent
 from agents.savetofile_agent import SaveToFileAgent
 from agents.github.create_branch_agent import GitHubCreateBranchAgent

@@ -2,8 +2,10 @@ name: create_and_publish_youtube_video
 description: Creates a narrated video and uploads it to YouTube
 
 vars:
-  script_topic: "How to manage multiple tasks during a day"
-  name: "multitask"
+  script_topic: "One tip to improve my health"
+  name: "testnewmodels02"
+  audio_model1: AudioModelOpenAI
+  audio_model2: AudioModelCoqui
 
 steps:
   - name: generate_script
@@ -16,7 +18,7 @@ steps:
   - name: generate_audio
     type: ai-audio
     agent: AudioAgent
-    model: ModelTTS1
+    model: ${audio_model2}
     input:
       mode: tts
       text: "{{ generate_script.result }}"
@@ -39,11 +41,11 @@ steps:
       image_path: workspace/images/${name}.png
       output_video_path: workspace/videos/${script_topic}.mp4
 
-  # - name: upload_to_youtube
-  #   type: tool
-  #   agent: YouTubeUploaderAgent
-  #   input:
-  #     video_path: workspace/videos/${name}.mp4
-  #     title: "${script_topic}"
-  #     description: "Learn productivity tips and hacks for remote work in this helpful video."
-  #     tags: "productivity, remote work, work from home"
+  - name: upload_to_youtube
+    type: tool
+    agent: YouTubeUploaderAgent
+    input:
+      video_path: workspace/videos/${name}.mp4
+      title: "${script_topic}"
+      description: "Learn productivity tips and hacks for remote work in this helpful video."
+      tags: "productivity, remote work, work from home"

@@ -135,6 +135,46 @@ Install Ollama: [https://ollama.com/download](https://ollama.com/download)
 ollama pull llama3
 ollama run llama3
 
+To create a local TTS system using Ollama
+
+Install Coqui TTS:
+```
+pip install TTS
+```
+Set Up the TTS Engine
+For Coqui TTS, download a pre-trained model:
+
+```
+tts --list_models
+tts --model_name tts_models/en/ljspeech/tacotron2-DDC --download
+```
+
+Integrate with Ollama
+Use Python to connect Ollama's output to the TTS engine:
+```
+import ollama
+from TTS.api import TTS
+
+# Initialize Ollama
+client = ollama.Client()
+response = client.generate(prompt="Hello, how can I assist you today?")
+
+# Initialize TTS
+tts = TTS(model_name="tts_models/en/ljspeech/tacotron2-DDC")
+tts.tts_to_file(text=response['text'], file_path="output.wav")
+
+```
+
+Play the Generated Audio
+
+Use a Python library like playsound or pydub to play the output.wav file:
+
+```
+from playsound import playsound
+playsound("output.wav")
+```
+
+
 # Optional
 export DEEPSEEK_URL=http://localhost:11434
 ```

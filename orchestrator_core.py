@@ -7,11 +7,11 @@ from utils.printer import Printer
 from models.model_registry import MODEL_REGISTRY
 
 from agents.agent_registry import AGENT_REGISTRY
-from agents.go_crud_agent import GoCRUDAgent
-from agents.go_crud_data_agent import GoCRUDDataAgent
-from agents.go_swagger_agent import GoSwaggerAgent
-from agents.dalle3_agent import Dalle3Agent
-from agents.dalle2_agent import Dalle2Agent
+from agents.code.go_crud_agent import GoCRUDAgent
+from agents.code.go_crud_data_agent import GoCRUDDataAgent
+from agents.code.go_swagger_agent import GoSwaggerAgent
+from agents.images.dalle3_agent import Dalle3Agent
+from agents.images.dalle2_agent import Dalle2Agent
 from agents.audio.audio_agent import AudioAgent
 from agents.audio.audio_segmented_agent import SegmentedAudioAgent
 from agents.orchestratoragent import OrchestratorAgent
@@ -20,7 +20,7 @@ from agents.rag.database_updater_agent import RAGDatabaseUpdaterAgent
 from agents.rag.attach_agent import RAGAttachAgent
 from agents.rag.database_builder_agent import RAGDatabaseBuilderAgent
 from agents.rag.query_agent import RAGQueryAgent
-from agents.angularapp_agent import AngularAppAgent
+from agents.code.angularapp_agent import AngularAppAgent
 from agents.images.segmented_image_agent import SegmentedImageAgent
 
 
@@ -262,7 +262,11 @@ def run_workflow(workflow_path, streamlit_mode=False):
 
         elif step_type == "ai-audio":
             if agent_name=="AudioAgent":
-                agent = AudioAgent()
+                model_name = step.get("model")
+                if model_name not in MODEL_REGISTRY:
+                    raise ValueError(f"Unknown model '{model_name}'")
+                model_instance = MODEL_REGISTRY[model_name]()
+                agent = AudioAgent(model_instance)
             if agent_name=="SegmentedAudioAgent":
                 agent = SegmentedAudioAgent()
             output = agent.run(**inputs)

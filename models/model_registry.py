@@ -4,6 +4,8 @@ from models.openai.model_gpt_4 import ModelGpt4
 from models.openai.model_gpt_4_turbo import ModelGpt4Turbo
 from models.local.model_llama3 import ModelOllama
 from models.local.model_deepseek_coder import ModelDeepSeekCoder67
+from models.openai.audio_model_openai import AudioModelOpenAI
+from models.local.audio_model_coqui import AudioModelCoqui
 
 # Optional: if you expect to add more local models later
 
@@ -12,11 +14,10 @@ MODEL_REGISTRY = {
     "ModelGpt35Turbo": ModelGpt35Turbo,
     "ModelGpt4Turbo": ModelGpt4Turbo,
     "ModelGpt4": ModelGpt4,
-    # "ModelDalle3": ModelDalle3,
-    # "ModelTTS1": ModelTTS1,
-    # "ModelWhisper": ModelWhisper,
     "ModelOllama": ModelOllama,
     "ModelDeepSeekCoder67": ModelDeepSeekCoder67,
+    "AudioModelOpenAI": AudioModelOpenAI,
+    "AudioModelCoqui": AudioModelCoqui,
 }
 
 # ✅ Model catalog for UI display
@@ -82,5 +83,23 @@ MODEL_CATALOG = {
             "Best for meeting notes, interviews, podcasts, or audio summarization."
         ],
         "tags": ["OpenAI", "Audio", "STT"]
+    },
+    "AudioModelOpenAI": {
+        "short_description": "OpenAI TTS model (e.g. alloy, tts-1).",
+        "detailed_description": [
+            "Cloud-based text-to-speech using OpenAI's TTS API.",
+            "Supports multiple voices and high quality audio.",
+            "Requires OpenAI API key and internet connection."
+        ],
+        "tags": ["Audio", "TTS", "OpenAI"]
+    },
+    "AudioModelCoqui": {
+        "short_description": "Offline TTS using Coqui (TTS CLI).",
+        "detailed_description": [
+            "Runs text-to-speech locally using the Coqui TTS engine.",
+            "Supports multiple models and speaker configurations.",
+            "No internet required, suitable for local/edge deployment."
+        ],
+        "tags": ["Audio", "TTS", "Local", "Coqui"]
     }
 }
