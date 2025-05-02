@@ -33,7 +33,8 @@ class SegmentedSubtitleGeneratorAgent(BaseAgent):
             ms = int((seconds - int(seconds)) * 1000)
             return f"{h:02}:{m:02}:{s:02},{ms:03}"
 
-        for section in ["intro", "scene1", "scene2", "scene3", "conclusion"]:
+        sections = list(text_sections.keys())
+        for section in sections:
             section_data = text_sections.get(section)
             if not section_data or not isinstance(section_data, dict):
                 continue

@@ -6,11 +6,11 @@ vars:
   model1: ModelOllama
   model: ModelGpt35Turbo
   voice: alloy
-  audio_dir: workspace/video08/audio
-  image_dir: workspace/video08/images
-  filename_prefix: personal_finance
-  final_video_path: workspace/video08/final_video.mp4
-  final_subtitle_path: workspace/video08/final_video.srt
+  audio_dir: workspace/video09/audio
+  image_dir: workspace/video09/images
+  filename_prefix: troya
+  final_video_path: workspace/video09/final_video.mp4
+  final_subtitle_path: workspace/video09/final_video.srt
 
 
 steps:

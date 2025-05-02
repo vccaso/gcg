@@ -2,7 +2,8 @@ name: create_and_publish_youtube_video
 description: Creates a narrated video and uploads it to YouTube
 
 vars:
-  script_topic: "How to Stay Productive While Working from Home"
+  script_topic: "How to manage multiple tasks during a day"
+  name: "multitask"
 
 steps:
   - name: generate_script
@@ -20,29 +21,29 @@ steps:
       mode: tts
       text: "{{ generate_script.result }}"
       voice: alloy
-      factor: 0.1
-      output_path: workspace/audio/audio_02.wav
+      factor: 1.5
+      output_path: workspace/audio/${name}.wav
 
   - name: generate_thumbnail
     type: ai-image
     agent: Dalle3Agent
     input:
       prompt: "A clean and professional YouTube thumbnail for a video titled '${script_topic}'."
-      image_path: workspace/images/youtube_thumbnail.png
+      image_path: workspace/images/${name}.png
 
   - name: assemble_video
     type: tool
     agent: VideoAssemblerAgent
     input:
-      audio_path: workspace/audio/video_narration.wav
-      image_path: workspace/images/youtube_thumbnail.png
+      audio_path: workspace/audio/${name}.wav
+      image_path: workspace/images/${name}.png
       output_video_path: workspace/videos/${script_topic}.mp4
 
-  - name: upload_to_youtube
-    type: tool
-    agent: YouTubeUploaderAgent
-    input:
-      video_path: workspace/videos/${script_topic}.mp4
-      title: "${script_topic}"
-      description: "Learn productivity tips and hacks for remote work in this helpful video."
-      tags: "productivity, remote work, work from home"
+  # - name: upload_to_youtube
+  #   type: tool
+  #   agent: YouTubeUploaderAgent
+  #   input:
+  #     video_path: workspace/videos/${name}.mp4
+  #     title: "${script_topic}"
+  #     description: "Learn productivity tips and hacks for remote work in this helpful video."
+  #     tags: "productivity, remote work, work from home"

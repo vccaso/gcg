@@ -17,10 +17,10 @@ class SegmentedVideoAssemblerAgent(BaseAgent):
         os.makedirs(os.path.dirname(output_path), exist_ok=True)
         clips = []
 
-        sections = [
-            "intro", "background", "key_figures", "turning_point", "daily_life",
-            "conflict", "resolution", "impact", "reflection", "outro"
-        ]
+         # Dynamically infer section names from audio filenames
+        audio_files = sorted(glob.glob(os.path.join(audio_dir, "*.wav")))
+        sections = [os.path.splitext(os.path.basename(f))[0].split("_")[-1] for f in audio_files]
+
 
         for section in sections:
             audio_glob = glob.glob(os.path.join(audio_dir, f"*{section}.wav"))

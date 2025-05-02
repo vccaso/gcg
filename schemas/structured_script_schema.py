@@ -29,7 +29,7 @@ STRUCTURED_SCRIPT_SCHEMA_ORIGINAL = {
     "additionalProperties": False
 }
 
-STRUCTURED_SCRIPT_SCHEMA = {
+STRUCTURED_SCRIPT_SCHEMA_10 = {
     "type": "object",
     "required": [
         "intro", "background", "key_figures", "turning_point",
@@ -50,6 +50,23 @@ STRUCTURED_SCRIPT_SCHEMA = {
             "daily_life", "conflict", "resolution", "impact",
             "reflection", "outro"
         ]
+    },
+    "additionalProperties": False
+}
+
+
+STRUCTURED_SCRIPT_SCHEMA = {
+    "type": "object",
+    "patternProperties": {
+        "^.*$": {  # Match any key name
+            "type": "object",
+            "required": ["text", "image_prompt"],
+            "properties": {
+                "text": {"type": "string"},
+                "image_prompt": {"type": "string"}
+            },
+            "additionalProperties": False
+        }
     },
     "additionalProperties": False
 }
