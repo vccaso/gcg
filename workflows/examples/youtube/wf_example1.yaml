@@ -20,7 +20,8 @@ steps:
       mode: tts
       text: "{{ generate_script.result }}"
       voice: alloy
-      output_path: workspace/audio/video_narration.wav
+      factor: 0.1
+      output_path: workspace/audio/audio_02.wav
 
   - name: generate_thumbnail
     type: ai-image

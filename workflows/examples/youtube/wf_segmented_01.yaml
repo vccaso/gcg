@@ -31,6 +31,7 @@ steps:
       text_sections: "{{ generate_structured_script.result }}"
       output_dir: ${audio_dir}
       filename_prefix: ${filename_prefix}
+      factor: 1.6
       voice: ${voice}
 
   - name: generate_thumbnails

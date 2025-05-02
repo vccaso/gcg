@@ -12,7 +12,7 @@ from agents.go_crud_data_agent import GoCRUDDataAgent
 from agents.go_swagger_agent import GoSwaggerAgent
 from agents.dalle3_agent import Dalle3Agent
 from agents.dalle2_agent import Dalle2Agent
-from agents.audio_agent import AudioAgent
+from agents.audio.audio_agent import AudioAgent
 from agents.audio.audio_segmented_agent import SegmentedAudioAgent
 from agents.orchestratoragent import OrchestratorAgent
 from agents.chat_agent import ChatAgent

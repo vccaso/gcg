@@ -4,17 +4,25 @@ from agents.base import BaseAgent
 from moviepy.editor import ImageClip, AudioFileClip, concatenate_videoclips
 
 class SegmentedVideoAssemblerAgent(BaseAgent):
+
     def run(self, **kwargs):
         audio_dir = kwargs["audio_dir"]     # e.g. workspace/video01/audio/segments04
         image_dir = kwargs["image_dir"]     # e.g. workspace/video01/images/segments04
         output_path = kwargs.get("output_path", "workspace/videos/final_video.mp4")
+        volume_factor = kwargs.get("factor", 1.0)
+
+        # Clamp volume to avoid silence or clipping
+        volume_factor = max(0.1, min(volume_factor, 3.0))
 
         os.makedirs(os.path.dirname(output_path), exist_ok=True)
-
         clips = []
 
-        # for section in ["intro", "scene1", "scene2", "scene3", "conclusion"]:
-        for section in ["intro", "background", "key_figures", "turning_point","daily_life", "conflict", "resolution", "impact","reflection", "outro"]:
+        sections = [
+            "intro", "background", "key_figures", "turning_point", "daily_life",
+            "conflict", "resolution", "impact", "reflection", "outro"
+        ]
+
+        for section in sections:
             audio_glob = glob.glob(os.path.join(audio_dir, f"*{section}.wav"))
             image_glob = glob.glob(os.path.join(image_dir, f"*{section}.png"))
 
@@ -26,8 +34,16 @@ class SegmentedVideoAssemblerAgent(BaseAgent):
             image_path = image_glob[0]
 
             audio = AudioFileClip(audio_path)
-            image = ImageClip(image_path).set_duration(audio.duration)
-            image = image.set_audio(audio).resize(height=720).set_fps(24)
+            if volume_factor != 1.0:
+                audio = audio.volumex(volume_factor)
+
+            image = (
+                ImageClip(image_path)
+                .set_duration(audio.duration)
+                .set_audio(audio)
+                .resize(height=720)
+                .set_fps(24)
+            )
 
             clips.append(image)
 

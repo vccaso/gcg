@@ -8,7 +8,7 @@ from agents.go_swagger_agent import GoSwaggerAgent
 from agents.angularapp_agent import AngularAppAgent
 from agents.dalle3_agent import Dalle3Agent
 from agents.dalle2_agent import Dalle2Agent
-from agents.audio_agent import AudioAgent
+from agents.audio.audio_agent import AudioAgent
 from agents.savetofile_agent import SaveToFileAgent
 from agents.github.create_branch_agent import GitHubCreateBranchAgent
 from agents.github.commit_agent import GitHubCommitAgent
