@@ -6,6 +6,7 @@ from models.local.model_llama3 import ModelOllama
 from models.local.model_deepseek_coder import ModelDeepSeekCoder67
 from models.openai.audio_model_openai import AudioModelOpenAI
 from models.local.audio_model_coqui import AudioModelCoqui
+from models.local.image_model_stable_diffusion import ImageModelStableDiffusion
 
 # Optional: if you expect to add more local models later
 
@@ -18,6 +19,7 @@ MODEL_REGISTRY = {
     "ModelDeepSeekCoder67": ModelDeepSeekCoder67,
     "AudioModelOpenAI": AudioModelOpenAI,
     "AudioModelCoqui": AudioModelCoqui,
+    "ImageModelStableDiffusion" : ImageModelStableDiffusion
 }
 
 # ✅ Model catalog for UI display
@@ -101,5 +103,14 @@ MODEL_CATALOG = {
             "No internet required, suitable for local/edge deployment."
         ],
         "tags": ["Audio", "TTS", "Local", "Coqui"]
+    },
+    "ImageModelStableDiffusion": {
+        "short_description": "Generates images locally using Stable Diffusion.",
+        "detailed_description": [
+            "This model uses Stable Diffusion to generate high-quality images from text prompts.",
+            "It can run locally or via a Hugging Face Inference Endpoint.",
+            "Ideal for offline image generation, visual storytelling, or AI art creation."
+        ],
+        "tags": ["Local", "Image", "StableDiffusion"]
     }
 }

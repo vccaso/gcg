@@ -1,0 +1,26 @@
+name: create_and_publish_youtube_video
+description: Creates a narrated video and uploads it to YouTube
+
+vars:
+  script_topic: "One tip to improve my health"
+  name: "testnewmodels02"
+  audio_model1: AudioModelOpenAI
+  audio_model2: AudioModelCoqui
+
+steps:
+  - name: generate_script
+    type: ai
+    agent: ChatAgent
+    model: ModelOllama
+    input:
+      question: ${script_topic}
+
+  - name: generate_thumbnail
+    type: ai-image
+    agent: ImageAgent
+    model: ImageModelStableDiffusion
+    input:
+      prompt: "A clean and professional YouTube thumbnail for a video titled '${script_topic}'."
+      output_path: workspace/images/${name}.png
+
+  

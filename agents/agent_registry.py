@@ -26,7 +26,7 @@ from agents.audio.audio_segmented_agent import SegmentedAudioAgent
 from agents.images.segmented_image_agent import SegmentedImageAgent
 from agents.video.segmented_video_assembler_agent import SegmentedVideoAssemblerAgent
 from agents.video.segmented_subtitle_generator_agent import SegmentedSubtitleGeneratorAgent
-
+from agents.images.image_agent import ImageAgent
 
 
 
@@ -56,7 +56,8 @@ AGENT_REGISTRY = {
     "SegmentedAudioAgent": SegmentedAudioAgent,
     "SegmentedImageAgent": SegmentedImageAgent,
     "SegmentedVideoAssemblerAgent": SegmentedVideoAssemblerAgent,
-    "SegmentedSubtitleGeneratorAgent": SegmentedSubtitleGeneratorAgent
+    "SegmentedSubtitleGeneratorAgent": SegmentedSubtitleGeneratorAgent,
+    "ImageAgent": ImageAgent
 
 }
 
@@ -333,5 +334,15 @@ AGENT_CATALOG = {
             "Typically used alongside SegmentedAudioAgent and SegmentedVideoAssemblerAgent to enable accessible and captioned video workflows."
         ],
         "tags": ["AI", "Subtitle", "SRT", "Multimodal", "Video"]
-    }
+    },
+    "ImageAgent": {
+        "type": "AI-Image",
+        "short_description": "Generates a single image from a text prompt using the configured image model.",
+        "detailed_description": [
+            "This agent takes a text prompt and uses a model (like DALL·E or Stable Diffusion) to generate an image.",
+            "The image is saved to the specified output path and can be used in video content, blogs, or design work.",
+            "The model can be swapped (e.g. DALL·E via OpenAI or Stable Diffusion via Hugging Face or local instance) for flexible deployment."
+        ],
+        "tags": ["AI", "Image", "Text-to-Image", "Vision"]
+}
 }
