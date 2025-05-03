@@ -107,33 +107,31 @@ elif menu == "Agents":
 
     selected_tags = st.multiselect("🔎 Filter by Tags", sorted(list(all_tags)))
 
-    st.divider()
-
-    # Group agents by primary tag
+    # Prepare filtered agent list
     from collections import defaultdict
     grouped_agents = defaultdict(list)
+    total_filtered = 0  # ✅ Counter for all visible agents
+
     for agent_name, agent_info in AGENT_CATALOG.items():
         agent_tags = agent_info.get("tags", [])
         if not agent_tags:
             continue
+        if selected_tags and not any(tag in agent_tags for tag in selected_tags):
+            continue  # ⛔ Skip agents not matching filter
+
         primary_tag = agent_tags[0]
         grouped_agents[primary_tag].append((agent_name, agent_info))
+        total_filtered += 1  # ✅ Count valid agents
+
+    st.markdown(f"**{total_filtered} agent(s) found**")
+    st.divider()
 
     for group_name, agents in grouped_agents.items():
         with st.expander(f"📂 {group_name} Agents ({len(agents)})", expanded=True):
             for agent_name, agent_info in agents:
-                agent_tags = agent_info.get("tags", [])
-
-                # Apply filtering
-                if selected_tags:
-                    if not any(tag in agent_tags for tag in selected_tags):
-                        continue
-
                 st.subheader(f"🔹 {agent_name}")
-
-                tags_str = ", ".join(f"[{tag}]" for tag in agent_tags)
+                tags_str = ", ".join(f"[{tag}]" for tag in agent_info.get("tags", []))
                 st.markdown(f"**Tags:** {tags_str}")
-
                 st.markdown(agent_info["short_description"])
                 st.divider()
 
@@ -141,7 +139,7 @@ elif menu == "Agents":
 # 🧠 Models
 # ---------------------
 elif menu == "Models":
-    st.title("🧠 Supported Models")
+    st.title("🧠 Available Models")
 
     # Collect all unique tags
     all_tags = set()
@@ -150,36 +148,34 @@ elif menu == "Models":
 
     selected_tags = st.multiselect("🔎 Filter by Tags", sorted(list(all_tags)))
 
-    st.divider()
-
-    # Group models by their primary tag
+    # Prepare filtered model list
+    from collections import defaultdict
     grouped_models = defaultdict(list)
+    total_filtered = 0  # ✅ Counter for all visible models
+
     for model_name, model_info in MODEL_CATALOG.items():
         model_tags = model_info.get("tags", [])
         if not model_tags:
             continue
+        if selected_tags and not any(tag in model_tags for tag in selected_tags):
+            continue  # ⛔ Skip models not matching filter
 
-        primary_tag = model_tags[0]  # First tag is the grouping key
+        primary_tag = model_tags[0]
         grouped_models[primary_tag].append((model_name, model_info))
+        total_filtered += 1  # ✅ Count valid models
 
-    # Display models grouped
+    st.markdown(f"**{total_filtered} model(s) found**")
+    st.divider()
+
     for group_name, models in grouped_models.items():
-        with st.expander(f"📂 {group_name} Models ({len(models)})", expanded=True):
+        with st.expander(f"📦 {group_name} Models ({len(models)})", expanded=True):
             for model_name, model_info in models:
-                model_tags = model_info.get("tags", [])
-
-                # ✅ Filter each model by all selected tags
-                if selected_tags:
-                    if not any(tag in model_tags for tag in selected_tags):
-                        continue  # Skip if no matching tag
-
-                st.subheader(f"🔹 {model_name}")
-
-                tags_str = ", ".join(f"[{tag}]" for tag in model_tags)
+                st.subheader(f"🧠 {model_name}")
+                tags_str = ", ".join(f"[{tag}]" for tag in model_info.get("tags", []))
                 st.markdown(f"**Tags:** {tags_str}")
-
                 st.markdown(model_info["short_description"])
                 st.divider()
+
 # ---------------------
 # ⚙️ Config
 # ---------------------
