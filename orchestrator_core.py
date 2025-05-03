@@ -22,7 +22,7 @@ from agents.rag.database_builder_agent import RAGDatabaseBuilderAgent
 from agents.rag.query_agent import RAGQueryAgent
 from agents.code.angularapp_agent import AngularAppAgent
 from agents.images.segmented_image_agent import SegmentedImageAgent
-
+from agents.validators.script_structure_validator_agent import ScriptStructureValidatorAgent
 
 from config import debug
 from prompt_loader import PromptLoader
@@ -234,6 +234,13 @@ def run_workflow(workflow_path, streamlit_mode=False):
             if(debug):
                 print(f"[DEBUG] Step '{name}' result:", output)
 
+        elif step_type == "validator":
+            agent = globals()[agent_name]()  # Load the validator agent
+            output = agent.validate(**inputs)
+            results[name] = output
+            if(debug):
+                print(f"[DEBUG] Step '{name}' result:", output)
+
         elif step_type == "ai-image":
             if agent_name == "Dalle2Agent":
                 agent = Dalle2Agent()
@@ -271,9 +278,9 @@ def run_workflow(workflow_path, streamlit_mode=False):
                 agent = SegmentedAudioAgent()
             output = agent.run(**inputs)
             results[name] = output
-            print(f"[DEBUG] Step '{name}' result:", output)
+            
             if(debug):
-                print(output)
+                print(f"[DEBUG] Step '{name}' result:", output)
 
         elif step_type == "rag":
             agent = get_rag_agent(agent_name, step["collection_name"], step["storage_path"])

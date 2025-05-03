@@ -27,7 +27,7 @@ from agents.images.segmented_image_agent import SegmentedImageAgent
 from agents.video.segmented_video_assembler_agent import SegmentedVideoAssemblerAgent
 from agents.video.segmented_subtitle_generator_agent import SegmentedSubtitleGeneratorAgent
 from agents.images.image_agent import ImageAgent
-
+from agents.validators.script_structure_validator_agent import ScriptStructureValidatorAgent
 
 
 # ✅ Agent registry for loading agents dynamically
@@ -57,7 +57,8 @@ AGENT_REGISTRY = {
     "SegmentedImageAgent": SegmentedImageAgent,
     "SegmentedVideoAssemblerAgent": SegmentedVideoAssemblerAgent,
     "SegmentedSubtitleGeneratorAgent": SegmentedSubtitleGeneratorAgent,
-    "ImageAgent": ImageAgent
+    "ImageAgent": ImageAgent,
+    "ScriptStructureValidatorAgent": ScriptStructureValidatorAgent
 
 }
 
@@ -344,5 +345,14 @@ AGENT_CATALOG = {
             "The model can be swapped (e.g. DALL·E via OpenAI or Stable Diffusion via Hugging Face or local instance) for flexible deployment."
         ],
         "tags": ["AI", "Image", "Text-to-Image", "Vision"]
-}
+    },
+    "ScriptStructureValidatorAgent": {
+        "type": "Validator",
+        "short_description": "Checks if all expected sections are present in a structured script.",
+        "detailed_description": [
+            "Useful to validate LLM output structure before downstream tasks like TTS or image generation.",
+            "Can help trigger retries or corrections if output is incomplete."
+        ],
+        "tags": ["Validation", "Script", "QA"]
+    }
 }

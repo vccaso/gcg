@@ -1,0 +1,32 @@
+name: use_validators
+description: Use validator to check the results from a previous step.
+
+vars:
+  topic: "One tip to improve my health"
+
+steps:
+  - name: generate_structured_script
+    type: ai
+    agent: ChatAgent
+    model: ModelOllama
+    template_name: youtube_history
+    input:
+      question: ${topic}
+
+
+  - name: validate_script
+    type: validator
+    agent: ScriptStructureValidatorAgent
+    input:
+      input_data: "{{ generate_structured_script.result }}"
+      expected_sections:
+        - intro
+        - background
+        - key_figures
+        - turning_point
+        - daily_life
+        - conflict
+        - resolution
+        - impact
+        - reflection
+        - outro
