@@ -1,209 +1,189 @@
 # Go Code Generator (GCG) 🛠️
 
-An extensible AI Agent Orchestrator for generating Go CRUD code, Angular apps, GitHub automations, images, audio, video, and more — using local and remote LLMs!
-
-Built with:
-
-- 🧠 Python 3
-- 🖥️ Streamlit (UI)
-- 📜 YAML-based workflow definitions
-- 🌐 OpenAI / Ollama / DeepSeek integrations
-- 🐳 Docker optional support
+An extensible AI Agent Orchestrator for generating Go CRUD code, Angular apps, GitHub automations, images, audio, video, subtitles, and more — using local and cloud-based LLMs.
 
 ---
 
-# 📆 Requirements
+## 🧰 Built With
+- 🧠 Python 3
+- 🖥️ Streamlit UI
+- 📜 YAML-based workflow engine
+- 🧩 Modular agent/model system
+- 🌐 OpenAI, Ollama, DeepSeek, Coqui TTS
+- 🐳 Optional Docker support
+
+---
+
+## 📆 Requirements
 
 - Python 3.8+
+- Pip + virtualenv
 - Docker (optional)
-- Access to LLMs (OpenAI API key or local Ollama models)
+- OpenAI or HuggingFace or Ollama access
 
 ---
 
-# 🔧 Setup Instructions
+## 🔧 Setup Instructions
 
-### 1. Clone the Repo
 ```bash
-git clone https://github.com/your-username/your-repo.git
-cd your-repo
-```
-
-### 2. Create and Activate Virtual Environment
-```bash
+git clone https://github.com/your-username/gcg.git
+cd gcg
 python3 -m venv .venv
-source .venv/bin/activate   # macOS/Linux
-# OR
-.venv\Scripts\activate      # Windows
-```
-
-### 3. Install Required Packages
-```bash
+source .venv/bin/activate  # or .venv\Scripts\activate on Windows
 pip install --no-cache-dir -r requirements.txt
 ```
 
 ---
 
-# 🧠 Supported LLM Models
+## 🧠 Supported LLM Models
 
-| Model | Best Use | Tags |
-|:------|:---------|:-----|
-| `ModelOllama` | Offline coding tasks | [Local] |
-| `ModelDeepSeekCoder67` | Go/Python/SQL code | [Local], [Code] |
+| Model | Use | Tags |
+|:------|:----|:-----|
+| `ModelOllama` | Offline dev & chat | [Local], [LLM] |
+| `ModelDeepSeekCoder67` | Advanced coding (Go, Python) | [Local], [Code] |
 | `ModelGpt4Turbo` | Structured workflows | [OpenAI] |
-| `ModelGpt35Turbo` | Fast, cheap drafts | [OpenAI] |
-| `ModelDalle3` | Image generation | [OpenAI], [Image] |
-| `ModelTTS1` | Text-to-Speech | [OpenAI], [Audio] |
-| `ModelWhisper` | Speech-to-Text | [OpenAI], [Audio] |
+| `ModelGpt35Turbo` | Quick drafts | [OpenAI] |
+| `ModelDalle3` | Text-to-image | [OpenAI], [Image] |
+| `ModelTTS1` | Text-to-speech | [OpenAI], [Audio] |
+| `ModelWhisper` | Speech-to-text | [OpenAI], [Audio] |
+| `ModelTTSCoqui` | Offline text-to-speech (Coqui TTS) | [Local], [Audio] |
+| `ImageModelStableDiffusion` | Local/remote image generation | [Local], [Image]
 
-✅ Model Registry available via UI!
+✅ Browse and filter models via Streamlit UI
 
 ---
 
-# 🤖 Supported AI Agents
+## 🤖 Supported AI Agents
 
-### 🧠 Core Agents
-- `ChatAgent` — General chat/Q&A
-- `GoCRUDAgent` — Full Go CRUD stack
+### 🧠 Core
+- `ChatAgent` — General chat / idea generation
+- `GoCRUDAgent` — Full Go CRUD generation
 - `AngularAppAgent` — Angular frontend builder
 
-### 🎨 Visual & Audio Agents
-- `Dalle3Agent` — Text-to-image
-- `SegmentedImageAgent` — Multiple image prompts from structured script
-- `AudioAgent` — TTS & STT
-- `SegmentedAudioAgent` — Per-section audio files
-- `SegmentedSubtitleGeneratorAgent` — Subtitle (SRT) from script & audio
-- `SegmentedVideoAssemblerAgent` — Build video from segmented media
+### 🎨 Image & Audio
+- `Dalle3Agent` — Generate image via DALL·E
+- `ImageAgent` — Unified image agent w/ pluggable models
+- `SegmentedImageAgent` — Image per scene/section
+- `AudioAgent` — TTS/STT engine
+- `SegmentedAudioAgent` — Per-section speech audio
+- `SegmentedSubtitleGeneratorAgent` — Builds subtitles from TTS
+- `SegmentedVideoAssemblerAgent` — Final video creator from image + audio
 
-### 🗃️ RAG & Utility
-- `RAGDatabaseBuilderAgent`, `RAGQueryAgent`, etc.
-- `SaveToFileAgent`, `RequirementsExtractorAgent`, etc.
+### ✅ Validators
+- `ScriptStructureValidatorAgent` — Checks script sections
+- `ScriptFeedbackValidatorAgent` — Scores script and suggests improved prompt
 
-✅ Dynamic Agent Registry available via UI
+### 🛠️ Utility
+- `SaveToFileAgent`, `RequirementsExtractorAgent`
+- `GitHub*` agents (branch, commit, PR)
+- `RAG*` agents for retrieval pipelines
 
----
-
-# 🚀 Example Usage
-
-### CLI Mode
-```bash
-python3 run_cli.py --workflow examples/youtube/wf_segmented_01.yaml
-```
-
-Other CLI Options:
-```bash
-python3 run_cli.py --prompt_list
-python3 run_cli.py --prompt_test youtube
-python3 run_cli.py --validate
-```
-
-### Streamlit UI
-```bash
-streamlit run ui.py
-```
-- Browse workflows
-- Select models/agents
-- Run & visualize outputs!
+✅ Filter & explore agents in Streamlit UI
 
 ---
 
-# 🎬 Segmented Video Generation
+## 🧪 Sample Workflow
 
-Structured YAML scripts now support `text` + `image_prompt` per section (intro, scene1, ...). Combine them into full narrated videos:
+```yaml
+vars:
+  topic: "How to prioritize tasks effectively"
+  name: "productivity"
 
-### Key Agents:
-- `SegmentedAudioAgent`: generates per-section voice
-- `SegmentedImageAgent`: creates image per scene
-- `SegmentedSubtitleGeneratorAgent`: builds `.srt` file
-- `SegmentedVideoAssemblerAgent`: merges all into final `.mp4`
+steps:
+  - name: generate_script
+    type: ai
+    agent: ChatAgent
+    model: ModelGpt35Turbo
+    input:
+      question: ${topic}
 
----
+  - name: generate_audio
+    type: ai-audio
+    agent: AudioAgent
+    model: ModelTTS1
+    input:
+      mode: tts
+      text: "{{ generate_script.result }}"
+      output_path: workspace/audio/${name}.wav
+      factor: 1.4
 
-# 🌐 OpenAI Setup
-
-```bash
-export OPENAI_API_KEY=your-key     # macOS/Linux
-set OPENAI_API_KEY=your-key        # Windows
+  - name: generate_thumbnail
+    type: ai-image
+    agent: ImageAgent
+    model: ImageModelStableDiffusion
+    input:
+      prompt: "Thumbnail for: ${topic}"
+      output_path: workspace/images/${name}.png
 ```
 
 ---
 
-# 💻 Local Models (Ollama, DeepSeek)
+## 🎬 Segmented Video Assembly
 
-Install Ollama: [https://ollama.com/download](https://ollama.com/download)
+Compose narrated videos using multiple agents:
 
+1. `ChatAgent` + YouTube template (text/image_prompt)
+2. `SegmentedAudioAgent`
+3. `SegmentedImageAgent`
+4. `SegmentedSubtitleGeneratorAgent`
+5. `SegmentedVideoAssemblerAgent`
+
+---
+
+## 🌐 OpenAI Configuration
+
+```bash
+export OPENAI_API_KEY=your-key
+```
+
+---
+
+## 💻 Local Model Support
+
+### 🦙 Ollama (for local LLMs)
 ```bash
 ollama pull llama3
 ollama run llama3
-
-To create a local TTS system using Ollama
-
-Install Coqui TTS:
 ```
+
+### 🐸 Coqui TTS (local TTS)
+```bash
 pip install TTS
-```
-Set Up the TTS Engine
-For Coqui TTS, download a pre-trained model:
-
-```
-tts --list_models
 tts --model_name tts_models/en/ljspeech/tacotron2-DDC --download
 ```
 
-Integrate with Ollama
-Use Python to connect Ollama's output to the TTS engine:
-```
-import ollama
+### Sample Python Usage
+```python
 from TTS.api import TTS
-
-# Initialize Ollama
-client = ollama.Client()
-response = client.generate(prompt="Hello, how can I assist you today?")
-
-# Initialize TTS
 tts = TTS(model_name="tts_models/en/ljspeech/tacotron2-DDC")
-tts.tts_to_file(text=response['text'], file_path="output.wav")
-
-```
-
-Play the Generated Audio
-
-Use a Python library like playsound or pydub to play the output.wav file:
-
-```
-from playsound import playsound
-playsound("output.wav")
-```
-
-
-# Optional
-export DEEPSEEK_URL=http://localhost:11434
+tts.tts_to_file("Hello world", file_path="output.wav")
 ```
 
 ---
 
-# 📂 Project Structure
+## 📂 Project Layout
 
-| Folder | Description |
-|--------|-------------|
+| Folder | Purpose |
+|--------|---------|
 | `workflows/` | YAML workflow definitions |
-| `agents/` | All agent classes |
-| `models/` | Model integrations |
-| `schemas/` | JSON schema validation |
-| `utils/` | Utility functions |
-| `api/` | FastAPI-based HTTP server |
-| `run_cli.py` | CLI entry point |
-| `ui.py` | Streamlit frontend |
+| `agents/` | Task-specific agents |
+| `models/` | Audio, image, LLM models |
+| `schemas/` | JSON validation schemas |
+| `utils/` | YAML, JSON, printer helpers |
+| `api/` | FastAPI server |
+| `ui.py` | Streamlit UI |
+| `run_cli.py` | CLI runner |
 
 ---
 
-# 🛠 Docker Support
+## 🐳 Docker Support
 
 ```bash
 docker build -t gcg-agent .
 docker run -p 8000:8000 -e OPENAI_API_KEY=your-key gcg-agent
 ```
 
-Or run Streamlit UI inside Docker:
+Or for UI:
 
 ```bash
 docker run -p 8501:8501 -e OPENAI_API_KEY=your-key gcg-agent streamlit run ui.py
@@ -211,30 +191,28 @@ docker run -p 8501:8501 -e OPENAI_API_KEY=your-key gcg-agent streamlit run ui.py
 
 ---
 
-# 📄 Workflow Expression Support
+## 🧪 Workflow DSL Support
 
 | Pattern | Example | From |
 |---------|---------|------|
-| `${var}` | `${topic}` | from `vars:` |
-| `step.result` | `step1.result` | from previous step |
+| `${var}` | `${topic}` | `vars:` |
+| `step.result` | `step1.result` | Previous step |
 | `{{ var }}` | `{{ filename }}` | Jinja |
 | `{{ step.result }}` | `{{ generate_script.result }}` | Jinja |
 
 ---
 
-# ✅ Validation
+## ✅ Validation
 
 ```bash
 python3 run_cli.py --validate
 ```
 
-Or from the Streamlit UI > Validation page.
+Or via Streamlit > Validation tab
 
 ---
 
-# 🌍 FastAPI API
-
-Run workflows via HTTP!
+## 🌍 API Server (FastAPI)
 
 ```bash
 export GCG_API_KEY=secret-key
@@ -248,21 +226,22 @@ POST `/run-workflow`:
 }
 ```
 
-Headers:
+Header:
 ```http
 x-api-key: secret-key
 ```
 
 ---
 
-# 🤝 License
+## 📜 License
 
-MIT — Open to contribute & extend!
+MIT — Fork, contribute, and scale it your way!
 
 ---
 
-# 🌟 Final Words
+## 💡 Final Words
 
-✅ Compose powerful workflows  
-✅ Scale AI pipelines easily  
-✅ Orchestrate agents for real-world dev, content, and automation!
+✅ Design agent workflows  
+✅ Run offline or cloud LLMs  
+✅ Generate code, media, and content pipelines  
+✅ Modular, extensible, and production-ready
