@@ -171,7 +171,7 @@ tts.tts_to_file("Hello world", file_path="output.wav")
 | `schemas/` | JSON validation schemas |
 | `utils/` | YAML, JSON, printer helpers |
 | `api/` | FastAPI server |
-| `ui.py` | Streamlit UI |
+| `run_ui.py` | Streamlit UI |
 | `run_cli.py` | CLI runner |
 
 ---
