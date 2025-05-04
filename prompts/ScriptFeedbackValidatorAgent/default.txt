@@ -1,0 +1,21 @@
+You're an expert video script analyst.
+
+Evaluate the following script on the topic of "{topic}":
+
+```yaml
+{script}
+```
+
+Please respond in **three clearly separated sections**, each marked with `===` on a new line:
+
+1. **Recommendations**: How can this script be improved in structure, tone, or content?
+2. **Score**: Rate it from 1 to 100 based on clarity, creativity, and usefulness.
+3. **Improved Prompt**: Rewrite the original prompt in a way that would yield a better script.
+
+Format your full response like this:
+
+<your_recommendations>
+===
+Score: <number>
+===
+<revised_prompt_to_try>

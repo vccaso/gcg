@@ -28,6 +28,7 @@ from agents.video.segmented_video_assembler_agent import SegmentedVideoAssembler
 from agents.video.segmented_subtitle_generator_agent import SegmentedSubtitleGeneratorAgent
 from agents.images.image_agent import ImageAgent
 from agents.validators.script_structure_validator_agent import ScriptStructureValidatorAgent
+from agents.validators.script_feedback_validator_agent import ScriptFeedbackValidatorAgent
 
 
 # ✅ Agent registry for loading agents dynamically
@@ -58,7 +59,8 @@ AGENT_REGISTRY = {
     "SegmentedVideoAssemblerAgent": SegmentedVideoAssemblerAgent,
     "SegmentedSubtitleGeneratorAgent": SegmentedSubtitleGeneratorAgent,
     "ImageAgent": ImageAgent,
-    "ScriptStructureValidatorAgent": ScriptStructureValidatorAgent
+    "ScriptStructureValidatorAgent": ScriptStructureValidatorAgent,
+    "ScriptFeedbackValidatorAgent": ScriptFeedbackValidatorAgent
 
 }
 
@@ -354,5 +356,15 @@ AGENT_CATALOG = {
             "Can help trigger retries or corrections if output is incomplete."
         ],
         "tags": ["Validation", "Script", "QA"]
+    },
+    "ScriptFeedbackValidatorAgent": {
+        "type": "Validator",
+        "short_description": "Evaluates script quality and suggests improvements.",
+        "detailed_description": [
+            "This agent analyzes a structured script and provides feedback to improve clarity, tone, and structure.",
+            "Returns a numeric score from 1 to 100, a list of recommendations, and a revised prompt suggestion to regenerate the script.",
+            "Useful for iterating toward higher-quality content before proceeding to audio/image generation."
+        ],
+        "tags": ["AI", "Validator", "Feedback", "Script"]
     }
 }

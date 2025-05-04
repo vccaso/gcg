@@ -23,6 +23,7 @@ from agents.rag.query_agent import RAGQueryAgent
 from agents.code.angularapp_agent import AngularAppAgent
 from agents.images.segmented_image_agent import SegmentedImageAgent
 from agents.validators.script_structure_validator_agent import ScriptStructureValidatorAgent
+from agents.validators.script_feedback_validator_agent import ScriptFeedbackValidatorAgent
 
 from config import debug
 from prompt_loader import PromptLoader
@@ -191,6 +192,8 @@ def get_ai_agent(llm, agent_name, name="default"):
         return AngularAppAgent(llm,prompt_template)  
     if agent_name == "GoCRUDDataAgent":
         return GoCRUDDataAgent(llm,prompt_template)   
+    if agent_name == "ScriptFeedbackValidatorAgent":
+        return ScriptFeedbackValidatorAgent(llm,prompt_template)   
 
 
 

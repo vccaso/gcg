@@ -1,0 +1,20 @@
+vars:
+  topic: "How to develop emotional intelligence"
+  name: "eq_script"
+
+steps:
+  - name: generate_script
+    type: ai
+    agent: ChatAgent
+    model: ModelOllama
+    template_name: youtube_history
+    input:
+      question: ${topic}
+
+  - name: validate_script_feedback
+    type: ai
+    agent: ScriptFeedbackValidatorAgent
+    model: ModelGpt35Turbo
+    input:
+      script: "{{ generate_script.result }}"
+      topic: ${topic}
