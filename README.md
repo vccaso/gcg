@@ -228,6 +228,46 @@ Or via Streamlit > Validation tab
 
 ---
 
+## 🗨️ Orchestrator Chat with Memory
+
+Plan complex YAML workflows through an iterative chat interface — powered by the OrchestratorAgent.
+
+### 🧠 Features
+
+- Chat-like prompt entry with per-session memory
+- Remembers previous instructions and improves outputs over time
+- Select from multiple LLMs (GPT-4, Ollama, DeepSeek, etc.)
+- Choose prompt templates (`default`, `data_only`, `spanish`)
+- Preview, validate, and run generated workflows
+
+### 🖥️ Streamlit UI
+
+- Navigate to **Chat** page
+- Enter a `Session ID` to start or continue a memory thread
+- Submit instructions like:
+
+```text
+Create a workflow to clone https://github.com/user/repo.git
+Then generate CRUD endpoints for Product
+Add Angular frontend and Swagger docs
+
+YAML is generated live and stored with history in workspace/memory_<session>.json
+
+
+🧑‍💻 CLI Mode
+
+```
+python3 run_cli.py --orchestrator_chat \
+  --session_id dev01 \
+  --question "Create a CRUD workflow for Customer"
+```
+
+- Result is saved to workspace/memory_dev01.json
+
+- Reuse the same session ID to refine, extend, or run the workflow
+
+---
+
 ## 🌐 FastAPI API Server
 
 Run your workflow as an API:
