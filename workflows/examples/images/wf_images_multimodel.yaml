@@ -5,21 +5,21 @@ vars:
   prompt_analyze: "Describe the key emotions or scene depicted in this image"
 
 steps:
-  # - name: generate_with_dalle2
-  #   type: ai-image
-  #   agent: ImageAgent
-  #   model: ModelDalle2
-  #   input:
-  #     prompt: ${prompt}
-  #     output_path: ${base_dir}/dalle2_${filename}.png
+  - name: generate_with_dalle2
+    type: ai-image
+    agent: ImageAgent
+    model: ModelDalle2
+    input:
+      prompt: ${prompt}
+      output_path: ${base_dir}/dalle2_${filename}.png
 
-  # - name: generate_with_dalle3
-  #   type: ai-image
-  #   agent: ImageAgent
-  #   model: ModelDalle3
-  #   input:
-  #     prompt: ${prompt}
-  #     output_path: ${base_dir}/dalle3_${filename}.png
+  - name: generate_with_dalle3
+    type: ai-image
+    agent: ImageAgent
+    model: ModelDalle3
+    input:
+      prompt: ${prompt}
+      output_path: ${base_dir}/dalle3_${filename}.png
 
   - name: analyze_image
     type: ai-image
@@ -27,4 +27,4 @@ steps:
     model: ModelGptImage1
     input:
       prompt: ${prompt_analyze}
-      image_path: "workspace/images/viejo_y_el_mar.png"
+      image_path: ${base_dir}/dalle3_${filename}.png

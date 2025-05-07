@@ -1,10 +1,11 @@
 # Go Code Generator (GCG) 🛠️
 
-An extensible AI Agent Orchestrator for generating Go CRUD code, Angular apps, GitHub automations, images, audio, video, subtitles, and more — using local and cloud-based LLMs.
+An extensible AI Agent Orchestrator for generating Go CRUD code, Angular apps, GitHub automations, images, audio, video, subtitles, validations, and more — using local and cloud-based LLMs.
 
 ---
 
 ## 🧰 Built With
+
 - 🧠 Python 3
 - 🖥️ Streamlit UI
 - 📜 YAML-based workflow engine
@@ -35,50 +36,64 @@ pip install --no-cache-dir -r requirements.txt
 
 ---
 
-## 🧠 Supported LLM Models
+## 🧠 Supported Models
 
-| Model | Use | Tags |
-|:------|:----|:-----|
+| Model | Use Case | Tags |
+|:------|:---------|:-----|
 | `ModelOllama` | Offline dev & chat | [Local], [LLM] |
-| `ModelDeepSeekCoder67` | Advanced coding (Go, Python) | [Local], [Code] |
+| `ModelDeepSeekCoder67` | Advanced Go/Python/SQL code | [Local], [Code] |
 | `ModelGpt4Turbo` | Structured workflows | [OpenAI] |
 | `ModelGpt35Turbo` | Quick drafts | [OpenAI] |
-| `ModelDalle3` | Text-to-image | [OpenAI], [Image] |
-| `ModelTTS1` | Text-to-speech | [OpenAI], [Audio] |
+| `ModelTTS1` | Cloud text-to-speech | [OpenAI], [Audio] |
+| `ModelTTSCoqui` | Local TTS via Coqui | [Local], [Audio] |
 | `ModelWhisper` | Speech-to-text | [OpenAI], [Audio] |
-| `ModelTTSCoqui` | Offline text-to-speech (Coqui TTS) | [Local], [Audio] |
-| `ImageModelStableDiffusion` | Local/remote image generation | [Local], [Image]
+| `ModelDalle2` | Text-to-image | [OpenAI], [Image] |
+| `ModelDalle3` | High-quality text-to-image | [OpenAI], [Image] |
+| `ImageModelStableDiffusion` | Local/remote image generation | [Local], [Image] |
+| `ModelGptImage1` | GPT-4 Vision for image analysis | [OpenAI], [Vision] |
 
-✅ Browse and filter models via Streamlit UI
+✅ Browse, filter, and preview models via Streamlit UI
 
 ---
 
-## 🤖 Supported AI Agents
+## 🤖 Supported Agents
 
 ### 🧠 Core
-- `ChatAgent` — General chat / idea generation
-- `GoCRUDAgent` — Full Go CRUD generation
-- `AngularAppAgent` — Angular frontend builder
+- `ChatAgent` — General chat, Q&A, prompt-based ideas
+- `GoCRUDAgent` — Generate full Go model + API + handlers
+- `AngularAppAgent` — Build basic Angular UIs
 
 ### 🎨 Image & Audio
-- `Dalle3Agent` — Generate image via DALL·E
-- `ImageAgent` — Unified image agent w/ pluggable models
-- `SegmentedImageAgent` — Image per scene/section
-- `AudioAgent` — TTS/STT engine
-- `SegmentedAudioAgent` — Per-section speech audio
-- `SegmentedSubtitleGeneratorAgent` — Builds subtitles from TTS
-- `SegmentedVideoAssemblerAgent` — Final video creator from image + audio
+- `Dalle3Agent`, `Dalle2Agent`
+- `ImageAgent` — Unified image creation with any model
+- `SegmentedImageAgent` — Per-section image rendering
+- `AudioAgent` — TTS/STT handler (OpenAI + Coqui)
+- `SegmentedAudioAgent` — Structured section narration
+- `SegmentedSubtitleGeneratorAgent` — Auto-generate `.srt` files
+- `SegmentedVideoAssemblerAgent` — Compose audio+image to video
+- `ImageAnalysisAgent` — Analyze image using GPT-4 Vision
 
 ### ✅ Validators
-- `ScriptStructureValidatorAgent` — Checks script sections
-- `ScriptFeedbackValidatorAgent` — Scores script and suggests improved prompt
+- `ScriptStructureValidatorAgent` — Checks YAML structure
+- `ScriptFeedbackValidatorAgent` — Gives recommendations + scores
+- (Custom validators support `status/pass/fail`, conditions)
 
-### 🛠️ Utility
+### 🛠️ Utilities
 - `SaveToFileAgent`, `RequirementsExtractorAgent`
-- `GitHub*` agents (branch, commit, PR)
-- `RAG*` agents for retrieval pipelines
+- GitHub automation agents (branch, commit, PR)
+- Retrieval Augmented Generation (`RAG*` agents)
 
-✅ Filter & explore agents in Streamlit UI
+---
+
+## 🎬 Segmented Video Workflow
+
+Generate narrated videos step-by-step:
+
+1. `ChatAgent` → generate script with `text` + `image_prompt`
+2. `SegmentedAudioAgent` → create audio for each section
+3. `SegmentedImageAgent` → generate scene visuals
+4. `SegmentedSubtitleGeneratorAgent` → create `.srt` captions
+5. `SegmentedVideoAssemblerAgent` → merge assets into `.mp4`
 
 ---
 
@@ -107,7 +122,7 @@ steps:
       output_path: workspace/audio/${name}.wav
       factor: 1.4
 
-  - name: generate_thumbnail
+  - name: generate_image
     type: ai-image
     agent: ImageAgent
     model: ImageModelStableDiffusion
@@ -118,61 +133,47 @@ steps:
 
 ---
 
-## 🎬 Segmented Video Assembly
+## 📊 Validators with Conditional Logic
 
-Compose narrated videos using multiple agents:
+```yaml
+- name: validate_script
+  type: validator
+  agent: ScriptStructureValidatorAgent
+  input:
+    input_data: "{{ generate_script.result }}"
+    expected_sections: ["intro", "background", "conclusion"]
 
-1. `ChatAgent` + YouTube template (text/image_prompt)
-2. `SegmentedAudioAgent`
-3. `SegmentedImageAgent`
-4. `SegmentedSubtitleGeneratorAgent`
-5. `SegmentedVideoAssemblerAgent`
-
----
-
-## 🌐 OpenAI Configuration
-
-```bash
-export OPENAI_API_KEY=your-key
+- name: improve_script
+  type: ai
+  condition: "{{ validate_script.result.status == 'fail' }}"
+  agent: ScriptFeedbackValidatorAgent
+  model: ModelGpt35Turbo
+  input:
+    script: "{{ generate_script.result }}"
 ```
 
 ---
 
-## 💻 Local Model Support
+## 📦 Local Model Setup
 
-### 🦙 Ollama (for local LLMs)
+### 🦙 Ollama
 ```bash
 ollama pull llama3
 ollama run llama3
 ```
 
-### 🐸 Coqui TTS (local TTS)
+### 🐸 Coqui TTS
 ```bash
 pip install TTS
 tts --model_name tts_models/en/ljspeech/tacotron2-DDC --download
 ```
 
-### Sample Python Usage
+### Sample Python
 ```python
 from TTS.api import TTS
 tts = TTS(model_name="tts_models/en/ljspeech/tacotron2-DDC")
 tts.tts_to_file("Hello world", file_path="output.wav")
 ```
-
----
-
-## 📂 Project Layout
-
-| Folder | Purpose |
-|--------|---------|
-| `workflows/` | YAML workflow definitions |
-| `agents/` | Task-specific agents |
-| `models/` | Audio, image, LLM models |
-| `schemas/` | JSON validation schemas |
-| `utils/` | YAML, JSON, printer helpers |
-| `api/` | FastAPI server |
-| `run_ui.py` | Streamlit UI |
-| `run_cli.py` | CLI runner |
 
 ---
 
@@ -183,7 +184,7 @@ docker build -t gcg-agent .
 docker run -p 8000:8000 -e OPENAI_API_KEY=your-key gcg-agent
 ```
 
-Or for UI:
+Streamlit UI:
 
 ```bash
 docker run -p 8501:8501 -e OPENAI_API_KEY=your-key gcg-agent streamlit run ui.py
@@ -191,18 +192,33 @@ docker run -p 8501:8501 -e OPENAI_API_KEY=your-key gcg-agent streamlit run ui.py
 
 ---
 
-## 🧪 Workflow DSL Support
+## 📂 Project Layout
 
-| Pattern | Example | From |
-|---------|---------|------|
-| `${var}` | `${topic}` | `vars:` |
-| `step.result` | `step1.result` | Previous step |
-| `{{ var }}` | `{{ filename }}` | Jinja |
-| `{{ step.result }}` | `{{ generate_script.result }}` | Jinja |
+| Folder | Purpose |
+|--------|---------|
+| `workflows/` | YAML workflow definitions |
+| `agents/` | Modular AI agent logic |
+| `models/` | Model integration classes |
+| `schemas/` | JSON/YAML validation schemas |
+| `utils/` | Common tools, printer, formatters |
+| `api/` | FastAPI server |
+| `run_cli.py` | CLI orchestrator |
+| `ui.py` | Streamlit interface |
 
 ---
 
-## ✅ Validation
+## ⚙️ Workflow Syntax
+
+| Syntax | Example |
+|--------|---------|
+| `${var}` | `${topic}` |
+| `{{ var }}` | `{{ name }}` |
+| `step.result` | `generate_script.result` |
+| `{{ step.result }}` | `{{ validate_script.result }}` |
+
+---
+
+## ✅ System Validation
 
 ```bash
 python3 run_cli.py --validate
@@ -212,36 +228,39 @@ Or via Streamlit > Validation tab
 
 ---
 
-## 🌍 API Server (FastAPI)
+## 🌐 FastAPI API Server
+
+Run your workflow as an API:
 
 ```bash
-export GCG_API_KEY=secret-key
+export GCG_API_KEY=your-key
 python3 api/main.py
 ```
 
-POST `/run-workflow`:
+POST `/run-workflow`
 ```json
 {
   "workflow_file": "examples/youtube/wf_segmented_01.yaml"
 }
 ```
 
-Header:
+Headers:
 ```http
-x-api-key: secret-key
+x-api-key: your-key
 ```
 
 ---
 
 ## 📜 License
 
-MIT — Fork, contribute, and scale it your way!
+MIT — Fork it, use it, build your own!
 
 ---
 
-## 💡 Final Words
+## 🚀 Final Notes
 
-✅ Design agent workflows  
-✅ Run offline or cloud LLMs  
-✅ Generate code, media, and content pipelines  
-✅ Modular, extensible, and production-ready
+✅ Modular YAML agents  
+✅ Multimodal pipelines (Text, Audio, Video)  
+✅ Flexible CLI / API / UI orchestration  
+✅ Works offline & online  
+✅ Extendable with your own agents & models
