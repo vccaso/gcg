@@ -25,7 +25,7 @@ class Dalle2Agent:
         """
         try:
             response = openai.images.generate(
-                model="dall-e-2",
+                model="dall-e-2",  #model="image-alpha-001"
                 prompt=prompt,
                 n=1,
                 size=size,

@@ -46,4 +46,10 @@ class Printer:
        print(f"{Printer.RED}{formatted_message}{Printer.RESET}")
 
 
+   @staticmethod
+   def info(message: str):
+        def highlight(match):
+            return f"{Printer.YELLOW}{match.group(1)}{Printer.CYAN}"
+        formatted_message = re.sub(r'<strong>(.*?)</strong>', highlight, message)
+        print(f"{Printer.CYAN}{formatted_message}{Printer.RESET}")
 

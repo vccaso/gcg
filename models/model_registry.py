@@ -7,6 +7,9 @@ from models.local.model_deepseek_coder import ModelDeepSeekCoder67
 from models.openai.audio_model_openai import AudioModelOpenAI
 from models.local.audio_model_coqui import AudioModelCoqui
 from models.local.image_model_stable_diffusion import ImageModelStableDiffusion
+from models.openai.model_gpt_image_1 import ModelGptImage1
+from models.openai.model_gpt_dalle_3 import ModelDalle3
+from models.openai.model_gpt_dalle_2 import ModelDalle2
 
 # Optional: if you expect to add more local models later
 
@@ -19,7 +22,10 @@ MODEL_REGISTRY = {
     "ModelDeepSeekCoder67": ModelDeepSeekCoder67,
     "AudioModelOpenAI": AudioModelOpenAI,
     "AudioModelCoqui": AudioModelCoqui,
-    "ImageModelStableDiffusion" : ImageModelStableDiffusion
+    "ImageModelStableDiffusion" : ImageModelStableDiffusion,
+    "ModelGptImage1": ModelGptImage1,
+    "ModelDalle3": ModelDalle3,
+    "ModelDalle2": ModelDalle2
 }
 
 # ✅ Model catalog for UI display
@@ -59,14 +65,6 @@ MODEL_CATALOG = {
             "Slightly less accurate on complex tasks."
         ],
         "tags": ["OpenAI", "LLM"]
-    },
-    "ModelDalle3": {
-        "short_description": "Generates high-quality images from text prompts (DALL·E 3).",
-        "detailed_description": [
-            "Advanced model for generating high-quality images from text prompts.",
-            "Ideal for creating marketing banners, UI designs, visual content."
-        ],
-        "tags": ["OpenAI", "Image"]
     },
     "ModelTTS1": {
         "short_description": "Text-to-speech (TTS) model converting text into spoken audio.",
@@ -112,5 +110,35 @@ MODEL_CATALOG = {
             "Ideal for offline image generation, visual storytelling, or AI art creation."
         ],
         "tags": ["Local", "Image", "StableDiffusion"]
-    }
+    },
+    "ModelGptImage1": {
+        "short_description": "GPT-4 Vision model that analyzes images alongside text prompts.",
+        "detailed_description": [
+            "Uses OpenAI's gpt-4-vision-preview endpoint to reason over both image and text input.",
+            "Supports high-detail visual comprehension tasks like image description, OCR, layout understanding, and visual Q&A.",
+            "Requires image input and a related prompt.",
+            "Outputs natural language response based on combined input."
+        ],
+        "tags": ["OpenAI", "Image", "Multimodal", "Vision"]
+    },
+    "ModelDalle3": {
+        "short_description": "OpenAI's DALL·E 3 model for high-quality image generation from text prompts.",
+        "detailed_description": [
+            "Generates detailed and coherent images based on textual descriptions.",
+            "Improved understanding of nuanced prompts compared to previous versions.",
+            "Integrated with ChatGPT for enhanced prompt generation and refinement.",
+            "Includes safety features to prevent the creation of harmful or inappropriate content."
+        ],
+        "tags": ["OpenAI", "Image", "Text-to-Image", "DALL·E 3"]
+    },
+    "ModelDalle2": {
+        "short_description": "OpenAI's DALL·E 2 model for basic image generation from text prompts.",
+        "detailed_description": [
+            "Generates simple, creative images based on text input.",
+            "Faster and lighter than DALL·E 3, with support for standard sizes (256x256, 512x512, 1024x1024).",
+            "Suitable for quick sketches, rough drafts, or experimental art.",
+            "Lower fidelity and detail compared to DALL·E 3, but more efficient for some tasks."
+        ],
+        "tags": ["OpenAI", "Image", "Text-to-Image", "DALL·E 2"]
+}
 }

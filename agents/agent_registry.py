@@ -29,6 +29,7 @@ from agents.video.segmented_subtitle_generator_agent import SegmentedSubtitleGen
 from agents.images.image_agent import ImageAgent
 from agents.validators.script_structure_validator_agent import ScriptStructureValidatorAgent
 from agents.validators.script_feedback_validator_agent import ScriptFeedbackValidatorAgent
+from agents.images.image_analysis_agent import ImageAnalysisAgent
 
 
 # ✅ Agent registry for loading agents dynamically
@@ -60,7 +61,8 @@ AGENT_REGISTRY = {
     "SegmentedSubtitleGeneratorAgent": SegmentedSubtitleGeneratorAgent,
     "ImageAgent": ImageAgent,
     "ScriptStructureValidatorAgent": ScriptStructureValidatorAgent,
-    "ScriptFeedbackValidatorAgent": ScriptFeedbackValidatorAgent
+    "ScriptFeedbackValidatorAgent": ScriptFeedbackValidatorAgent,
+    "ImageAnalysisAgent": ImageAnalysisAgent
 
 }
 
@@ -366,5 +368,15 @@ AGENT_CATALOG = {
             "Useful for iterating toward higher-quality content before proceeding to audio/image generation."
         ],
         "tags": ["AI", "Validator", "Feedback", "Script"]
+    },
+    "ImageAnalysisAgent": {
+        "type": "AI",
+        "short_description": "Analyzes an image using GPT-4 Vision to extract insights or descriptions.",
+        "detailed_description": [
+            "This agent uses OpenAI's GPT-4 Vision model to analyze image content based on a provided natural language prompt.",
+            "Ideal for extracting descriptions, summarizing visual scenes, or generating context-aware captions.",
+            "Requires a valid local image path and a prompt."
+        ],
+        "tags": ["AI", "Vision", "Image Analysis", "GPT-4"]
     }
 }

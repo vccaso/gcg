@@ -15,7 +15,7 @@ class ImageAgent:
         """
         try:
             os.makedirs(os.path.dirname(output_path), exist_ok=True)
-            Printer.info(f"🎨 Generating image for: '{prompt}'")
+            print(f"🎨 Generating image for: '{prompt}'")
             self.model.generate_image(prompt, output_path)
             Printer.success(f"✅ Image saved to: {output_path}")
             return {"status": "success", "image_path": output_path}
