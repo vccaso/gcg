@@ -136,4 +136,25 @@ These are steps worflow examples for different agents:
     file_name: ${{file_name}}
 
 
+---
+IMPORTANT:
+You must return a valid YAML workflow only.
 
+DO NOT:
+- Include bullet points, explanations, greetings, or markdown.
+- Wrap the YAML in a code block (e.g., ```yaml).
+
+Respond ONLY with raw YAML content, starting with:
+
+name: <WorkflowName>
+description: <Short description>
+vars:
+  ...
+steps:
+  ...
+
+---
+Return only a valid YAML workflow.
+Start with `name:` and include at least one `steps:` entry.
+DO NOT explain anything. DO NOT include markdown or bullet points.
+This is a machine-readable config, not human instructions.

@@ -8,15 +8,23 @@ class OrchestratorAgent:
     def __init__(self, llm, prompt_template: str = None):
         self.llm = llm
         self.prompt_template = prompt_template or "You are a workflow planner..."
-    
 
-    def generate_prompt(self, user_request: str) -> str:
-        p = self.prompt_template.format(
+    def generate_prompt(self, user_request: str, memory: dict = None) -> str:
+        memory_context = ""
+        if memory and "history" in memory and memory["history"]:
+            memory_lines = ["### Previous User Requests:"]
+            for i, item in enumerate(memory["history"][-3:], 1):
+                memory_lines.append(f"{i}. {item['request']}")
+            memory_context = "\n".join(memory_lines) + "\n---\n"
+
+        base_prompt = self.prompt_template.format(
             request=user_request,
             agents_description=self.get_agent_description(),
             models_description=self.get_model_description()
         )
-        return p
+
+        return f"{memory_context}{base_prompt}"
+
 
 
     def get_agent_description(self) -> str:
@@ -57,10 +65,10 @@ class OrchestratorAgent:
         return "\n".join(description_lines)
     
 
-    def run(self, request: str, save_path: str = "workflows/wf_generated.yaml") -> dict:
+    def run(self, request: str, save_path: str = "workflows/wf_generated.yaml", memory: dict = None) -> dict:
 
 
-        final_prompt = self.generate_prompt(request)
+        final_prompt = self.generate_prompt(request, memory)
         print(f"final prompt: {final_prompt}")
         workflow_yaml = self.llm.get_response(final_prompt).strip()
 

@@ -7,13 +7,14 @@ from models.model_registry import MODEL_CATALOG
 from agents.agent_registry import AGENT_CATALOG
 from api.api_catalog import API_CATALOG
 from config import __version__, __app_name__, __workflow_path__
+from chat import render_chat_page
 
 st.set_page_config(page_title=__app_name__, page_icon="🧠")
 
 # Sidebar menu
 menu = st.sidebar.selectbox(
     "📂 Menu",
-    ("Home", "Workflows", "Agents", "Models", "Config", "Validate", "Templates", "API", "Docs")
+    ("Home", "Chat", "Workflows", "Agents", "Models", "Config", "Validate", "Templates", "API", "Docs")
 )
 
 st.sidebar.markdown(f"<div style='text-align:center; color: gray;'>v{__version__}</div>", unsafe_allow_html=True)
@@ -73,6 +74,11 @@ if menu == "Home":
         with col2:
             if st.button("❌ Cancel"):
                 st.session_state.confirm_ready = False
+
+
+elif menu == "Chat":
+    # This will render orchestrator_chat.py's logic
+    render_chat_page()
 
 # ---------------------
 # 📄 Workflows (Read Workflow Files)
