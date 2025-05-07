@@ -10,8 +10,6 @@ from agents.agent_registry import AGENT_REGISTRY
 from agents.code.go_crud_agent import GoCRUDAgent
 from agents.code.go_crud_data_agent import GoCRUDDataAgent
 from agents.code.go_swagger_agent import GoSwaggerAgent
-from agents.images.dalle3_agent import Dalle3Agent
-from agents.images.dalle2_agent import Dalle2Agent
 from agents.audio.audio_agent import AudioAgent
 from agents.audio.audio_segmented_agent import SegmentedAudioAgent
 from agents.orchestratoragent import OrchestratorAgent

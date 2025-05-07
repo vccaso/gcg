@@ -67,7 +67,6 @@ class OrchestratorAgent:
 
     def run(self, request: str, save_path: str = "workflows/wf_generated.yaml", memory: dict = None) -> dict:
 
-
         final_prompt = self.generate_prompt(request, memory)
         print(f"final prompt: {final_prompt}")
         workflow_yaml = self.llm.get_response(final_prompt).strip()

@@ -1,23 +1,46 @@
-Based on the previous requests, it seems like there is a duplicate request for creating a YAML workflow to clone a specific repository. To avoid redundancy, I will provide you with a single YAML workflow that accomplishes this task:
+Here is the YAML workflow file:
 
 ```yaml
-name: Clone Repository Workflow
+name: Auto-Generate Workflow
+description: An example YAML workflow for AI-powered productivity tool development.
 
-on:
-  push:
-    branches:
-      - main
+vars:
+  local_repo_dir: ./workspace/my-app
 
-jobs:
-  clone_repo:
-    runs-on: ubuntu-latest
+steps:
+  - name: Generate Hero Image
+    type: ai
+    agent: Dalle3Agent
+    model: ModelDalle3
+    prompt_template: default
+    input:
+      prompt: "A futuristic office workspace with holographic screens"
+      image_path: "output/images/hero.png"
 
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
+  - name: Create Intro Voice
+    type: ai
+    agent: AudioAgent
+    model: ModelTTS1
+    prompt_template: default
+    input:
+      mode: tts
+      text: "Welcome to EasyChat, your AI-powered assistant!"
+      voice: alloy
+      output_path: output/audio/intro.wav
 
-      - name: Clone Repository
-        run: git clone https://github.com/vccaso/avila-easychat.git ./workspace/avila-easychat
-```
+  - name: Transcribe Voice Note
+    type: ai
+    agent: AudioAgent
+    model: ModelWhisper
+    prompt_template: default
+    input:
+      mode: stt
+      audio_file_path: input/audio/note.mp3
 
-You can use this YAML workflow to clone the repository `https://github.com/vccaso/avila-easychat.git` and save it to `./workspace/avila-easychat` whenever a push event occurs on the `main` branch. Let me know if you need any further assistance or modifications.
+  - name: Brainstorm Ideas
+    type: ai
+    agent: ChatAgent
+    model: ModelGpt35Turbo
+    prompt_template: default
+    input:
+      question: "Give me 5 startup ideas for an AI-powered productivity tool"

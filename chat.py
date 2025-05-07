@@ -1,11 +1,12 @@
-# orchestrator_chat.py (Streamlit page)
+# chat.py (Streamlit page)
 import streamlit as st
 import os
 from orchestrator_core import run_workflow
 from memory_manager import load_memory, save_memory, list_sessions
 from models.model_registry import MODEL_REGISTRY
 from agents.orchestratoragent import OrchestratorAgent
-from models.openai.model_gpt_35_turbo import ModelGpt35Turbo  # Default model
+from prompt_loader import PromptLoader
+
 
 def render_chat_page():
 
@@ -18,12 +19,27 @@ def render_chat_page():
         st.session_state.session_id = session_id
         st.session_state.memory = load_memory(session_id)
 
+    # Model and Template selection
+    col1, col2 = st.columns(2)
+
+    with col1:
+        model_choice = st.selectbox("🤖 Select Model", ["ModelGpt35Turbo", "ModelGpt4Turbo", "ModelDeepSeekCoder67", "ModelOllama"])
+
+    with col2:
+        template_choice = st.selectbox("📄 Select Prompt Template", ["default", "data_only", "spanish"])
+
     # Input
     st.text_input("Ask something to the Orchestrator...", key="user_request")
     if st.button("💬 Submit"):
         if st.session_state.user_request:
-            llm = ModelGpt35Turbo(temperature=0.3)
-            agent = OrchestratorAgent(llm)
+            # Load the selected LLM
+            llm = MODEL_REGISTRY[model_choice](temperature=0.3)
+
+            # Load the selected prompt template
+            prompt_loader = PromptLoader()
+            prompt_template = prompt_loader.load_prompt("OrchestratorAgent", template_choice)
+
+            agent = OrchestratorAgent(llm, prompt_template)
             result = agent.run(request=st.session_state.user_request, memory=st.session_state.memory)
 
             st.session_state.memory["history"].append({
@@ -58,3 +74,4 @@ def render_chat_page():
                 st.text(output)
             if "_execution_duration" in result:
                 st.success(f"✅ Completed in {result['_execution_duration']}s")
+                
