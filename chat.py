@@ -26,7 +26,7 @@ def render_chat_page():
         model_choice = st.selectbox("🤖 Select Model", ["ModelGpt35Turbo", "ModelGpt4Turbo", "ModelDeepSeekCoder67", "ModelOllama"])
 
     with col2:
-        template_choice = st.selectbox("📄 Select Prompt Template", ["default", "data_only", "spanish"])
+        template_choice = st.selectbox("📄 Select Prompt Template", ["default", "info"])
 
     # Input
     st.text_input("Ask something to the Orchestrator...", key="user_request")
