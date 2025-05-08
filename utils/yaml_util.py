@@ -1,6 +1,14 @@
 import yaml
 from jsonschema import validate, ValidationError
 
+def strip_markdown_fences(text: str) -> str:
+    text = text.strip()
+    if text.startswith("```yaml"):
+        text = text.replace("```yaml", "", 1).strip()
+    if text.endswith("```"):
+        text = text[:-3].strip()
+    return text
+
 
 def parse_and_validate_yaml(yaml_text, schema):
     if isinstance(yaml_text, dict):

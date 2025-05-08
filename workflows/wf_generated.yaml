@@ -1,14 +1,20 @@
-name: CloneGitHubRepoWorkflow
-description: Workflow to clone a GitHub repository to a specified directory
+name: Manage_User_CRUD
+description: Add a step to manage the CRUD operations for User entity
 
 vars:
-  local_repo_dir: ./workspace/github/avila-easychat
+  local_repo_dir: ./workspace/avila-common
 
 steps:
-  - name: clone_github_repo
-    type: git
-    agent: GitHubCloneOrUpdateRepoAgent
+  - name: manage_user_crud
+    type: ai
+    agent: GoCRUDAgent
+    model: ModelGpt4Turbo
+    prompt_template: default
     input:
-      repo_url: https://github.com/vccaso/avila-easychat
-      local_dir: ${local_repo_dir}
-      update_if_exists: true
+      model: User
+      fields: |
+        ID (int)
+        Name (string, required)
+        Email (string, required)
+        Age (int)
+      local_repo_dir: ${local_repo_dir}

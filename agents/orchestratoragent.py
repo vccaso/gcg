@@ -2,6 +2,7 @@ import yaml
 import os
 from agents.agent_registry import AGENT_CATALOG
 from models.model_registry import MODEL_CATALOG
+from utils.yaml_util import strip_markdown_fences
 
 
 class OrchestratorAgent:
@@ -68,18 +69,22 @@ class OrchestratorAgent:
     def run(self, request: str, save_path: str = "workflows/wf_generated.yaml", memory: dict = None) -> dict:
 
         final_prompt = self.generate_prompt(request, memory)
-        print(f"final prompt: {final_prompt}")
         workflow_yaml = self.llm.get_response(final_prompt).strip()
 
         # Clean markdown code block if present
-        if workflow_yaml.startswith("```yaml"):
-            workflow_yaml = workflow_yaml.replace("```yaml", "").strip()
-        if workflow_yaml.endswith("```"):
-            workflow_yaml = workflow_yaml[:-3].strip()
+        workflow_yaml = strip_markdown_fences(workflow_yaml)
 
-        # Save file
+        # return {"path": save_path, "content": workflow_yaml}
+        try:
+            parsed = yaml.safe_load(workflow_yaml)
+            assert isinstance(parsed, dict) and "steps" in parsed
+        except Exception:
+            retry_prompt = final_prompt + "\n\nYour last output failed. Please return a valid YAML GCG workflow only."
+            workflow_yaml = self.llm.get_response(retry_prompt).strip()
+            workflow_yaml = strip_markdown_fences(workflow_yaml)
+
         os.makedirs(os.path.dirname(save_path), exist_ok=True)
         with open(save_path, "w", encoding="utf-8") as f:
             f.write(workflow_yaml)
 
-        return {"path": save_path, "content": workflow_yaml}
+        return {"path": save_path, "yaml": workflow_yaml}
