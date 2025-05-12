@@ -2,7 +2,7 @@ import yaml, importlib
 import re
 import time
 from utils.printer import Printer
-
+from utils.json_util import render_template 
 
 from models.model_registry import MODEL_REGISTRY
 
@@ -220,6 +220,29 @@ def run_workflow(workflow_path, streamlit_mode=False):
         name, step_type, agent_name = step["name"], step["type"], step["agent"]
         input_spec = resolve_vars(step["input"], vars_dict)
         inputs = resolve_inputs(input_spec, results, vars_dict)
+        
+        # 🧠 Evaluate `when` condition (optional)
+        when = step.get("when", True)
+        if isinstance(when, str) and when.startswith("{{"):
+            try:
+                context = {**vars_dict, **results}  # merge vars + step results
+                rendered_when = render_template(when, context)
+                try:
+                    when_result = eval(rendered_when)
+                except Exception as e:
+                    Printer.warning(f"⚠️ Eval error in step '{name}': {e}")
+                    when_result = False
+
+            except Exception as e:
+                Printer.info(f"⚠️ Failed to evaluate 'when' for step '{name}': {e}")
+                when_result = False
+        else:
+            when_result = bool(when)
+
+        if not when_result:
+            Printer.info(f"⏭ Skipping step '{name}' due to 'when: {when}'")
+            results[name] = {"skipped": True, "reason": f"when={when}"}
+            continue
 
         if step_type == "ai":
             template_name = step.get("template_name", "default")

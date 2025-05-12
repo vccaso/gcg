@@ -1,6 +1,7 @@
 import json
 import re
 from jsonschema import validate, ValidationError
+from jinja2 import Template
 import yaml
 
 STRUCTURED_SCRIPT_SCHEMA = {
@@ -105,6 +106,16 @@ def extract_and_validate_json(raw_input: str, schema: dict) -> dict:
     # except ValidationError as e:
     #     raise ValueError(f"JSON validation error: {e}")
 
+def render_template(template_str: str, context: dict) -> str:
+    """
+    Renders a Jinja-style template string using the provided context.
+    Example: "{{ step1.result.status }}" with {"step1": {"result": {"status": "pass"}}}
+    """
+    try:
+        template = Template(template_str)
+        return template.render(**context)
+    except Exception as e:
+        raise ValueError(f"Jinja rendering failed: {e}")
 
 
 def extract_and_validate_yaml(raw_input: str, schema: dict) -> dict:
