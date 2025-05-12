@@ -1,5 +1,6 @@
 import yaml, importlib
 import re
+import os
 import time
 from utils.printer import Printer
 from utils.json_util import render_template 
@@ -205,11 +206,40 @@ def get_rag_agent(agent_name, collection_name, storage_path):
         return RAGDatabaseUpdaterAgent(collection_name,storage_path)
 
 
-def run_workflow(workflow_path, streamlit_mode=False):
-    start_time = time.time()
+def load_workflow_with_includes(workflow_path, loaded_paths=None):
+    """ Recursively loads workflow YAML and included fragments. """
+    loaded_paths = loaded_paths or set()
+    if workflow_path in loaded_paths:
+        raise ValueError(f"Circular include detected with: {workflow_path}")
+    loaded_paths.add(workflow_path)
 
     with open(workflow_path) as f:
         workflow = yaml.safe_load(f)
+
+    steps = workflow.get("steps", [])
+    includes = workflow.get("include", [])
+
+    if not isinstance(includes, list):
+        includes = [includes]
+
+    for include_file in includes:
+        include_path = os.path.join(os.path.dirname(workflow_path), include_file)
+        included_workflow = load_workflow_with_includes(include_path, loaded_paths)
+        steps = included_workflow["steps"] + steps  # prepend included steps
+
+    workflow["steps"] = steps
+    return workflow
+
+
+
+
+
+def run_workflow(workflow_path, streamlit_mode=False):
+    start_time = time.time()
+
+    # with open(workflow_path) as f:
+    #     workflow = yaml.safe_load(f)
+    workflow = load_workflow_with_includes(workflow_path)
 
     vars_dict = workflow.get("vars", {})
     steps = resolve_vars(workflow["steps"], vars_dict)
@@ -319,118 +349,3 @@ def run_workflow(workflow_path, streamlit_mode=False):
 
     return results
 
-
-
-def run_workflow_original(workflow_path, streamlit_mode=False):
-    start_time = time.time()
-
-    with open(workflow_path) as f:
-        workflow = yaml.safe_load(f)
-
-    vars_dict = workflow.get("vars", {})
-    steps = resolve_vars(workflow["steps"], vars_dict)
-
-    results = {}
-
-    for step in steps: # workflow["steps"]:
-        name, step_type, agent_name = step["name"], step["type"], step["agent"]
-        input_spec = resolve_vars(step["input"], vars_dict)
-        inputs = resolve_inputs(input_spec, results, vars_dict)
-
-
-        if step_type == "ai":
-            template_name = step.get("template_name", "default")
-            temperature = step.get("temperature",0.2)
-            model = step["model"]   
-            llm = get_model(model, temperature)
-            agent = get_ai_agent(llm, agent_name, template_name)
-            if not streamlit_mode:
-                print(f"▶️ {name} using {agent_name}")
-            output = agent.run(**inputs)
-            results[name] = output
-            if(debug):
-                print(f"[DEBUG] Step '{name}' result:", output)
-
-        elif step_type == "validator":
-            agent = globals()[agent_name]()  # Load the validator agent
-            output = agent.validate(**inputs)
-            results[name] = output
-            if(debug):
-                print(f"[DEBUG] Step '{name}' result:", output)
-
-        elif step_type == "ai-image":
-            
-            if agent_name == "ImageAgent":
-                model = step["model"]   
-                temperature = step.get("temperature",0.2)
-                llm = get_model(model, temperature)
-                agent = ImageAgent(llm)
-                result = agent.run(**inputs)
-            elif agent_name == "ImageAnalysisAgent":
-                temperature = step.get("temperature",0.2)
-                model = ModelGptImage1(temperature)
-                agent = ImageAnalysisAgent(model)
-                result = agent.run(**inputs)
-            
-            elif agent_name == "SegmentedImageAgent":
-                agent = SegmentedImageAgent()
-                result = agent.run(**inputs)
-            else:
-                raise ValueError(f"Unknown ai-image agent '{agent_name}'")
-
-            # 🖼 Output handling
-            if "url" in result:
-                print("Image URL:", result["url"])
-            elif "images" in result:
-                print("Generated images:")
-                for section, url in result["images"].items():
-                    print(f"  {section}: {url}")
-            elif "analysis" in result:
-                print("🧠 Image Analysis:\n", result["analysis"])
-            elif "error" in result:
-                print("❌ Error:", result["error"])
-            else:
-                print("⚠️ Unexpected result format:", result)
-
-
-        elif step_type == "ai-audio":
-            if agent_name=="AudioAgent":
-                model_name = step.get("model")
-                if model_name not in MODEL_REGISTRY:
-                    raise ValueError(f"Unknown model '{model_name}'")
-                model_instance = MODEL_REGISTRY[model_name]()
-                agent = AudioAgent(model_instance)
-            if agent_name=="SegmentedAudioAgent":
-                agent = SegmentedAudioAgent()
-            output = agent.run(**inputs)
-            results[name] = output
-            
-            if(debug):
-                print(f"[DEBUG] Step '{name}' result:", output)
-
-        elif step_type == "rag":
-            agent = get_rag_agent(agent_name, step["collection_name"], step["storage_path"])
-            if not streamlit_mode:
-                print(f"▶️ {name} using {agent_name}")
-            output = agent.run(**inputs)
-            results[name] = output
-            if(debug):
-                print(output)
-        else: 
-            agent = load_agent(agent_name)
-
-            if not streamlit_mode:
-                print(f"▶️ {name} using {agent_name}")
-            output = agent.run(**inputs)
-            results[name] = output
-            if(debug):
-                print(output)
-
-    duration = round(time.time() - start_time, 2)
-    if not streamlit_mode:
-        print(f"\n✅ Workflow completed in {duration} seconds.")
-    else:
-        results["_execution_duration"] = duration  # optionally expose it to UI
-
-
-    return results

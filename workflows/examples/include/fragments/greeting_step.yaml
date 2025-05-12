@@ -1,0 +1,8 @@
+steps:
+  - name: greet
+    type: ai
+    agent: ChatAgent
+    model: ModelGpt35Turbo
+    template_name: short
+    input:
+      question: "Say hello to {{ username }}"

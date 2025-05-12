@@ -228,6 +228,67 @@ Or via Streamlit > Validation tab
 
 ---
 
+🔗 Workflow Fragment Inclusion with include:
+
+You can now reuse common step blocks across multiple workflows using the include: directive.
+
+This allows you to keep your YAML workflows modular and DRY (Don't Repeat Yourself).
+
+🧹 Example: Reusing Shared Git Steps
+
+main_workflow.yaml
+```
+name: main-example
+description: Main workflow that includes a greeting step
+
+vars:
+  username: Alice
+
+include:
+  - fragments/greeting_step.yaml
+
+steps:
+  - name: farewell
+    type: ai
+    agent: ChatAgent
+    model: ModelGpt35Turbo
+    template_name: short
+    input:
+      question: "Say goodbye to {{ username }}"
+```
+fragments/greeting_step.yaml
+```
+steps:
+  - name: greet
+    type: ai
+    agent: ChatAgent
+    model: ModelGpt35Turbo
+    template_name: short
+    input:
+      question: "Say hello to {{ username }}"
+```
+✅ Features
+
+ - Supports relative paths for included YAMLs (e.g. fragments/steps.yaml)
+
+ - Included steps are prepended before the main workflow’s steps:
+
+ - The main file’s vars: are applied globally across all steps
+
+ - Detects and prevents circular includes
+
+This enables shared fragments for:
+
+ - GitHub project setup (clone, branch, commit)
+
+ - Audio/image pipelines
+
+ - Common validators
+
+ - Onboarding or reporting steps
+
+---
+
 ## 🔀 Conditional Step Execution with `when`
 
 Each workflow step can now include an optional `when` field to conditionally control whether it should run.
