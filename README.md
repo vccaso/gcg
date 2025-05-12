@@ -228,6 +228,51 @@ Or via Streamlit > Validation tab
 
 ---
 
+## 🔀 Conditional Step Execution with `when`
+
+Each workflow step can now include an optional `when` field to conditionally control whether it should run.
+
+### ✅ Supported Formats
+
+| Type      | Example                                       | Description                            |
+|-----------|-----------------------------------------------|----------------------------------------|
+| Literal   | `when: true`                                  | Always run                             |
+| Expression| `when: "{{ validate_step.status == 'fail' }}"`| Evaluates based on previous results    |
+| Variable  | `when: "{{ doit }}"`                          | Controlled by a value in `vars:`       |
+
+### 📌 Example
+
+```yaml
+vars:
+  doit: true
+
+steps:
+  - name: validate_step
+    type: validator
+    agent: ScriptStructureValidatorAgent
+    input:
+      input_data: "{{ script }}"
+      expected_sections: ["intro", "body", "end"]
+
+  - name: fix_script
+    type: ai
+    agent: ScriptFeedbackValidatorAgent
+    model: ModelGpt35Turbo
+    when: "{{ validate_step.status == 'fail' }}"
+    input:
+      script: "{{ script }}"
+
+  - name: log_result
+    type: utils
+    agent: SaveToFileAgent
+    when: "{{ doit }}"
+    input:
+      content: "{{ fix_script.result }}"
+      file_path: ./logs/fix.txt
+
+
+---
+
 ## 🗨️ Orchestrator Chat with Memory
 
 Plan complex YAML workflows through an iterative chat interface — powered by the OrchestratorAgent.
