@@ -8,6 +8,7 @@ import os
 CONFIG_SCHEDULE_PATH = "configs/workflow_schedules.yaml"
 CONFIG_ALERT_PATH = "configs/alert_rules.yaml"
 ALERT_HISTORY_PATH = "logs/alert_history.log"
+CRON_HISTORY_PATH = "logs/cron_history.log"
 
 alert_last_triggered = {}
 
@@ -32,13 +33,20 @@ def resolve_env_vars(input_dict):
     for k, v in input_dict.items():
         if isinstance(v, str) and v.startswith("${") and v.endswith("}"):
             env_key = v[2:-1]
-            input_dict[k] = os.getenv(env_key, v)  # fallback to original if not found
+            input_dict[k] = os.getenv(env_key, v)
     return input_dict
 
 
 def log_alert(name, message):
     os.makedirs(os.path.dirname(ALERT_HISTORY_PATH), exist_ok=True)
     with open(ALERT_HISTORY_PATH, "a") as log_file:
+        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        log_file.write(f"[{timestamp}] {name}: {message}\n")
+
+
+def log_cron(name, message):
+    os.makedirs(os.path.dirname(CRON_HISTORY_PATH), exist_ok=True)
+    with open(CRON_HISTORY_PATH, "a") as log_file:
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         log_file.write(f"[{timestamp}] {name}: {message}\n")
 
@@ -56,12 +64,15 @@ def schedule_jobs(scheduler):
 
         minute, hour, day, month, weekday = cron_expr
 
-        def job_fn(path=workflow):
-            print(f"\n⏰ Running scheduled job: {name} at {datetime.now()}")
+        def job_fn(path=workflow, job_name=name):
+            print(f"\n⏰ Running scheduled job: {job_name} at {datetime.now()}")
+            log_cron(job_name, "Started")
             try:
                 run_workflow(path)
+                log_cron(job_name, "Completed successfully")
             except Exception as e:
                 print(f"❌ Failed to run workflow {path}: {e}")
+                log_cron(job_name, f"Error: {e}")
 
         scheduler.add_job(job_fn, 'cron', id=name, minute=minute, hour=hour, day=day, month=month, day_of_week=weekday)
 
@@ -74,7 +85,7 @@ def schedule_alerts(scheduler):
         condition = alert["condition"]
         interval = int(alert["interval"])
         actions = alert.get("actions", [])
-        cooldown = alert.get("cooldown", 300)  # default 5 minutes
+        cooldown = alert.get("cooldown", 300)
 
         def check_alert(name=name, condition=condition, actions=actions, cooldown=cooldown):
             print(f"🔍 Evaluating alert: {name}")

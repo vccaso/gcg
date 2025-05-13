@@ -1,0 +1,9 @@
+name: test-cron-job
+
+steps:
+  - name: log_hello
+    type: utils
+    agent: SaveToFileAgent
+    input:
+      content: "Cron job executed at {{ now() }}"
+      file_path: logs/test_cron_output.txt

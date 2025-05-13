@@ -1,6 +1,6 @@
 alerts:
   - name: high_cpu_alert
-    condition: "80 > 70"  # Example placeholder; in practice use a real metric check
+    condition: "80 < 70"  # Example placeholder; in practice use a real metric check
     interval: 10  # Check every 60 seconds
     cooldown: 25
     actions:
