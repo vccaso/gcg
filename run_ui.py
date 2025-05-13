@@ -11,10 +11,15 @@ from chat import render_chat_page
 
 st.set_page_config(page_title=__app_name__, page_icon="🧠")
 
+CONFIG_SCHEDULE_PATH = "configs/workflow_schedules.yaml"
+CONFIG_ALERT_PATH = "configs/alert_rules.yaml"
+CRON_LOG = "logs/cron_history.log"
+ALERT_LOG = "logs/alert_history.log"
+
 # Sidebar menu
 menu = st.sidebar.selectbox(
     "📂 Menu",
-    ("Home", "Chat", "Workflows", "Agents", "Models", "Config", "Validate", "Templates", "API", "Docs")
+    ("Home", "Chat", "Workflows", "Agents", "Models", "Config", "Validate", "Templates", "API", "Docs", "Cronjobs", "Alerts", "Logs")
 )
 
 st.sidebar.markdown(f"<div style='text-align:center; color: gray;'>v{__version__}</div>", unsafe_allow_html=True)
@@ -257,3 +262,43 @@ elif menu == "Docs":
         st.markdown(readme_content)
     else:
         st.warning("README.md not found.")
+# ---------------------
+# 🧠 Models
+# ---------------------
+elif menu == "Cronjobs":
+    st.header("⏰ Scheduled Cronjobs")
+    if os.path.exists(CONFIG_SCHEDULE_PATH):
+        with open(CONFIG_SCHEDULE_PATH) as f:
+            data = yaml.safe_load(f)
+            st.code(yaml.dump(data), language="yaml")
+    else:
+        st.warning("No cronjob configuration found.")
+
+elif menu == "Alerts":
+    st.header("🚨 Alert Rules")
+    if os.path.exists(CONFIG_ALERT_PATH):
+        with open(CONFIG_ALERT_PATH) as f:
+            data = yaml.safe_load(f)
+            st.code(yaml.dump(data), language="yaml")
+    else:
+        st.warning("No alert configuration found.")
+
+elif menu == "Logs":
+    st.header("📜 Logs")
+    col1, col2 = st.columns(2)
+
+    with col1:
+        st.subheader("Cron History")
+        if os.path.exists(CRON_LOG):
+            with open(CRON_LOG) as f:
+                st.text(f.read())
+        else:
+            st.info("No cron log found.")
+
+    with col2:
+        st.subheader("Alert History")
+        if os.path.exists(ALERT_LOG):
+            with open(ALERT_LOG) as f:
+                st.text(f.read())
+        else:
+            st.info("No alert log found.")

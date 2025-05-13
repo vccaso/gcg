@@ -7,7 +7,7 @@ class CreateAlertAgent(BaseAgent):
         super().__init__()
         self.alert_path = alert_path
 
-    def run(self, name, condition, interval, actions):
+    def run(self, name, condition, interval, cooldown, actions):
         os.makedirs(os.path.dirname(self.alert_path), exist_ok=True)
 
         if os.path.exists(self.alert_path):
@@ -27,6 +27,7 @@ class CreateAlertAgent(BaseAgent):
             "name": name,
             "condition": condition,
             "interval": interval,
+            "cooldown": cooldown,
             "actions": actions
         })
 

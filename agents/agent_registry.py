@@ -31,6 +31,8 @@ from agents.validators.script_structure_validator_agent import ScriptStructureVa
 from agents.validators.script_feedback_validator_agent import ScriptFeedbackValidatorAgent
 from agents.images.image_analysis_agent import ImageAnalysisAgent
 from agents.notify.email_agent import GenericEmailAgent
+from agents.notify.webhook_agent import WebhookAgent
+from agents.notify.slack_agent import SlackAgent
 
 
 # ✅ Agent registry for loading agents dynamically
@@ -64,7 +66,9 @@ AGENT_REGISTRY = {
     "ScriptStructureValidatorAgent": ScriptStructureValidatorAgent,
     "ScriptFeedbackValidatorAgent": ScriptFeedbackValidatorAgent,
     "ImageAnalysisAgent": ImageAnalysisAgent,
-    "GenericEmailAgent": GenericEmailAgent
+    "GenericEmailAgent": GenericEmailAgent,
+    "WebhookAgent": WebhookAgent,
+    "SlackAgent": SlackAgent
 
 }
 
@@ -391,4 +395,22 @@ AGENT_CATALOG = {
         ],
         "tags": ["Utility", "Email"]
     },
+    "WebhookAgent": {
+        "type": "Utility",
+        "short_description": "Sends a POST request to a webhook URL.",
+        "detailed_description": [
+            "Sends JSON payloads to external APIs or services.",
+            "Useful for integrations, notifications, and serverless hooks."
+        ],
+        "tags": ["Utility", "Webhook"]
+    },
+    "SlackAgent": {
+        "type": "Utility",
+        "short_description": "Sends a message to a Slack channel via webhook.",
+        "detailed_description": [
+            "Posts formatted messages to Slack using an incoming webhook.",
+            "Use for alerts, updates, and chatops workflows."
+        ],
+        "tags": ["Utility", "Slack"]
+    }
 }

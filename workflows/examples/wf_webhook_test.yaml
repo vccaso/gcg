@@ -1,0 +1,20 @@
+name: webhook-test
+description: Example that uses WebhookAgent agent to send a webhook to a service
+
+steps:
+  - name: send_webhook
+    type: utils
+    agent: WebhookAgent
+    input:
+      url: "https://your-requestbin-url.com"
+      payload:
+        event: "workflow_triggered"
+        timestamp: ${CURRENT_TIME}
+        message: "This is a test webhook from GCG."
+
+  - name: send_slack
+    type: utils
+    agent: SlackAgent
+    input:
+      webhook_url: "https://hooks.slack.com/services/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"
+      message: "SlackAgent test message sent at ${CURRENT_TIME}"
