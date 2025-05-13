@@ -455,6 +455,65 @@ This logs the current time using a runtime-injected variable.
 
 ---
 
+---
+
+## 📣 Notifications via Agents
+
+### ✅ WebhookAgent
+Send JSON payloads to any external system:
+```yaml
+steps:
+  - name: send_webhook
+    type: utils
+    agent: WebhookAgent
+    input:
+      url: "https://your-requestbin-url.com"
+      payload:
+        message: "Triggered at ${CURRENT_TIME}"
+```
+
+### ✅ SlackAgent
+Post messages to Slack using Incoming Webhooks:
+```yaml
+steps:
+  - name: send_slack
+    type: utils
+    agent: SlackAgent
+    input:
+      webhook_url: "https://hooks.slack.com/services/XXX/YYY/ZZZ"
+      message: "This is a test message sent at ${CURRENT_TIME}"
+```
+
+#### 🔧 How to Create Your Slack Webhook
+1. Visit: https://api.slack.com/apps
+2. Create a new app → Enable Incoming Webhooks
+3. Add a new webhook for your workspace
+4. Copy the webhook URL and use it in your workflow
+
+---
+
+## 🧪 Test Workflow Example
+
+### 📄 `workflows/wf_test.yaml`
+
+```yaml
+vars:
+  current_time: ${CURRENT_TIME}
+
+steps:
+  - name: log_hello
+    type: utils
+    agent: SaveToFileAgent
+    input:
+      content: "Cron job executed at ${current_time}"
+      file_path: logs/test_cron_output.txt
+```
+
+This logs the current time using a runtime-injected variable.
+
+---
+
+
 ## ✅ Runtime Engine
 
 Use `scheduler_runner.py` to load both alerts and cronjobs:
