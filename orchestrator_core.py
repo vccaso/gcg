@@ -30,7 +30,7 @@ from models.openai.model_gpt_image_1 import ModelGptImage1
 from config import debug
 from prompt_loader import PromptLoader
 
-def resolve_vars(obj, variables: dict):
+def resolve_vars_original(obj, variables: dict):
     pattern = re.compile(r"\$\{(.*?)\}")
 
     if isinstance(obj, dict):
@@ -44,6 +44,25 @@ def resolve_vars(obj, variables: dict):
         for match in matches:
             if match in variables:
                 obj = obj.replace(f"${{{match}}}", str(variables[match]))
+        return obj
+
+    return obj  # Return original type (int, bool, etc.)
+
+def resolve_vars(obj, variables: dict):
+    pattern = re.compile(r"\$\{(.*?)\}")
+
+    if isinstance(obj, dict):
+        return {k: resolve_vars(v, variables) for k, v in obj.items()}
+
+    elif isinstance(obj, list):
+        return [resolve_vars(i, variables) for i in obj]
+
+    elif isinstance(obj, str):
+        matches = pattern.findall(obj)
+        for match in matches:
+            value = variables.get(match, os.getenv(match))
+            if value is not None:
+                obj = obj.replace(f"${{{match}}}", str(value))
         return obj
 
     return obj  # Return original type (int, bool, etc.)

@@ -2,7 +2,7 @@ name: main-example
 description: Main file that includes a greeting step
 
 vars:
-  username: Alice
+  username: Anna
 
 include:
   - fragments/greeting_step.yaml
@@ -14,4 +14,4 @@ steps:
     model: ModelGpt35Turbo
     template_name: short
     input:
-      question: "Say goodbye to {{ username }}"
+      question: "Say goodbye to ${GIRL_NAME}, {{ username }}'s best friend."

@@ -5,4 +5,4 @@ steps:
     model: ModelGpt35Turbo
     template_name: short
     input:
-      question: "Say hello to {{ username }}"
+      question: "Say hello to ${GIRL_NAME}, {{ username }}'s best friend.."

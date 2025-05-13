@@ -331,6 +331,48 @@ steps:
       content: "{{ fix_script.result }}"
       file_path: ./logs/fix.txt
 
+---
+
+🌱 Environment Variable Support in Workflows
+You can securely inject secrets like API keys, email credentials, and other configuration values using environment variables inside your YAML workflows.
+
+✅ Syntax
+Use the ${VAR_NAME} format to reference an environment variable. The system automatically resolves it using os.environ at runtime:
+'''
+password: ${EMAIL_PASSWORD}
+'''
+If a matching vars: key is not found in the workflow, the system will fall back to environment variables.
+
+📄 Example: Sending Email Securely
+
+```
+name: email notification
+description: Sends an email using SMTP with credentials from environment
+
+steps:
+  - name: notify_team
+    type: utils
+    agent: EmailSenderAgent
+    input:
+      sender: "admin@mydomain.com"
+      recipient: "team@mydomain.com"
+      subject: "🚀 Workflow Completed"
+      body: "The job is done!"
+      password: ${EMAIL_PASSWORD}
+
+```
+
+🔒 Secure Setup
+You can set environment variables using:
+
+```export EMAIL_PASSWORD="your-secret"```
+
+Or store them in a .env file and auto-load with python-dotenv:
+
+```
+EMAIL_PASSWORD=your-secret
+```
+This approach avoids hardcoding secrets in your YAML files while keeping workflows portable and safe.
 
 ---
 
