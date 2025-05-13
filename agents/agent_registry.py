@@ -30,6 +30,7 @@ from agents.images.image_agent import ImageAgent
 from agents.validators.script_structure_validator_agent import ScriptStructureValidatorAgent
 from agents.validators.script_feedback_validator_agent import ScriptFeedbackValidatorAgent
 from agents.images.image_analysis_agent import ImageAnalysisAgent
+from agents.notify.email_agent import GenericEmailAgent
 
 
 # ✅ Agent registry for loading agents dynamically
@@ -62,7 +63,8 @@ AGENT_REGISTRY = {
     "ImageAgent": ImageAgent,
     "ScriptStructureValidatorAgent": ScriptStructureValidatorAgent,
     "ScriptFeedbackValidatorAgent": ScriptFeedbackValidatorAgent,
-    "ImageAnalysisAgent": ImageAnalysisAgent
+    "ImageAnalysisAgent": ImageAnalysisAgent,
+    "GenericEmailAgent": GenericEmailAgent
 
 }
 
@@ -378,5 +380,15 @@ AGENT_CATALOG = {
             "Requires a valid local image path and a prompt."
         ],
         "tags": ["AI", "Vision", "Image Analysis", "GPT-4"]
-    }
+    },
+    "GenericEmailAgent": {
+        "type": "Utility",
+        "short_description": "Sends a plain text email via SMTP.",
+        "detailed_description": [
+            "Uses SMTP to send an email.",
+            "Supports custom subject, sender, recipient, and body.",
+            "Works with any SMTP-compatible provider."
+        ],
+        "tags": ["Utility", "Email"]
+    },
 }
