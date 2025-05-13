@@ -1,4 +1,4 @@
 schedules:
   - name: daily_report
-    cron: "45 18 * * *"  # Every day at 9:00 AM
+    cron: "45 18 * * *"
     workflow: workflows/wf_test_cronjob.yaml

@@ -376,6 +376,100 @@ This approach avoids hardcoding secrets in your YAML files while keeping workflo
 
 ---
 
+## ⏰ Scheduled Cronjobs
+
+Define and execute workflows based on a cron expression.
+
+### 🔧 Setup `configs/workflow_schedules.yaml`
+
+```yaml
+schedules:
+  - name: daily_report
+    cron: "0 9 * * *"  # 9:00 AM daily
+    workflow: workflows/wf_send_report.yaml
+```
+
+- Standard 5-field cron syntax
+- Each job runs a YAML workflow
+- Uses APScheduler under the hood
+
+### 📄 Logs
+
+- Logs saved to: `logs/cron_history.log`
+- Each entry shows start, success, or error
+
+---
+
+## 🚨 Alerts with Cooldown + Actions
+
+Define time-based alerts with trigger conditions and actions.
+
+### 📄 `configs/alert_rules.yaml`
+
+```yaml
+alerts:
+  - name: high_cpu_alert
+    condition: "80 > 70"  # Example condition
+    interval: 60  # Check every 60s
+    cooldown: 300  # Avoid duplicate alerts within 5 mins
+    actions:
+      - agent: GenericEmailAgent
+        input:
+          sender: "you@example.com"
+          recipient: "admin@example.com"
+          subject: "High CPU!"
+          body: "Please investigate."
+          password: ${EMAIL_PASSWORD}
+```
+
+### ✅ Features
+- `interval`: how often to check (seconds)
+- `cooldown`: skip alert if triggered recently
+- `actions`: email, Slack, webhook (via agents)
+- Env vars like `${EMAIL_PASSWORD}` auto-resolved
+
+### 📄 Logs
+
+- All alerts and errors logged to: `logs/alert_history.log`
+
+---
+
+## 🧪 Test Workflow Example
+
+### 📄 `workflows/wf_test.yaml`
+
+```yaml
+vars:
+  current_time: ${CURRENT_TIME}
+
+steps:
+  - name: log_hello
+    type: utils
+    agent: SaveToFileAgent
+    input:
+      content: "Cron job executed at ${current_time}"
+      file_path: logs/test_cron_output.txt
+```
+
+This logs the current time using a runtime-injected variable.
+
+---
+
+## ✅ Runtime Engine
+
+Use `scheduler_runner.py` to load both alerts and cronjobs:
+
+```bash
+python scheduler_runner.py
+```
+
+- Runs indefinitely
+- Executes alerts + workflows as scheduled
+- Outputs logs to terminal and file
+
+---
+
+
 ## 🗨️ Orchestrator Chat with Memory
 
 Plan complex YAML workflows through an iterative chat interface — powered by the OrchestratorAgent.
