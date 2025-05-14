@@ -513,6 +513,36 @@ This logs the current time using a runtime-injected variable.
 
 ---
 
+📈 Workflow Visualization
+Visualize YAML-based AI workflows as interactive graphs directly in the Streamlit UI.
+
+Each step is displayed as a node with its name, agent, and model.
+
+Steps are connected in execution order.
+
+Layout dynamically adapts:
+
+Horizontal for short workflows
+
+Vertical for workflows with many steps
+
+Color-coded by step type (ai, validator, utils, etc.)
+
+Conditional steps (when:) are styled with dashed borders
+
+
+🔧 Customizations
+The visualization supports:
+
+Dynamic layout direction (LR vs TB)
+
+Rounded, filled boxes with styled fonts
+
+Node coloring per step type
+
+Optional tooltips and labels
+
+---
 
 ## ✅ Runtime Engine
 
