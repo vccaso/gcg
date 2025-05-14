@@ -1,0 +1,85 @@
+# 🔮 Advanced Feature Roadmap
+
+## 📈 Monitoring & System Health
+
+### ✅ Recommended:
+
+* **System Monitoring Agents**: `CpuUsageAgent`, `DiskUsageAgent`, `MemoryUsageAgent`
+* Feed metrics into alert workflows with conditions like:
+
+  ```yaml
+  condition: "cpu > 80"
+  ```
+
+## 🕸️ Event-Driven Workflows
+
+### ✅ Recommended:
+
+* **WebhookTriggerAgent** or `webhook_listener.py` to allow:
+
+  * GitHub, forms, or IoT devices to trigger workflows via POST
+
+## 🔊 Streamlit UI Enhancements
+
+### ✅ Recommended:
+
+* UI Pages for:
+
+  * Managing cronjobs and alert rules
+  * Viewing current jobs and history
+  * Manual workflow trigger with parameters
+  * Log viewer with filters/search
+
+## 🔄 Workflow Chaining
+
+### ✅ Recommended:
+
+* Enable workflows to emit outputs for the next
+* Use `RunWorkflowAgent` to cascade executions
+
+## 🧪 Test & Debug Tools
+
+### ✅ Recommended:
+
+* `dry_run` mode to simulate workflow execution
+* Simulated alert conditions for test
+* Persistent log/history with SQLite or TinyDB
+
+---
+
+## 🛠️ Infrastructure Enhancements
+
+### ✅ Recommended:
+
+* **Docker Compose Setup**:
+
+  * API, UI, scheduler, worker
+  * Volume for logs and config
+
+* **Secrets Management**:
+
+  * Load `.env` with fallback to `os.environ`
+  * Optional: Vault, AWS Secrets Manager support
+
+* **Cloud Deploy Targets**:
+
+  * EC2 / GCP VM
+  * Lightweight: Fly.io / Railway / Render
+
+---
+
+## 🤖 Agent Expansion Ideas
+
+| Type        | Agent                                          |
+| ----------- | ---------------------------------------------- |
+| GitHub      | `RepoWatcherAgent`, `IssueNotifierAgent`       |
+| Reports     | `GenerateReportAgent`, `PDFExportAgent`        |
+| Audio/Video | `TextToSpeechAgent`, `ClipMergerAgent`         |
+| NLP         | `SummarizeAgent`, `SentimentAgent`             |
+| ChatOps     | `AskAgent` to route messages to LLM and return |
+
+---
+
+## ✨ Summary
+
+This roadmap proposes useful system extensions for monitoring, chaining, UI interaction, and deployment. These align with your architecture and offer scalable enhancements with minimal disruption. Would you like YAML templates or implementation examples for any of these?

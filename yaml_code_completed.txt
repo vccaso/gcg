@@ -1,0 +1,1153 @@
+wf_test01.yaml
+===
+name: Improve_Cardio_Tips_Workflow
+description: Workflow to ask for tips to improve cardio and save them in a file
+
+vars:
+  local_repo_dir: ./workspace/cardio-tips
+
+steps:
+  - name: ask_for_cardio_tips
+    type: ai
+    agent: ChatAgent
+    model: ModelGpt35Turbo
+    prompt_template: default
+    input:
+      question: "What are 5 effective tips to improve cardio health?"
+
+  - name: save_tips_to_file
+    type: utils
+    agent: SaveToFileAgent
+    model: N/A
+    prompt_template: default
+    input:
+      content: |
+        1. Start with a warm-up before cardio exercises.
+        2. Incorporate interval training for high intensity.
+        3. Stay hydrated throughout your workout.
+        4. Include strength training to complement cardio.
+        5. Monitor your heart rate to optimize performance.
+      file_path: ${local_repo_dir}/cardio_tips.txt
+===
+wf_test03.yaml
+===
+name: GitHub_Workflow_Clone_Create_PR
+description: Workflow to clone a repository, create a new branch, generate Go CRUD code, and create a Pull Request
+
+vars:
+  local_repo_dir: ./workspace/goapp
+
+steps:
+  - name: clone_repository
+    type: git
+    agent: GitHubCloneOrUpdateRepoAgent
+    model: ModelOllama
+    prompt_template: default
+    input:
+      repo_url: https://github.com/vccaso/avila-easychat-goals.git
+      local_repo_dir: ${local_repo_dir}
+
+  - name: create_branch
+    type: git
+    agent: GitHubCreateBranchAgent
+    model: ModelOllama
+    prompt_template: default
+    input:
+      branch_name: testing
+      local_repo_dir: ${local_repo_dir}
+
+  - name: generate_order_crud
+    type: ai
+    agent: GoCRUDAgent
+    model: ModelDeepSeekCoder67
+    prompt_template: default
+    input:
+      model: Order
+      fields: |
+        ID (int)
+        CustomerID (int)
+        TotalAmount (float64)
+        Status (string)
+      local_repo_dir: ${local_repo_dir}
+
+  - name: generate_orderdetail_crud
+    type: ai
+    agent: GoCRUDAgent
+    model: ModelDeepSeekCoder67
+    prompt_template: default
+    input:
+      model: Orderdetail
+      fields: |
+        ID (int)
+        OrderID (int)
+        ProductID (int)
+        Quantity (int)
+      local_repo_dir: ${local_repo_dir}
+
+  - name: create_pull_request
+    type: git
+    agent: GitHubPRAgent
+    model: ModelOllama
+    prompt_template: default
+    input:
+      branch_name: testing
+      base_branch: dev
+      title: "Adding Order and Orderdetail CRUD code"
+      description: "Generated CRUD code for Order and Orderdetail models."
+      local_repo_dir: ${local_repo_dir}
+===
+wf_test02.yaml
+===
+name: generate_go_crud_user
+description: Workflow to generate Go CRUD code for User with common fields
+
+vars:
+  local_repo_dir: ./workspace/goapp
+
+steps:
+  - name: generate_user_crud
+    type: ai
+    agent: GoCRUDAgent
+    model: ModelGpt4Turbo
+    prompt_template: default
+    input:
+      model: User
+      fields: |
+        ID (int)
+        Name (string, required)
+        Email (string, required)
+        Age (int)
+        Address (string)
+      local_repo_dir: ${local_repo_dir}
+
+  - name: generate_user_data
+    type: ai
+    agent: GoCRUDDataAgent
+    model: ModelGpt4Turbo
+    prompt_template: data_only
+    input:
+      model: User
+      local_repo_dir: ${local_repo_dir}
+
+  - name: generate_user_api
+    type: ai
+    agent: GoSwaggerAgent
+    model: ModelGpt4Turbo
+    prompt_template: default
+    input:
+      service_name: UserService
+      models: User
+      routes_file: ${local_repo_dir}/http/server.go
+```
+This workflow will generate Go CRUD code for a User entity with common fields like ID, Name, Email, Age, and Address. It includes steps for generating CRUD operations, data access layer, and API documentation.
+===
+wf_orchestrator.yaml
+===
+name: Orchestrator
+description: this workflow to orchestrate workflows
+  
+steps:
+
+  - name: questions_worfflows
+    type: ai
+    agent: OrchestratorAgent
+    model: ModelGpt35Turbo
+    input:
+      request: "Create a workflow to ask for tips to improve the cardio and save them in a file"
+      save_path: "workflows/wf_test01.yaml"
+
+  - name: generate_workflows
+    type: ai
+    agent: OrchestratorAgent
+    model: ModelGpt35Turbo
+    input:
+      request: "Create a workflow to do a GO CRUD generator code for User with its most commons fields"
+      save_path: "workflows/wf_test02.yaml"
+
+  - name: generate_code_workflows
+    type: ai
+    agent: OrchestratorAgent
+    model: ModelGpt35Turbo
+    input:
+      request: |
+        Create a workflow to clone a repository repo_url: https://github.com/vccaso/avila-easychat-goals.git and 
+        then create a new branch named testing
+        then do a GO CRUD generator code for Order and Orderdetail with its most commont fields 
+        and create a Pull request with those changes to dev
+      save_path: "workflows/wf_test03.yaml"
+
+  - name: questions2_worfflows
+    type: ai
+    agent: OrchestratorAgent
+    model: ModelGpt35Turbo
+    input:
+      request: "Create a workflow to create a short story and generate the audio for that short story and two images related to the story"
+      save_path: "workflows/wf_test04.yaml"
+===
+wf_generated.yaml
+===
+name: Manage_User_CRUD
+description: Add a step to manage the CRUD operations for User entity
+
+vars:
+  local_repo_dir: ./workspace/avila-common
+
+steps:
+  - name: manage_user_crud
+    type: ai
+    agent: GoCRUDAgent
+    model: ModelGpt4Turbo
+    prompt_template: default
+    input:
+      model: User
+      fields: |
+        ID (int)
+        Name (string, required)
+        Email (string, required)
+        Age (int)
+      local_repo_dir: ${local_repo_dir}
+===
+wf_test_cronjob.yaml
+===
+name: test-cron-job
+
+steps:
+  - name: log_hello
+    type: utils
+    agent: SaveToFileAgent
+    input:
+      content: "Cron job executed at {{ now() }}"
+      file_path: logs/test_cron_output.txt
+===
+wf_test04.yaml
+===
+name: ShortStoryWorkflow
+description: Workflow to create a short story, generate audio, and images related to the story
+
+vars:
+  local_repo_dir: ./workspace/story-app
+
+steps:
+  - name: brainstorm_story_ideas
+    type: ai
+    agent: ChatAgent
+    model: ModelGpt35Turbo
+    prompt_template: default
+    input:
+      question: "Generate ideas for a short story about a magical adventure"
+
+  - name: generate_story_audio
+    type: ai
+    agent: AudioAgent
+    model: ModelTTS1
+    prompt_template: default
+    input:
+      mode: tts
+      text: "Once upon a time, in a faraway land, there lived a young wizard named Merlin."
+      voice: standard
+      output_path: output/audio/story_intro.wav
+
+  - name: generate_story_images
+    type: ai
+    agent: Dalle3Agent
+    model: ModelDalle3
+    prompt_template: default
+    input:
+      prompt: "A magical forest with glowing fireflies and a hidden castle"
+      image_path_1: "output/images/magical_forest.png"
+
+  - name: generate_story_images
+    type: ai
+    agent: Dalle3Agent
+    model: ModelDalle3
+    prompt_template: default
+    input:
+      prompt: "A young wizard casting a spell to protect the enchanted kingdom"
+      image_path_2: "output/images/wizard_spell.png"
+===
+examples/wf_chat.yaml
+===
+name: chat example
+description: this workflow chat wiht local model
+
+vars:
+  model: ModelOllama
+  model2: ModelGpt35Turbo
+  model3: ModelGpt4Turbo
+  topic: Aerospace Engineering
+  color: blue
+steps:
+
+  - name: tips
+    type: ai
+    agent: ChatAgent
+    model: ${model}
+    temperature: 1.0
+    template_name: short
+    input:
+      question: "Whay the sky is {{ color }}?"
+
+  - name: tips2
+    type: ai
+    agent: ChatAgent
+    temperature: 0.01
+    template_name: short
+    model: ${model}
+    input:
+      question: "Whay the sky is {{ color }}?"
+
+===
+examples/wf_webhook_test.yaml
+===
+name: webhook-test
+description: Example that uses WebhookAgent agent to send a webhook to a service
+
+steps:
+  - name: send_webhook
+    type: utils
+    agent: WebhookAgent
+    input:
+      url: "https://your-requestbin-url.com"
+      payload:
+        event: "workflow_triggered"
+        timestamp: ${CURRENT_TIME}
+        message: "This is a test webhook from GCG."
+
+  - name: send_slack
+    type: utils
+    agent: SlackAgent
+    input:
+      webhook_url: "https://hooks.slack.com/services/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"
+      message: "SlackAgent test message sent at ${CURRENT_TIME}"
+
+===
+examples/wf_image.yaml
+===
+name: image generator
+description: this workflow is to generate images
+
+steps:
+
+  - name: generate_login_feature
+    type: ai-image
+    agent: Dalle3Agent
+    input:
+      prompt: "Create an image in the style of a classic book illustration for 'The Old Man and the Sea': A lone, elderly fisherman in his small skiff fights against a violent sea storm. Rough, dark waves threaten to swamp the boat. Perhaps a thick fishing line is taut, disappearing into the tumultuous water. Focus on the man's resilience against overwhelming nature."
+      image_path: "workspace/images/viejo_y_el_mar.png"
+
+===
+examples/wf_audio.yaml
+===
+  
+name: audio example
+description: this workflow is example to manage audio
+  
+steps:
+
+  - name: generate_voice_greeting
+    type: ai-audio
+    agent: AudioAgent
+    model: ModelTTS1
+    input:
+      mode: tts
+      text: "A book review is a critical analysis of a book, typically including a summary of the plot or content, an evaluation of the book's strengths and weaknesses, and a recommendation for potential readers. It helps readers decide if they should read a particular book by providing insights into its content, style, and overall quality. "
+      voice: alloy
+      output_path: "workspace/audio/test01.wav"
+
+  # - name: transcribe_audio_note
+  #   type: ai
+  #   agent: AudioAgent
+  #   model: ModelTTS1
+  #   input:
+  #     mode: stt
+  #     audio_file_path: "input/audio/voice_note.mp3"
+===
+examples/images/wf_images_multimodel.yaml
+===
+vars:
+  prompt: "A futuristic city skyline at sunset"
+  base_dir: "workspace/images/futuristic"
+  filename: "sunset_city"
+  prompt_analyze: "Describe the key emotions or scene depicted in this image"
+
+steps:
+  - name: generate_with_dalle2
+    type: ai-image
+    agent: ImageAgent
+    model: ModelDalle2
+    input:
+      prompt: ${prompt}
+      output_path: ${base_dir}/dalle2_${filename}.png
+
+  - name: generate_with_dalle3
+    type: ai-image
+    agent: ImageAgent
+    model: ModelDalle3
+    input:
+      prompt: ${prompt}
+      output_path: ${base_dir}/dalle3_${filename}.png
+
+  - name: analyze_image
+    type: ai-image
+    agent: ImageAnalysisAgent
+    model: ModelGptImage1
+    input:
+      prompt: ${prompt_analyze}
+      image_path: ${base_dir}/dalle3_${filename}.png
+
+===
+examples/include/main_workflow.yaml
+===
+name: main-example
+description: Main file that includes a greeting step
+
+vars:
+  username: Anna
+
+include:
+  - fragments/greeting_step.yaml
+
+steps:
+  - name: farewell
+    type: ai
+    agent: ChatAgent
+    model: ModelGpt35Turbo
+    template_name: short
+    input:
+      question: "Say goodbye to ${GIRL_NAME}, {{ username }}'s best friend."
+
+===
+examples/include/fragments/greeting_step.yaml
+===
+steps:
+  - name: greet
+    type: ai
+    agent: ChatAgent
+    model: ModelGpt35Turbo
+    template_name: short
+    input:
+      question: "Say hello to ${GIRL_NAME}, {{ username }}'s best friend.."
+
+===
+examples/code/wf_crud.yaml
+===
+name: crud example
+description: this workflow generate GO code
+
+vars:
+  local_repo_dir: ./workspace/avila-easychat-goals
+  source_branch: dev
+  branch_name: model3turbo
+  repo_name: avila-easychat-goals
+  additional_model: gpt-4o-mini
+  model2: ModelGpt4Turbo
+  model: ModelGpt35Turbo
+  model3: ModelOllama
+  model4: ModelDeepSeekCoder67
+
+  product_fields: |
+        ID (int)
+        Name (string, required)
+        Price (float64, required)
+
+  order_fields: |
+        ID (int)
+        OrderDate (datetime, required)
+        EmployeeID (int, required)
+        Status (int, required)
+
+  orderdetail_fields: |
+        ID (int)
+        OrderID (int)
+        ProductID (int)
+        UnitPrice (float64, required)
+        Quantity (int, required)
+
+steps:
+
+  - name: clone_repo
+    type: git
+    agent: GitHubCloneOrUpdateRepoAgent
+    input:
+      repo_url: https://github.com/vccaso/avila-easychat-goals.git
+      local_repo_dir: ${local_repo_dir}
+
+  - name: checkout_branch
+    type: git
+    agent: GitHubCheckoutBranchAgent
+    input:
+      source_branch: ${source_branch}
+      local_repo_dir: ${local_repo_dir}
+
+  - name: create_branch
+    type: git
+    agent: GitHubCreateBranchAgent
+    input:
+      branch_name: ${branch_name}
+      local_repo_dir: ${local_repo_dir}
+
+  - name: generate_product
+    type: ai
+    agent: GoCRUDAgent
+    model: ${model4}
+    template_name: go_crud
+    input:
+      model: "Product"
+      fields: ${product_fields}
+      local_repo_dir: ${local_repo_dir}
+
+  - name: generate_data_layer_product
+    type: ai
+    agent: GoCRUDDataAgent
+    model: ${model4}
+    prompt_template: data_only
+    temperature: 0.2
+    input:
+      model: Product
+      fields: ${product_fields}
+      local_repo_dir: ${local_repo_dir}
+
+  - name: generate_data_layer_detail
+    type: ai
+    agent: GoCRUDDataAgent
+    model: ${model3}
+    prompt_template: data_only
+    temperature: 0.2
+    input:
+      model: Order
+      fields: ${order_fields}
+      local_repo_dir: ${local_repo_dir}
+
+  - name: generate_data_layer_detail
+    type: ai
+    agent: GoCRUDDataAgent
+    model: ${model3}
+    prompt_template: data_only
+    temperature: 0.2
+    input:
+      model: OrderDetail
+      fields: ${orderdetail_fields}
+      local_repo_dir: ${local_repo_dir}
+
+  - name: stage_commit_push
+    type: git
+    agent: GitHubCommitAgent
+    input:
+      new_branch: ${branch_name}
+      local_repo_dir: ${local_repo_dir}
+      commit_message: "Code added for Product and Ticket"
+
+  - name: pull_request
+    type: git
+    agent: GitHubPRAgent
+    input:
+      repo_name: ${repo_name}
+      pr_title: "Product and Ticket added"
+      new_branch: ${branch_name}
+      source_branch: ${source_branch}
+      pr_body: "Code generated for Product and Ticket"
+
+===
+examples/code/wf_angular.yaml
+===
+name: angular code generator
+description: this workflow angular code generator
+
+vars:
+  model: ModelGpt4
+
+steps:
+
+  - name: generate_login_feature
+    type: ai
+    agent: AngularAppAgent
+    model: ModelGpt4
+    prompt_template: default
+    input:
+      feature_description: "Create a login form with username and password fields, validation, and a login button."
+      app_base_dir: src/app/features/auth
+
+===
+examples/code/wf_swagger.yaml
+===
+name: code_generator_workflow
+description: this workflow generate code for CRUD
+
+vars:
+  local_repo_dir: ./workspace/avila-easychat-goals
+  source_branch: dev
+  branch_name: comments
+  repo_name: avila-easychat-goals
+
+steps:
+
+  - name: clone_repo
+    type: git
+    agent: GitHubCloneOrUpdateRepoAgent
+    input:
+      repo_url: https://github.com/vccaso/avila-easychat-goals.git
+      local_repo_dir: ${local_repo_dir}
+
+  - name: checkout branch
+    type: git
+    agent: GitHubCheckoutBranchAgent
+    input:
+      source_branch: ${source_branch}
+      local_repo_dir: ${local_repo_dir}
+
+  - name: create branch
+    type: git
+    agent: GitHubCreateBranchAgent
+    input:
+      branch_name: ${branch_name}
+      local_repo_dir: ${local_repo_dir}
+
+  - name: generate_code
+    type: ai
+    agent: GoSwaggerAgent
+    model: ModelGpt35Turbo
+    input:
+      local_repo_dir: ${local_repo_dir}
+
+  - name: stage_commit_push
+    type: git
+    agent: GitHubCommitAgent
+    input:
+      new_branch: ${branch_name}
+      local_repo_dir: ${local_repo_dir}
+      commit_message: "Swagger comments code added"
+
+  - name: stage_commit_push
+    type: git
+    agent: GitHubPRAgent
+    input:
+      repo_name: ${repo_name}
+      pr_title: "Swagger comments code added"
+      new_branch: ${branch_name}
+      source_branch: ${source_branch}
+      pr_body: "Swagger comments code added"
+
+===
+examples/code/wf_py_req_extractor.yaml
+===
+name: python requeriment extractor 
+description: The purpose of this agent is to scan a source code repository and automatically identify which dependencies (e.g., Python packages) it uses.
+
+vars:
+  local_repo_dir: ./workspace/taipy
+
+
+steps:
+
+  # - name: clone_repo
+  #   type: git
+  #   agent: GitHubCloneOrUpdateRepoAgent
+  #   input:
+  #     repo_url: https://github.com/Avaiga/taipy
+  #     local_repo_dir: ${local_repo_dir}
+
+  - name: extract_requirements
+    type: req
+    agent: RequirementsExtractorAgent
+    input:
+      repo_path: ${local_repo_dir}
+      key: requirements
+
+  - name: generate_requirements_file
+    type: file
+    agent: SaveToFileAgent
+    input:
+      content: extract_requirements.requirements
+      file_path: ./workspace/avila-goals.txt
+===
+examples/content/wf_book.yaml
+===
+name: chat example
+description: this workflow chat wiht local model
+
+vars:
+  header: "Create a short story about three siblins named Victoria, Ethan and Eli"
+  dragon: Pititi
+  file_name: workspace/mixing_lang.txt
+  doit: true
+
+steps:
+
+  - name: chapter_1
+    type: ai
+    agent: ChatAgent
+    model: ModelOllama
+    when: false
+    template_name: spanish
+    input:
+      question: "{{ header }} who find a Dragon named {{ dragon }} and meke him their best friend"
+      save_to_file: true
+      file_name: ${file_name}
+
+  - name: chapter_2
+    type: ai
+    agent: ChatAgent
+    model: ModelGpt35Turbo
+    template_name: chinese
+    when: "{{ chapter_1.status != 'fail' }}"
+    input:
+      question: "{{ header }} with their best friend a Dragon named {{ dragon }} traveling to the volcano Vesubio"
+      save_to_file: true
+      file_name: ${file_name}
+
+  - name: chapter_3
+    type: ai
+    agent: ChatAgent
+    model: ModelOllama
+    when: "{{ doit }}"
+    input:
+      question: "{{ header }} with their best friend a Dragon named {{ dragon }} traveling to the enchanged city Ocapuna"
+      save_to_file: true
+      file_name: ${file_name}
+
+===
+examples/content/wf_content.yaml
+===
+name: chat example
+description: this workflow chat wiht local model
+
+vars:
+  header1: "Create a introductory text about the pros and cons of AI in robotic. Not more than 200 words, not less of 50."
+  header2: "develop the importance and risks of AI in robotics. Not more than 300 words, not less of 100."
+  file_name: workspace/blog01.txt
+
+steps:
+
+  - name: Content 1
+    type: ai
+    agent: ChatAgent
+    model: ModelOllama
+    template_name: default
+    input:
+      question: "{{ header1 }}"
+      save_to_file: true
+      file_name: ${file_name}
+
+  - name: Content 2
+    type: ai
+    agent: ChatAgent
+    model: ModelOllama
+    input:
+      question: "{{ header2 }}"
+      save_to_file: true
+      file_name: ${file_name}
+
+===
+examples/youtube/wf_feedback.yaml
+===
+vars:
+  topic: "How to develop emotional intelligence"
+  name: "eq_script"
+
+steps:
+  - name: generate_script
+    type: ai
+    agent: ChatAgent
+    model: ModelOllama
+    template_name: youtube_history
+    input:
+      question: ${topic}
+
+  - name: validate_script_feedback
+    type: ai
+    agent: ScriptFeedbackValidatorAgent
+    model: ModelGpt35Turbo
+    input:
+      script: "{{ generate_script.result }}"
+      topic: ${topic}
+
+===
+examples/youtube/wf_example2.yaml
+===
+name: create_and_publish_youtube_video
+description: Creates a narrated video and uploads it to YouTube
+
+vars:
+  script_topic: "One tip to improve my health"
+  name: "testnewmodels02"
+  audio_model1: AudioModelOpenAI
+  audio_model2: AudioModelCoqui
+
+steps:
+  - name: generate_script
+    type: ai
+    agent: ChatAgent
+    model: ModelOllama
+    input:
+      question: ${script_topic}
+
+  - name: generate_thumbnail
+    type: ai-image
+    agent: ImageAgent
+    model: ImageModelStableDiffusion
+    input:
+      prompt: "A clean and professional YouTube thumbnail for a video titled '${script_topic}'."
+      output_path: workspace/images/${name}.png
+
+  
+===
+examples/youtube/wf_video_with_subtitle.yaml
+===
+name: youtube_video_with_subtitles
+description: Generates a narrated video with subtitles and a static image
+
+vars:
+  topic: "How to Stay Productive While Working from Home"
+  voice: alloy
+  audio_file: workspace/audio/video_narration.wav
+  image_file: workspace/images/youtube_thumbnail.png
+  video_file: workspace/videos/productivity.mp4
+  srt_file: workspace/captions/productivity.srt
+  duration: 60.0
+
+steps:
+  - name: generate_script
+    type: ai
+    agent: ChatAgent
+    model: ModelOllama
+    input:
+      question: "Write a YouTube script about '${topic}' in a friendly, conversational tone."
+
+  - name: generate_audio
+    type: ai-audio
+    agent: AudioAgent
+    model: ModelTTS1
+    input:
+      mode: tts
+      text: "{{ generate_script.result }}"
+      voice: ${voice}
+      output_path: ${audio_file}
+
+  - name: generate_subtitles
+    type: tool
+    agent: SubtitleGeneratorAgent
+    input:
+      text: "{{ generate_script.result }}"
+      output_path: ${srt_file}
+      duration: ${duration}
+
+  - name: assemble_video
+    type: tool
+    agent: VideoAssemblerAgent
+    input:
+      image_path: ${image_file}
+      audio_path: ${audio_file}
+      output_video_path: ${video_file}
+      duration: ${duration}
+
+===
+examples/youtube/wf_example1.yaml
+===
+name: create_and_publish_youtube_video
+description: Creates a narrated video and uploads it to YouTube
+
+vars:
+  script_topic: "One tip to improve my health"
+  name: "testnewmodels02"
+  audio_model1: AudioModelOpenAI
+  audio_model2: AudioModelCoqui
+
+steps:
+  - name: generate_script
+    type: ai
+    agent: ChatAgent
+    model: ModelOllama
+    input:
+      question: ${script_topic}
+
+  - name: generate_audio
+    type: ai-audio
+    agent: AudioAgent
+    model: ${audio_model2}
+    input:
+      mode: tts
+      text: "{{ generate_script.result }}"
+      voice: alloy
+      factor: 1.5
+      output_path: workspace/audio/${name}.wav
+
+  - name: generate_thumbnail
+    type: ai-image
+    agent: Dalle3Agent
+    input:
+      prompt: "A clean and professional YouTube thumbnail for a video titled '${script_topic}'."
+      image_path: workspace/images/${name}.png
+
+  - name: assemble_video
+    type: tool
+    agent: VideoAssemblerAgent
+    input:
+      audio_path: workspace/audio/${name}.wav
+      image_path: workspace/images/${name}.png
+      output_video_path: workspace/videos/${script_topic}.mp4
+
+  - name: upload_to_youtube
+    type: tool
+    agent: YouTubeUploaderAgent
+    input:
+      video_path: workspace/videos/${name}.mp4
+      title: "${script_topic}"
+      description: "Learn productivity tips and hacks for remote work in this helpful video."
+      tags: "productivity, remote work, work from home"
+
+===
+examples/youtube/wf_segmented_01.yaml
+===
+name: structured_script_audio
+description: Generates a structured YouTube script and converts each section to audio
+
+vars:
+  topic: "The begining, middle, and end of the Trojan war, as well as the gods that instigated it."
+  model1: ModelOllama
+  model: ModelGpt35Turbo
+  voice: alloy
+  audio_dir: workspace/video09/audio
+  image_dir: workspace/video09/images
+  filename_prefix: troya
+  final_video_path: workspace/video09/final_video.mp4
+  final_subtitle_path: workspace/video09/final_video.srt
+
+
+steps:
+  - name: generate_structured_script
+    type: ai
+    agent: ChatAgent
+    model: ${model1}
+    template_name: youtube_history
+    input:
+      question: ${topic}
+
+  - name: generate_audio_segments
+    type: ai-audio
+    agent: SegmentedAudioAgent
+    model: ModelTTS1
+    input:
+      model: tts-1
+      text_sections: "{{ generate_structured_script.result }}"
+      output_dir: ${audio_dir}
+      filename_prefix: ${filename_prefix}
+      factor: 1.6
+      voice: ${voice}
+
+  - name: generate_thumbnails
+    type: ai-image
+    agent: SegmentedImageAgent
+    input:
+      model: dall-e-2
+      text_sections: "{{ generate_structured_script.result }}"
+      output_dir: ${image_dir}
+      filename_prefix: ${filename_prefix}
+      
+  - name: generate_subtitles
+    type: tool
+    agent: SegmentedSubtitleGeneratorAgent
+    input:
+      text_sections: "{{ generate_structured_script.result }}"
+      audio_dir: ${audio_dir}
+      filename_prefix: ${filename_prefix}
+      output_path: ${final_subtitle_path}
+
+  - name: assemble_video
+    type: tool
+    agent: SegmentedVideoAssemblerAgent
+    input:
+      audio_dir: ${audio_dir}
+      image_dir: ${image_dir}
+      output_path:  ${final_video_path}
+
+===
+examples/rag/workflow_rag_code.yaml
+===
+name: code_generator_workflow
+description: this workflow generates code for CRUD
+
+vars:
+  local_repo_dir: ./avila-easychat-goals
+  source_branch: dev
+  repo_url: https://github.com/vccaso/avila-easychat-goals.git
+  storage_path: ./workspace/rag_db
+
+steps:
+  # - name: clone_repo
+  #   type: git
+  #   agent: GitHubCloneOrUpdateRepoAgent
+  #   input:
+  #     repo_url: ${repo_url}
+  #     local_repo_dir: ${local_repo_dir}
+
+  # - name: checkout_branch
+  #   type: git
+  #   agent: GitHubCheckoutBranchAgent
+  #   input:
+  #     source_branch: ${source_branch}
+  #     local_repo_dir: ${local_repo_dir}
+
+
+
+
+  - name: create_rag_db
+    type: rag
+    agent: RAGDatabaseBuilderAgent
+    collection_name: project_docs
+    storage_path: ${storage_path}
+    input:
+      source_files:
+        - ./docs/documentation.txt
+        - ./docs/landing_page.txt
+
+
+  - name: update_rag_db
+    type: rag
+    agent: RAGDatabaseUpdaterAgent
+    collection_name: project_docs
+    storage_path: ${storage_path}
+    input:
+      source_files:
+        - ./docs/workflows.txt
+
+  - name: query_rag_db
+    type: rag
+    agent: RAGQueryAgent
+    collection_name: project_docs
+    storage_path: ${storage_path}
+    input:
+      user_query: "How to create a workflow?"
+
+
+
+
+  # - name: build_knowledge_db
+  #   type: rag
+  #   agent: RAGDatabaseBuilderAgent
+  #   input:
+  #     source_files:
+  #       - ./avila-easychat-goals/README.md
+  #       - ./avila-easychat-goals/model/goal.go
+  #     collection_name: goals_knowledge
+  #     storage_backend: file
+
+  # - name: generate_crud
+  #   type: llm
+  #   agent: RAGQueryAgent
+  #   input:
+  #     collection_name: goals_knowledge
+  #     user_query: Generate Go CRUD endpoints for the Goal model.
+  #     storage_backend: file
+  #     save_to_file: true
+  #     file_name: ./output/generated_crud.go
+
+===
+examples/rag/workflow_rag.yaml
+===
+name: chat example
+description: this workflow chat wiht local model
+
+steps:
+
+
+- name: build_vector_store
+  type: rag
+  agent: RAGDatabaseBuilderAgent
+  input:
+    source_files:
+      - docs/manual.pdf
+      - docs/README.md
+    collection_name: "product_docs"
+    storage_backend: "chroma"
+
+
+- name: update_knowledge
+  type: rag
+  agent: RAGDatabaseUpdaterAgent
+  input:
+    collection_name: "product_docs"
+    new_docs:
+      - changelog.txt
+    storage_backend: "qdrant"
+
+
+- name: generate_answer
+  type: rag
+  agent: RAGQueryAgent
+  input:
+    collection_name: "product_docs"
+    user_query: "How does the permission system work?"
+    storage_backend: "memory"
+
+
+- name: attach_shared_rag
+  type: rag
+  agent: RAGAttachAgent
+  input:
+    collection_name: "company_knowledge"
+    alias: "shared_rag"
+    storage_backend: "file"
+
+
+- name: attach_shared_rag
+  type: rag
+  agent: RAGAttachAgent
+  input:
+    collection_name: "company_knowledge"
+    alias: "shared_rag"
+    storage_backend: "file"
+
+
+- name: ingest_docs
+  type: rag
+  agent: RAGDatabaseBuilderAgent
+  input:
+    source_files: ["docs/setup.pdf"]
+    collection_name: "setup_docs"
+    storage_backend: "file"
+
+- name: ask_question
+  type: rag
+  agent: RAGQueryAgent
+  input:
+    collection_name: "setup_docs"
+    user_query: "How do I deploy this to Kubernetes?"
+    storage_backend: "file"
+
+===
+examples/validators/wf_validator.yaml
+===
+name: use_validators
+description: Use validator to check the results from a previous step.
+
+vars:
+  topic: "One tip to improve my health"
+
+steps:
+  - name: generate_structured_script
+    type: ai
+    agent: ChatAgent
+    model: ModelOllama
+    template_name: youtube_history
+    input:
+      question: ${topic}
+
+
+  - name: validate_script
+    type: validator
+    agent: ScriptStructureValidatorAgent
+    input:
+      input_data: "{{ generate_structured_script.result }}"
+      expected_sections:
+        - intro
+        - background
+        - key_figures
+        - turning_point
+        - daily_life
+        - conflict
+        - resolution
+        - impact
+        - reflection
+        - outro
+
+===
