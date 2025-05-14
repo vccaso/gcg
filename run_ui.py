@@ -8,6 +8,7 @@ from agents.agent_registry import AGENT_CATALOG
 from api.api_catalog import API_CATALOG
 from config import __version__, __app_name__, __workflow_path__
 from chat import render_chat_page
+from graphviz import Digraph
 
 st.set_page_config(page_title=__app_name__, page_icon="🧠")
 
@@ -91,6 +92,65 @@ elif menu == "Chat":
 elif menu == "Workflows":
     st.title("📄 Browse Workflow Files")
 
+    def get_step_colors(step_type):
+        return {
+            "ai": ("#66aaff", "#004488"),
+            "validator": ("#b4e197", "#4b8544"),
+            "utils": ("#ffe599", "#b8860b"),
+            "git": ("#f4cccc", "#a61c00"),
+            "rag": ("#d9d2e9", "#5e4b8b")
+        }.get(step_type, ("#dddddd", "#666666"))  # Default
+
+    def render_workflow_graph(workflow_dict):
+        dot = Digraph()
+        steps = workflow_dict.get("steps", [])
+        # "BT" — Bottom to Top
+        # "RL" — Right to Left
+        rankdir = "LR" # "LR" — Left to Right
+        if len(steps)>4:
+            rankdir = "TB" # "TB" — Top to Bottom (default)
+        dot.attr(   rankdir=rankdir, 
+                    bgcolor="#99ccff",
+                    margin="0.4",        # Default is 0.05; increase for more padding around the entire graph
+                    pad="0.5",           # Extra padding outside the drawing
+                    nodesep="0.8",       # Horizontal spacing between nodes
+                    ranksep="0.8" )       # Vertical spacing between levels)  # top-to-bottom layouttransparent
+
+        dot.attr(label=f"<<b>{workflow_dict.get('name', 'Workflow')}</b>>", fontsize="16", labelloc="t")
+        for i, step in enumerate(steps):
+            node_name = step["name"]
+            agent = step.get("agent", "unknown")
+            model = step.get("model", "N/A")
+            step_type = step.get("type", "unknown")
+            fillcolor, fontcolor = get_step_colors(step_type)
+
+            style = "rounded,filled"
+            if "when" in step:
+                style += ",dashed"
+
+            label = f"<<b>{i+1}. {node_name}</b><br/><br/><font point-size='10'>[{agent}]<br/>LLM:{model}</font>>"
+
+            # 🧩 Custom node styling
+            dot.node(
+                node_name,
+                label=label,
+                tooltip=f"{step_type} | {agent} | {model}",
+                shape="box",
+                style=style,
+                color="#aaaaff",
+                fillcolor=fillcolor,
+                fontname="Helvetica",
+                fontcolor=fontcolor,
+                fontsize="14",
+            )
+
+            if i > 0:
+                prev_step = steps[i - 1]["name"]
+                dot.edge(prev_step, node_name)
+
+        return dot
+
+
     workflow_files = []
     for root, _, files in os.walk(__workflow_path__):
         for file in files:
@@ -103,7 +163,17 @@ elif menu == "Workflows":
     if selected_workflow:
         with open(os.path.join(__workflow_path__, selected_workflow)) as f:
             content = f.read()
-        st.code(content, language="yaml")
+
+        # Parse the YAML safely
+        try:
+            workflow_dict = yaml.safe_load(content)
+            st.markdown("### 📈 Workflow Visualization")
+            graph = render_workflow_graph(workflow_dict)
+            st.graphviz_chart(graph)
+            st.code(content, language="yaml")
+        except Exception as e:
+            st.error(f"Failed to parse and render workflow graph: {e}")
+
 
 # ---------------------
 # 🧠 Agents
