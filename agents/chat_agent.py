@@ -35,6 +35,7 @@ class ChatAgent:
                         f.write(f"{response}\n\n")
             except Exception as e:
                 print(f"⚠️ Failed to save response to file '{file_name}': {e}")
-
-        return response
+                return {"status": "Fail", "details":f"Failed to save response to file '{file_name}': {e}"}
+        return {"status": "Success", "details":f"{response}"}
+    
     

@@ -20,23 +20,23 @@ steps:
       save_to_file: true
       file_name: ${file_name}
 
-  - name: chapter_2
-    type: ai
-    agent: ChatAgent
-    model: ModelGpt35Turbo
-    template_name: chinese
-    when: "{{ chapter_1.status != 'fail' }}"
-    input:
-      question: "{{ header }} with their best friend a Dragon named {{ dragon }} traveling to the volcano Vesubio"
-      save_to_file: true
-      file_name: ${file_name}
+  # - name: chapter_2
+  #   type: ai
+  #   agent: ChatAgent
+  #   model: ModelGpt35Turbo
+  #   template_name: chinese
+  #   when: "{{ chapter_1.status != 'fail' }}"
+  #   input:
+  #     question: "{{ header }} with their best friend a Dragon named {{ dragon }} traveling to the volcano Vesubio"
+  #     save_to_file: true
+  #     file_name: ${file_name}
 
-  - name: chapter_3
-    type: ai
-    agent: ChatAgent
-    model: ModelOllama
-    when: "{{ doit }}"
-    input:
-      question: "{{ header }} with their best friend a Dragon named {{ dragon }} traveling to the enchanged city Ocapuna"
-      save_to_file: true
-      file_name: ${file_name}
+  # - name: chapter_3
+  #   type: ai
+  #   agent: ChatAgent
+  #   model: ModelOllama
+  #   when: "{{ doit }}"
+  #   input:
+  #     question: "{{ header }} with their best friend a Dragon named {{ dragon }} traveling to the enchanged city Ocapuna"
+  #     save_to_file: true
+  #     file_name: ${file_name}

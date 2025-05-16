@@ -74,8 +74,15 @@ if menu == "Home":
                             continue
                         st.subheader(f"Step: {step}")
                         if isinstance(output, dict) and "status" in output and "details" in output:
-                            status_icon = "✅" if output["status"].lower() == "success" else "❌"
-                            # st.markdown(f"{status_icon} **Status:** {output['status']}  \n**Details:** {output['details']}")
+                            status_lower = output["status"].lower()
+                            if status_lower == "success":
+                                status_icon = "✅"
+                            elif status_lower == "fail":
+                                status_icon = "❌"
+                            elif status_lower == "skipped":
+                                status_icon = "⏭️"
+                            else:
+                                status_icon = "ℹ️"  # default for unknown statuses
                             st.markdown(f"{status_icon} {output['details']}")
                         else:
                             st.text(output)

@@ -294,7 +294,7 @@ def run_workflow(workflow_path, streamlit_mode=False):
 
         if not when_result:
             Printer.info(f"⏭ Skipping step '{name}' due to 'when: {when}'")
-            results[name] = {"skipped": True, "reason": f"when={when}"}
+            results[name] = {"status": "Skipped", "details": f"when={when}"}
             continue
 
         if step_type == "ai":
