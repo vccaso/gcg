@@ -15,7 +15,7 @@ class GitHubCommitAgent(BaseAgent):
             Printer.message("Committed changes.")
         except git.exc.GitCommandError as e:
             Printer.error(f"No changes to commit or commit failed: {e}")
-            return
+            return {"status": "Fail", "details": f"No changes to commit or commit failed: {e}"}
 
         origin = self.repo.remotes.origin
         try:
@@ -23,3 +23,5 @@ class GitHubCommitAgent(BaseAgent):
             Printer.message(f"Pushed branch {new_branch} to GitHub.")
         except Exception as e:
             Printer.error("Error during push:", e)
+            return {"status": "Fail", "details": f"Error during push:: {e}"}
+        return {"status": "Success", "details": f"new_branch: {new_branch}"}

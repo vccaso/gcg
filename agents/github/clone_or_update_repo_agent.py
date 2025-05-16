@@ -25,9 +25,9 @@ class GitHubCloneOrUpdateRepoAgent():
                 self.repo.remotes.origin.fetch()
                 return {"status": "updated", "repo_path": local_repo_dir}
             else:
-                Printer.warning("Repo exists and update_if_exists=False. Skipping.")
+                Printer.info("Repo exists and update_if_exists=False. Skipping.")
                 return {"status": "skipped", "repo_path": local_repo_dir}
         else:
             Printer.message("Cloning repository...")
             self.repo = git.Repo.clone_from(auth_repo_url, local_repo_dir)
-        return {"status": "cloned", "repo_path": local_repo_dir}
+        return {"status": "Success", "details": f"repo_path {local_repo_dir}"}

@@ -164,6 +164,10 @@ def resolve_inputs_original(input_dict, context, variables=None):
 
 
 def handle_result(step_name: str, result: dict):
+    if not result:
+        print(f"⚠️ Step '{step_name}' returned no result (None or empty).")
+        return
+    print(result)
     if "error" in result:
         print(f"❌ Error in {step_name}: {result['error']}")
     elif "analysis" in result:
@@ -279,7 +283,7 @@ def run_workflow(workflow_path, streamlit_mode=False):
                 try:
                     when_result = eval(rendered_when)
                 except Exception as e:
-                    Printer.warning(f"⚠️ Eval error in step '{name}': {e}")
+                    Printer.info(f"⚠️ Eval error in step '{name}': {e}")
                     when_result = False
 
             except Exception as e:

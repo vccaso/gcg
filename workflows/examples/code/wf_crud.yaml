@@ -4,13 +4,13 @@ description: this workflow generate GO code
 vars:
   local_repo_dir: ./workspace/avila-easychat-goals
   source_branch: dev
-  branch_name: model3turbo
+  branch_name: create-product
   repo_name: avila-easychat-goals
   additional_model: gpt-4o-mini
   model2: ModelGpt4Turbo
-  model: ModelGpt35Turbo
+  model4: ModelGpt35Turbo
   model3: ModelOllama
-  model4: ModelDeepSeekCoder67
+  model: ModelDeepSeekCoder67
 
   product_fields: |
         ID (int)
@@ -53,15 +53,15 @@ steps:
       branch_name: ${branch_name}
       local_repo_dir: ${local_repo_dir}
 
-  - name: generate_product
-    type: ai
-    agent: GoCRUDAgent
-    model: ${model4}
-    template_name: go_crud
-    input:
-      model: "Product"
-      fields: ${product_fields}
-      local_repo_dir: ${local_repo_dir}
+  # - name: generate_product
+  #   type: ai
+  #   agent: GoCRUDAgent
+  #   model: ${model4}
+  #   template_name: go_crud
+  #   input:
+  #     model: "Product"
+  #     fields: ${product_fields}
+  #     local_repo_dir: ${local_repo_dir}
 
   - name: generate_data_layer_product
     type: ai
@@ -74,27 +74,27 @@ steps:
       fields: ${product_fields}
       local_repo_dir: ${local_repo_dir}
 
-  - name: generate_data_layer_detail
-    type: ai
-    agent: GoCRUDDataAgent
-    model: ${model3}
-    prompt_template: data_only
-    temperature: 0.2
-    input:
-      model: Order
-      fields: ${order_fields}
-      local_repo_dir: ${local_repo_dir}
+  # - name: generate_data_layer_detail
+  #   type: ai
+  #   agent: GoCRUDDataAgent
+  #   model: ${model3}
+  #   prompt_template: data_only
+  #   temperature: 0.2
+  #   input:
+  #     model: Order
+  #     fields: ${order_fields}
+  #     local_repo_dir: ${local_repo_dir}
 
-  - name: generate_data_layer_detail
-    type: ai
-    agent: GoCRUDDataAgent
-    model: ${model3}
-    prompt_template: data_only
-    temperature: 0.2
-    input:
-      model: OrderDetail
-      fields: ${orderdetail_fields}
-      local_repo_dir: ${local_repo_dir}
+  # - name: generate_data_layer_detail
+  #   type: ai
+  #   agent: GoCRUDDataAgent
+  #   model: ${model3}
+  #   prompt_template: data_only
+  #   temperature: 0.2
+  #   input:
+  #     model: OrderDetail
+  #     fields: ${orderdetail_fields}
+  #     local_repo_dir: ${local_repo_dir}
 
   - name: stage_commit_push
     type: git

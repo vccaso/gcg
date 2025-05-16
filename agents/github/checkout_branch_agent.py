@@ -16,5 +16,8 @@ class GitHubCheckoutBranchAgent(BaseAgent):
         except git.exc.GitCommandError:
             Printer.error(f"Branch {source_branch} not found locally, creating tracking branch.")
             self.repo.git.checkout(f"origin/{source_branch}", b=source_branch)
+            return {"status": "Fail", "details":f"Branch {source_branch} not found locally, creating tracking branch."}
         Printer.message(f"Checked out branch {source_branch}")
+        return {"status": "Success", "details":f"Checked out branch {source_branch}"}
+        
 

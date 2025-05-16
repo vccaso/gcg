@@ -26,7 +26,9 @@ class GoCRUDDataAgent:
         llm_response = self.llm.get_response(final_prompt).strip()
         # Write files
         written_files = self.write_data_file(llm_response)
-        return "\n".join(written_files)
+        # return "\n".join(written_files)
+        # return {"status": "Fail", "details":f"Branch {branch_name} not found locally, creating tracking branch."}
+        return {"status": "Success", "details":f"\n".join(written_files)}
 
     def write_data_file(self, go_code: str) -> list:
         parts = re.split(r"==== (.+?)\/n", go_code)

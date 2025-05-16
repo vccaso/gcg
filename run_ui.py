@@ -73,7 +73,12 @@ if menu == "Home":
                         if step == "_execution_duration":
                             continue
                         st.subheader(f"Step: {step}")
-                        st.text(output)
+                        if isinstance(output, dict) and "status" in output and "details" in output:
+                            status_icon = "✅" if output["status"].lower() == "success" else "❌"
+                            # st.markdown(f"{status_icon} **Status:** {output['status']}  \n**Details:** {output['details']}")
+                            st.markdown(f"{status_icon} {output['details']}")
+                        else:
+                            st.text(output)
                 st.session_state.confirm_ready = False
                 if "_execution_duration" in result:
                     st.success(f"✅ Workflow completed in {result['_execution_duration']} seconds.")

@@ -16,3 +16,5 @@ class GitHubCreateBranchAgent(BaseAgent):
             Printer.message(f"Created and switched to new branch {branch_name}")
         except git.exc.GitCommandError:
             Printer.error(f"Branch {branch_name} not found locally, creating tracking branch.")
+            return {"status": "Fail", "details":f"Branch {branch_name} not found locally, creating tracking branch."}
+        return {"status": "Success", "details":f"branch creted:{branch_name}"}

@@ -33,7 +33,9 @@ class GitHubPRAgent(BaseAgent):
         if response.status_code == 201:
             pr_data = response.json()
             print(f"Pull Request created: {pr_data.get('html_url')}")
+            return {"status": "Success", "details":f"Pull Request created. {pr_data.get('html_url')}"}
         else:
             print(f"Failed to create Pull Request. Status Code: {response.status_code}")
             print(response.json())
+            return {"status": "Fail", "details":f"Failed to create Pull Request {response.status_code}"}
 
