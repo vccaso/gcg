@@ -9,10 +9,12 @@ from agents.orchestratoragent import OrchestratorAgent
 from prompt_loader import PromptLoader
 from agents.orchestrator.planner_agent import OrchestratorPlannerAgent
 from agents.orchestrator.builder_agent import OrchestratorBuilderAgent
+from agents.orchestrator.validator_agent import OrchestratorValidatorAgent
+from agents.orchestrator.feedback_agent import OrchestratorFeedbackAgent
 
 
 def render_chatv2_page():
-    st.title("🧠 Orchestrator V2 – Planner + Builder Test")
+    st.title("🧠 Orchestrator V2 – Iterative Flow")
 
     # Session management
     existing_sessions = list_sessions()
@@ -30,59 +32,83 @@ def render_chatv2_page():
     with col2:
         template_choice = st.selectbox("📄 Prompt Template", ["default"])
 
+    # Iteration settings
+    st.sidebar.header("🔁 Iteration Settings")
+    target_score = st.sidebar.slider("🎯 Target Score", 0.0, 10.0, 8.5, step=0.1)
+    desired_iterations = st.sidebar.number_input("✅ Desired Iterations", min_value=1, max_value=10, value=3)
+    max_iterations = st.sidebar.number_input("🚨 Max Iterations", min_value=1, max_value=20, value=5)
+
     request_text = st.text_area("📝 Enter your orchestration request:",
                                 value="Create a workflow to transcribe audio and generate subtitles",
                                 height=150)
 
-    if st.button("🧠 Run Planner Agent"):
-        st.info("Running OrchestratorPlannerAgent...")
-
+    if st.button("🚀 Run Full Iterative Flow"):
         agent_list = "\n".join([f"- {k}: {getattr(v, 'short_description', '')}" for k, v in AGENT_CATALOG.items()])
         model_list = "\n".join([f"- {k}: {getattr(v, 'short_description', '')}" for k, v in MODEL_CATALOG.items()])
 
         llm = MODEL_REGISTRY[model_choice](temperature=0.3)
-        prompt_template = PromptLoader().load_prompt("orchestratorplanneragent", template_choice)
+        iteration = 0
+        score = 0
+        current_prompt = request_text
+        plan_yaml = ""
+        workflow_yaml = ""
+        feedback_text = ""
 
-        planner = OrchestratorPlannerAgent(llm, prompt_template)
-        plan_result = planner.run(request=request_text,
-                                  agents_description=agent_list,
-                                  models_description=model_list)
+        while iteration < max_iterations:
+            iteration += 1
+            st.info(f"🔁 Iteration {iteration}")
 
-        st.session_state.memory["latest_plan"] = plan_result.get("yaml_plan", "")
+            # Planner
+            planner_prompt = PromptLoader().load_prompt("orchestratorplanneragent", template_choice)
+            planner = OrchestratorPlannerAgent(llm, planner_prompt)
+            plan_result = planner.run(request=current_prompt, agents_description=agent_list, models_description=model_list)
+            plan_yaml = plan_result.get("yaml_plan", "")
+            st.code(plan_yaml, language="yaml")
+
+            # Builder
+            builder_prompt = PromptLoader().load_prompt("orchestratorbuilderagent", template_choice)
+            builder = OrchestratorBuilderAgent(llm, builder_prompt)
+            build_result = builder.run(plan=plan_yaml)
+            workflow_yaml = build_result.get("workflow", "")
+            st.code(workflow_yaml, language="yaml")
+
+            # Validator
+            validator_prompt = PromptLoader().load_prompt("orchestratorvalidatoragent", template_choice)
+            validator = OrchestratorValidatorAgent(llm, validator_prompt)
+            validation = validator.run(workflow=workflow_yaml)
+            score = validation["score"]
+            st.markdown(f"**Score:** {score} | **Status:** {validation['status']}")
+            st.markdown(f"**Feedback:** {validation['feedback']}")
+
+            if iteration >= desired_iterations and score >= target_score:
+                break
+
+            # Feedback
+            feedback_prompt = PromptLoader().load_prompt("orchestratorfeedbackagent", template_choice)
+            feedback_agent = OrchestratorFeedbackAgent(llm, feedback_prompt)
+            feedback_result = feedback_agent.run(original_prompt=current_prompt, validation_feedback=validation["feedback"])
+            current_prompt = feedback_result["new_prompt"]
+
+        st.session_state.memory["latest_plan"] = plan_yaml
+        st.session_state.memory["latest_workflow"] = workflow_yaml
+        st.session_state.memory["latest_validation"] = validation
         st.session_state.memory["history"].append({
             "request": request_text,
-            "plan": plan_result.get("yaml_plan", "")
+            "plan": plan_yaml,
+            "workflow": workflow_yaml,
+            "score": score,
+            "feedback": validation["feedback"]
         })
         save_memory(st.session_state.memory, session_id)
-        st.success("Planner result saved to memory.")
 
     # History
     st.markdown("### 🧠 Planner History")
     for i, entry in enumerate(st.session_state.memory.get("history", []), 1):
         st.markdown(f"**{i}.** {entry['request']}")
 
-    # YAML Plan Preview
-    if st.session_state.memory.get("latest_plan"):
-        st.markdown("### 📝 Latest YAML Plan")
-        st.code(st.session_state.memory["latest_plan"], language="yaml")
-
-        if st.button("🏗️ Run Builder Agent"):
-            st.info("Running OrchestratorBuilderAgent...")
-
-            llm = MODEL_REGISTRY[model_choice](temperature=0.3)
-            prompt_template = PromptLoader().load_prompt("orchestratorbuilderagent", template_choice)
-
-            builder = OrchestratorBuilderAgent(llm, prompt_template)
-            result = builder.run(plan=st.session_state.memory["latest_plan"])
-
-            st.session_state.memory["latest_workflow"] = result.get("workflow", "")
-            st.success("Builder output saved to memory.")
-
-    # YAML Workflow Preview
     if st.session_state.memory.get("latest_workflow"):
-        st.markdown("### 📜 Generated Workflow YAML")
+        st.markdown("### 📜 Latest Workflow YAML")
         st.code(st.session_state.memory["latest_workflow"], language="yaml")
-
 
 
 def render_chat_page():
