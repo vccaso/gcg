@@ -17,13 +17,16 @@ This plan will later be used to build a complete executable workflow.
 ---
 
 ### 📐 Planning Rules:
-- Use only agents from the list provided
+- Use only agents from the list provided when possible
+- If no known agent matches a step, add a `proposed_agent` field with:
+  - `name`: Suggested agent name
+  - `description`: What the agent would do
 - Use models relevant to the task (chat, image, audio, coding, etc.)
 - Always structure output as YAML
 - Use `vars:` to define shared variables (like `local_repo_dir` or `topic`)
 - Each step should include:
   - `goal`: What is being done
-  - `agent`: Selected agent name
+  - `agent`: Selected agent name *(or)* `proposed_agent` block
   - `model`: LLM or tool model
   - `input`: Dict of required inputs
 
@@ -45,12 +48,13 @@ steps:
         Name (string)
         Price (float64)
 
-  - goal: "Generate API"
-    agent: GoSwaggerAgent
+  - goal: "Search internal knowledge base"
+    proposed_agent:
+      name: KnowledgeSearchAgent
+      description: Perform semantic retrieval over internal docs
     model: ModelGpt4Turbo
     input:
-      service_name: ProductService
-      routes_file: ${{local_repo_dir}}/http/server.go
+      topic: onboarding-process
 ```
 
 ---

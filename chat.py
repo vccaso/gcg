@@ -1,6 +1,7 @@
 # chat.py (Streamlit page)
 import streamlit as st
 import os
+import time
 from orchestrator_core import run_workflow
 from memory_manager import load_memory, save_memory, list_sessions
 from models.model_registry import MODEL_CATALOG, MODEL_REGISTRY
@@ -11,7 +12,6 @@ from agents.orchestrator.planner_agent import OrchestratorPlannerAgent
 from agents.orchestrator.builder_agent import OrchestratorBuilderAgent
 from agents.orchestrator.validator_agent import OrchestratorValidatorAgent
 from agents.orchestrator.feedback_agent import OrchestratorFeedbackAgent
-
 
 def render_chatv2_page():
     st.title("🧠 Orchestrator V2 – Iterative Flow")
@@ -54,9 +54,14 @@ def render_chatv2_page():
         workflow_yaml = ""
         feedback_text = ""
 
+        total_start_time = time.time()
+
         while iteration < max_iterations:
             iteration += 1
             st.info(f"🔁 Iteration {iteration}")
+            st.markdown(f"**📝 Prompt Used:** {current_prompt}")
+
+            iter_start = time.time()
 
             # Planner
             planner_prompt = PromptLoader().load_prompt("orchestratorplanneragent", template_choice)
@@ -80,6 +85,9 @@ def render_chatv2_page():
             st.markdown(f"**Score:** {score} | **Status:** {validation['status']}")
             st.markdown(f"**Feedback:** {validation['feedback']}")
 
+            iter_duration = time.time() - iter_start
+            st.markdown(f"**⏱️ Iteration Duration:** {iter_duration:.2f} seconds")
+
             if iteration >= desired_iterations and score >= target_score:
                 break
 
@@ -88,6 +96,9 @@ def render_chatv2_page():
             feedback_agent = OrchestratorFeedbackAgent(llm, feedback_prompt)
             feedback_result = feedback_agent.run(original_prompt=current_prompt, validation_feedback=validation["feedback"])
             current_prompt = feedback_result["new_prompt"]
+
+        total_duration = time.time() - total_start_time
+        st.success(f"🏁 Total Duration: {total_duration:.2f} seconds")
 
         st.session_state.memory["latest_plan"] = plan_yaml
         st.session_state.memory["latest_workflow"] = workflow_yaml
@@ -108,8 +119,16 @@ def render_chatv2_page():
 
     if st.session_state.memory.get("latest_workflow"):
         st.markdown("### 📜 Latest Workflow YAML")
-        st.code(st.session_state.memory["latest_workflow"], language="yaml")
+        workflow_content = st.session_state.memory["latest_workflow"]
+        st.code(workflow_content, language="yaml")
 
+        filename = st.text_input("📝 Filename for Download", value="workflow_generated.yaml")
+        st.download_button(
+            label="💾 Download Workflow YAML",
+            data=workflow_content,
+            file_name=filename,
+            mime="text/yaml"
+        )
 
 def render_chat_page():
 

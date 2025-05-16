@@ -544,6 +544,86 @@ Optional tooltips and labels
 
 ---
 
+## 🧠 Iterative AI Workflow Builder (Orchestrator V2)
+
+Orchestrator V2 is a fully automated multi-agent pipeline designed to translate natural language requests into complete, validated, and ready-to-run YAML workflows. It introduces intelligent prompt refinement and self-feedback capabilities to iteratively improve results.
+
+### 🧩 Architecture
+🧩 Multi-Agent Architecture
+- Planner Agent
+Interprets the user's natural language request and produces a high-level YAML plan. The plan defines vars and steps, describing what needs to be done using available or proposed agents.
+
+- Builder Agent
+Converts the plan into an executable YAML workflow. It assigns proper types (ai, utils, validator), integrates models, input references, and makes the output compatible with the execution engine.
+
+- Validator Agent
+Reviews the generated workflow, checking for structure, agent-model compatibility, and logical completeness. Returns:
+
+    status: pass/fail
+    score: 0–10
+    feedback: human-readable critique
+
+- Feedback Agent
+Analyzes validator feedback and rewrites the original user prompt to clarify intent, improve step mapping, or satisfy validator criteria. This improved prompt feeds the next iteration.
+
+
+### 🔁 Iteration Logic
+Controlled by:
+
+🎯 target_score — Minimum acceptable validator score (e.g. 8.5)
+
+✅ desired_iterations — Number of planned refinement loops (e.g. 3)
+
+🚨 max_iterations — Hard stop to prevent infinite loops
+
+The loop stops early if:
+
+ Desired iterations are completed and
+
+ The validator score meets or exceeds the target
+
+Each iteration begins with a new prompt revision, making the system increasingly accurate and context-aware.
+- Controlled by:
+  - 🎯 `target_score`
+  - ✅ `desired_iterations`
+  - 🚨 `max_iterations`
+- Stops when target score is reached or max is hit
+
+Dynamic Agent Discovery
+If the planner identifies a goal that cannot be fulfilled by any known agent, it doesn't skip it — instead, it inserts a proposed_agent: block:
+
+yaml
+Copy
+Edit
+proposed_agent:
+  name: LegalDocParserAgent
+  description: Extracts structured metadata from scanned legal PDFs.
+This empowers agent developers to backfill capabilities based on real-world needs.
+
+🖥️ Streamlit UI Features
+Access the iterative builder via the ChatV2 tab
+
+Real-time display of:
+
+User prompt used per iteration
+
+YAML plan and final workflow
+
+Validator feedback and scores
+
+Elapsed time per iteration and overall duration
+
+Adjustable inputs:
+
+Model and prompt template
+
+Iteration goals (target_score, max_iterations, etc.)
+
+Download final workflow as .yaml with custom filename
+
+
+---
+
 ## ✅ Runtime Engine
 
 Use `scheduler_runner.py` to load both alerts and cronjobs:
