@@ -7,7 +7,7 @@ from models.model_registry import MODEL_CATALOG
 from agents.agent_registry import AGENT_CATALOG
 from api.api_catalog import API_CATALOG
 from config import __version__, __app_name__, __workflow_path__
-from chat import render_chat_page
+from chat import render_chat_page, render_chatv2_page
 from graphviz import Digraph
 
 st.set_page_config(page_title=__app_name__, page_icon="🧠")
@@ -20,7 +20,7 @@ ALERT_LOG = "logs/alert_history.log"
 # Sidebar menu
 menu = st.sidebar.selectbox(
     "📂 Menu",
-    ("Home", "Chat", "Workflows", "Agents", "Models", "Config", "Validate", "Templates", "API", "Docs", "Cronjobs", "Alerts", "Logs")
+    ("Home", "Chatv2", "Workflows", "Agents", "Models", "Config", "Validate", "Templates", "API", "Docs", "Cronjobs", "Alerts", "Logs", "Chat")
 )
 
 st.sidebar.markdown(f"<div style='text-align:center; color: gray;'>v{__version__}</div>", unsafe_allow_html=True)
@@ -81,6 +81,9 @@ if menu == "Home":
             if st.button("❌ Cancel"):
                 st.session_state.confirm_ready = False
 
+elif menu == "Chatv2":
+    # This will render orchestrator_chat.py's logic
+    render_chatv2_page()
 
 elif menu == "Chat":
     # This will render orchestrator_chat.py's logic

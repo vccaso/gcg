@@ -3,9 +3,39 @@ import streamlit as st
 import os
 from orchestrator_core import run_workflow
 from memory_manager import load_memory, save_memory, list_sessions
-from models.model_registry import MODEL_REGISTRY
+from models.model_registry import MODEL_CATALOG, MODEL_REGISTRY
+from agents.agent_registry import AGENT_CATALOG, AGENT_REGISTRY
 from agents.orchestratoragent import OrchestratorAgent
 from prompt_loader import PromptLoader
+from agents.orchestrator.planner_agent import OrchestratorPlannerAgent
+
+
+def render_chatv2_page():
+    st.title("🧠 Orchestrator V2 – Planner Test")
+
+    request_text = st.text_area("📝 Enter your orchestration request:",
+                                value="Create a workflow to transcribe audio and generate subtitles",
+                                height=150)
+
+    if st.button("🧠 Run Planner Agent"):
+        st.info("Running OrchestratorPlannerAgent...")
+
+        agent_list = "\n".join([f"- {k}: {getattr(v, 'short_description', '')}" for k, v in AGENT_REGISTRY.items()])
+        model_list = "\n".join([f"- {k}: {getattr(v, 'short_description', '')}" for k, v in MODEL_REGISTRY.items()])
+
+
+        llm = MODEL_REGISTRY["ModelGpt4Turbo"](temperature=0.3)
+        prompt_template = PromptLoader().load_prompt("orchestratorplanneragent", "default")
+
+        planner = OrchestratorPlannerAgent(llm, prompt_template)
+        result = planner.run(request=request_text,
+                            agents_description=agent_list,
+                            models_description=model_list)
+
+        st.subheader("📄 YAML Plan Output")
+        st.code(result["yaml_plan"], language="yaml")
+
+
 
 
 def render_chat_page():
