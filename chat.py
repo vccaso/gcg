@@ -10,8 +10,9 @@ from prompt_loader import PromptLoader
 from agents.orchestrator.planner_agent import OrchestratorPlannerAgent
 from agents.orchestrator.builder_agent import OrchestratorBuilderAgent
 
+
 def render_chatv2_page():
-    st.title("🧠 Orchestrator V2 – Planner Test")
+    st.title("🧠 Orchestrator V2 – Planner + Builder Test")
 
     # Session management
     existing_sessions = list_sessions()
@@ -43,13 +44,14 @@ def render_chatv2_page():
         prompt_template = PromptLoader().load_prompt("orchestratorplanneragent", template_choice)
 
         planner = OrchestratorPlannerAgent(llm, prompt_template)
-        result = planner.run(request=request_text,
-                            agents_description=agent_list,
-                            models_description=model_list)
+        plan_result = planner.run(request=request_text,
+                                  agents_description=agent_list,
+                                  models_description=model_list)
 
+        st.session_state.memory["latest_plan"] = plan_result.get("yaml_plan", "")
         st.session_state.memory["history"].append({
             "request": request_text,
-            "plan": result.get("yaml_plan", "")
+            "plan": plan_result.get("yaml_plan", "")
         })
         save_memory(st.session_state.memory, session_id)
         st.success("Planner result saved to memory.")
@@ -59,11 +61,29 @@ def render_chatv2_page():
     for i, entry in enumerate(st.session_state.memory.get("history", []), 1):
         st.markdown(f"**{i}.** {entry['request']}")
 
-    # YAML preview
-    if st.session_state.memory.get("history"):
+    # YAML Plan Preview
+    if st.session_state.memory.get("latest_plan"):
         st.markdown("### 📝 Latest YAML Plan")
-        latest_plan = st.session_state.memory["history"][-1].get("plan", "")
-        st.code(latest_plan, language="yaml")
+        st.code(st.session_state.memory["latest_plan"], language="yaml")
+
+        if st.button("🏗️ Run Builder Agent"):
+            st.info("Running OrchestratorBuilderAgent...")
+
+            llm = MODEL_REGISTRY[model_choice](temperature=0.3)
+            prompt_template = PromptLoader().load_prompt("orchestratorbuilderagent", template_choice)
+
+            builder = OrchestratorBuilderAgent(llm, prompt_template)
+            result = builder.run(plan=st.session_state.memory["latest_plan"])
+
+            st.session_state.memory["latest_workflow"] = result.get("workflow", "")
+            st.success("Builder output saved to memory.")
+
+    # YAML Workflow Preview
+    if st.session_state.memory.get("latest_workflow"):
+        st.markdown("### 📜 Generated Workflow YAML")
+        st.code(st.session_state.memory["latest_workflow"], language="yaml")
+
+
 
 def render_chat_page():
 
