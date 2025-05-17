@@ -1,6 +1,7 @@
 import streamlit as st
 import os
 import yaml
+import time
 from collections import defaultdict
 from orchestrator_core import run_workflow
 from models.model_registry import MODEL_CATALOG
@@ -9,6 +10,7 @@ from api.api_catalog import API_CATALOG
 from config import __version__, __app_name__, __workflow_path__
 from chat import render_chat_page, render_chatv2_page
 from graphviz import Digraph
+
 
 st.set_page_config(page_title=__app_name__, page_icon="🧠")
 
@@ -29,6 +31,67 @@ st.sidebar.markdown(f"<div style='text-align:center; color: gray;'>v{__version__
 # 🏠 Home (Run a Workflow)
 # ---------------------
 if menu == "Home":
+    # Workflow list
+    workflow_files = sorted([
+        os.path.relpath(os.path.join(root, file), __workflow_path__)
+        for root, _, files in os.walk(__workflow_path__)
+        for file in files if file.endswith((".yaml", ".yml"))
+    ])
+
+    selected_file = st.selectbox("📂 Run Workflow", workflow_files)
+    if "confirm_ready" not in st.session_state:
+        st.session_state.confirm_ready = False
+    if selected_file != st.session_state.get("last_selected_workflow"):
+        st.session_state.confirm_ready = False
+        st.session_state.last_selected_workflow = selected_file
+
+    workflow_path = os.path.join(__workflow_path__, selected_file)
+    with open(workflow_path) as f:
+        workflow_yaml = yaml.safe_load(f)
+
+    name = workflow_yaml.get("name", selected_file)
+    desc = workflow_yaml.get("description", '*No description provided.*')
+
+    st.markdown(f"**🧾 `{name}`** — _{desc}_")
+
+    if st.button("🚀 Run Workflow"):
+        st.session_state.confirm_ready = True
+        st.session_state.run_results = None
+
+    if st.session_state.confirm_ready:
+        st.warning("⚠️ Are you sure you want to run this workflow?")
+        col1, col2 = st.columns([3, 1])
+        with col1:
+            if st.button("✅ Confirm and Run"):
+                with st.spinner("Running workflow..."):
+                    start_time = time.time()
+                    result = run_workflow(workflow_path, streamlit_mode=True)
+                    result["_execution_duration"] = round(time.time() - start_time, 2)
+                    st.session_state.run_results = result
+                    st.session_state.confirm_ready = False
+                    st.rerun()
+        with col2:
+            if st.button("❌ Cancel"):
+                st.session_state.confirm_ready = False
+                st.rerun()
+
+    if "run_results" in st.session_state and st.session_state.run_results:
+        result = st.session_state.run_results
+        for step, output in result.items():
+            if step == "_execution_duration":
+                continue
+            with st.expander(f"🔹 Step: {step}", expanded=False):
+                if "duration" in output:
+                    st.markdown(f"⏱️ Duration: `{output['duration']:.2f}s`")
+                if isinstance(output, dict) and "status" in output and "details" in output:
+                    icon = {"success": "✅", "fail": "❌", "skipped": "⏭️"}.get(output["status"].lower(), "ℹ️")
+                    st.markdown(f"{'&nbsp;' * 4}{icon} {output['details']}", unsafe_allow_html=True)
+                else:
+                    st.text(output)
+        st.success(f"🎉 Workflow completed in {result['_execution_duration']} seconds.")
+
+
+elif menu == "HomeOLD":
     st.title("🏠 Run Workflow")
 
     workflow_files = []
