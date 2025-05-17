@@ -217,6 +217,8 @@ def get_ai_agent(llm, agent_name, name="default"):
         return GoCRUDDataAgent(llm,prompt_template)   
     if agent_name == "ScriptFeedbackValidatorAgent":
         return ScriptFeedbackValidatorAgent(llm,prompt_template)   
+    if agent_name == "AudioAgent":
+        return AudioAgent(llm)   
 
 
 

@@ -10,14 +10,16 @@ class AudioAgent:
     def run(self, **kwargs):
         mode = kwargs.get("mode")
         if mode == "tts":
-            return self.model.text_to_speech(
+            response = self.model.text_to_speech(
                 text=kwargs["text"],
                 output_path=kwargs.get("output_path", "output/audio.wav"),
                 voice=kwargs.get("voice", ""),
                 factor=kwargs.get("factor", 1.0)
             )
+            return {"status": "Success", "details":response}
         elif mode == "stt":
-            return self.model.speech_to_text(kwargs["audio_file_path"])
+            response = self.model.speech_to_text(kwargs["audio_file_path"])
+            return {"status": "Success", "details":response}
         else:
             raise ValueError("Invalid mode. Use 'tts' or 'stt'.")
 

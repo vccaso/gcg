@@ -4,8 +4,10 @@ from TTS.api import TTS
 from models.audio_model_base import AudioModelBase
 
 class AudioModelCoqui(AudioModelBase):
-    def __init__(self, model_name="tts_models/en/ljspeech/tacotron2-DDC"):
-        self.tts = TTS(model_name)
+    def __init__(self, temperature=None):
+        self.tts = TTS("tts_models/en/ljspeech/tacotron2-DDC")
+    # def __init__(self, model_name="tts_models/en/ljspeech/tacotron2-DDC"):
+    #     self.tts = TTS(model_name)
 
     def text_to_speech(self, text: str, output_path: str, voice: str = "", factor: float = 1.0) -> str:
         os.makedirs(os.path.dirname(output_path), exist_ok=True)

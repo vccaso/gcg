@@ -7,7 +7,7 @@ from models.audio_model_base import AudioModelBase
 class AudioModelOpenAI(AudioModelBase):
     def __init__(self, api_key=None):
         self.api_key = api_key or os.getenv("OPENAI_API_KEY")
-        openai.api_key = self.api_key
+        openai.api_key = os.getenv("OPENAI_API_KEY")
 
     def _increase_volume(self, path, factor):
         clip = AudioFileClip(path)

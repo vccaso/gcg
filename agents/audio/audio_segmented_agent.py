@@ -52,5 +52,6 @@ class SegmentedAudioAgent(BaseAgent):
 
         return {
             "status": "success",
-            "files": generated_files
+            "files": generated_files,
+            "details": generated_files
         }

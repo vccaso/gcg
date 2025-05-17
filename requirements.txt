@@ -15,3 +15,4 @@ jsonschema
 TTS
 apscheduler
 graphviz
+watchdog
