@@ -8,7 +8,7 @@ class WebhookAgent(BaseAgent):
         headers = kwargs.get("headers", {"Content-Type": "application/json"})
 
         if not url:
-            return {"status": "error", "message": "Missing webhook URL."}
+            return {"status": "error", "details": "Missing webhook URL."}
 
         try:
             response = requests.post(url, json=payload, headers=headers, timeout=10)
@@ -18,5 +18,5 @@ class WebhookAgent(BaseAgent):
                 "response": response.text
             }
         except Exception as e:
-            return {"status": "error", "message": str(e)}
+            return {"status": "error", "details": str(e)}
         

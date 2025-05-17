@@ -83,7 +83,7 @@ if menu == "Home":
                                 status_icon = "⏭️"
                             else:
                                 status_icon = "ℹ️"  # default for unknown statuses
-                            st.markdown(f"{status_icon} {output['details']}")
+                            st.markdown(f"{'&nbsp;' * 4}{status_icon} {output['details']}")
                         else:
                             st.text(output)
                 st.session_state.confirm_ready = False

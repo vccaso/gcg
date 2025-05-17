@@ -14,7 +14,7 @@ class GenericEmailAgent(BaseAgent):
         smtp_port = kwargs.get("smtp_port", 587)
 
         if not all([sender, recipient, subject, body, password]):
-            return {"status": "error", "message": "Missing required fields."}
+            return {"status": "error", "details": "Missing required fields."}
 
         msg = EmailMessage()
         msg.set_content(body.encode("utf-8").decode("utf-8"))  # Normalize body
@@ -28,6 +28,6 @@ class GenericEmailAgent(BaseAgent):
                 server.starttls()
                 server.login(sender, password)
                 server.send_message(msg)
-            return {"status": "success", "message": f"Email sent to {recipient}"}
+            return {"status": "success", "details": f"Email sent to {recipient}"}
         except Exception as e:
-            return {"status": "error", "message": str(e)}
+            return {"status": "error", "details": str(e)}

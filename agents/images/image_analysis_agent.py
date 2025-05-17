@@ -19,6 +19,7 @@ class ImageAnalysisAgent:
 
         return {
             "status": "success",
+            "details": image_path,
             "image_path": image_path,
             "analysis": analysis
         }

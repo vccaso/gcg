@@ -7,7 +7,7 @@ class SlackAgent(BaseAgent):
         message = kwargs.get("message")
 
         if not webhook_url or not message:
-            return {"status": "error", "message": "Missing webhook_url or message."}
+            return {"status": "error", "details": "Missing webhook_url or message."}
 
         payload = {"text": message}
 
@@ -19,4 +19,4 @@ class SlackAgent(BaseAgent):
                 "response": response.text
             }
         except Exception as e:
-            return {"status": "error", "message": str(e)}
+            return {"status": "error", "details": str(e)}

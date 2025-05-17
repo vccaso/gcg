@@ -18,8 +18,8 @@ class ImageAgent:
             print(f"🎨 Generating image for: '{prompt}'")
             self.model.generate_image(prompt, output_path)
             Printer.success(f"✅ Image saved to: {output_path}")
-            return {"status": "success", "image_path": output_path}
+            return {"status": "success", "details": output_path}
         except Exception as e:
             Printer.error(f"❌ Image generation failed: {e}")
-            return {"status": "error", "error": str(e)}
+            return {"status": "error", "details": str(e)}
 
