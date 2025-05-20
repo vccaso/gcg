@@ -51,6 +51,9 @@ pip install --no-cache-dir -r requirements.txt
 | `ModelDalle3` | High-quality text-to-image | [OpenAI], [Image] |
 | `ImageModelStableDiffusion` | Local/remote image generation | [Local], [Image] |
 | `ModelGptImage1` | GPT-4 Vision for image analysis | [OpenAI], [Vision] |
+| `ModelQwen3_8b` | Local Qwen3 8B for bilingual AI and reasoning | [Local], [LLM] |
+| `ModelLlama31Claude` | LLaMA 3.1 with Claude-style behavior | [Local], [LLM] |
+| `ModelOllamaMistral` | Local Mistral model for chat and code | [Local], [LLM] |
 
 ✅ Browse, filter, and preview models via Streamlit UI
 
@@ -167,6 +170,25 @@ ollama run llama3
 pip install TTS
 tts --model_name tts_models/en/ljspeech/tacotron2-DDC --download
 ```
+
+###  Qwen3 8B
+```
+ollama pull qwen3:8b
+ollama run qwen3:8b
+```
+
+###  Llama3.1 Claude
+```
+ollama pull incept5/llama3.1-claude
+ollama run incept5/llama3.1-claude
+```
+
+###  Mistral 
+```
+ollama pull mistral
+ollama run mistral
+```
+
 
 ### Sample Python
 ```python

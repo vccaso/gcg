@@ -342,25 +342,115 @@ examples/wf_audio.yaml
 name: audio example
 description: this workflow is example to manage audio
   
+vars:
+  model1: AudioModelOpenAI
+  model2: AudioModelCoqui
+
 steps:
 
   - name: generate_voice_greeting
     type: ai-audio
     agent: AudioAgent
-    model: ModelTTS1
+    model: AudioModelCoqui
     input:
       mode: tts
-      text: "A book review is a critical analysis of a book, typically including a summary of the plot or content, an evaluation of the book's strengths and weaknesses, and a recommendation for potential readers. It helps readers decide if they should read a particular book by providing insights into its content, style, and overall quality. "
+      text: "A book review is a critical analysis of a book"
       voice: alloy
-      output_path: "workspace/audio/test01.wav"
+      output_path: "workspace/audio/test05.wav"
 
-  # - name: transcribe_audio_note
-  #   type: ai
-  #   agent: AudioAgent
-  #   model: ModelTTS1
-  #   input:
-  #     mode: stt
-  #     audio_file_path: "input/audio/voice_note.mp3"
+  - name: transcribe_audio_note
+    type: ai
+    agent: AudioAgent
+    model: AudioModelOpenAI
+    input:
+      mode: stt
+      audio_file_path: "workspace/audio/video_narration.wav"
+===
+examples/wf_audio_multivoice.yaml
+===
+  
+name: audio example
+description: this workflow is example to manage audio
+  
+vars:
+  model1: AudioModelOpenAI
+  model2: AudioModelCoqui
+  text: "Revenge of the Sith is the greatest star wars movie of all time"
+
+steps:
+
+  - name: generate_voice_coqui
+    type: ai-audio
+    agent: AudioAgent
+    model: AudioModelCoqui
+    input:
+      mode: tts
+      text: ${text}
+      voice: alloy
+      output_path: "workspace/audio/voice_coqui.wav"
+
+  - name: generate_voice_alloy
+    type: ai-audio
+    agent: AudioAgent
+    model: AudioModelOpenAI
+    input:
+      mode: tts
+      text: ${text}
+      voice: alloy
+      output_path: "workspace/audio/voice_alloy.wav"
+
+  - name: generate_voice_echo
+    type: ai-audio
+    agent: AudioAgent
+    model: AudioModelOpenAI
+    input:
+      mode: tts
+      text: ${text}
+      voice: echo
+      output_path: "workspace/audio/voice_echo.wav"
+
+  - name: generate_voice_fable
+    type: ai-audio
+    agent: AudioAgent
+    model: AudioModelOpenAI
+    input:
+      mode: tts
+      text: ${text}
+      voice: fable
+      output_path: "workspace/audio/voice_fable.wav"
+
+  - name: generate_voice_onyx
+    type: ai-audio
+    agent: AudioAgent
+    model: AudioModelOpenAI
+    input:
+      mode: tts
+      text: ${text}
+      voice: onyx
+      output_path: "workspace/audio/voice_onyx.wav"
+
+
+
+  - name: generate_voice_nova
+    type: ai-audio
+    agent: AudioAgent
+    model: AudioModelOpenAI
+    input:
+      mode: tts
+      text: ${text}
+      voice: nova
+      output_path: "workspace/audio/voice_nova.wav"
+
+  - name: generate_voice_shimmer
+    type: ai-audio
+    agent: AudioAgent
+    model: AudioModelOpenAI
+    input:
+      mode: tts
+      text: ${text}
+      voice: shimmer
+      output_path: "workspace/audio/voice_shimmer.wav"
+
 ===
 examples/images/wf_images_multimodel.yaml
 ===
@@ -437,13 +527,13 @@ description: this workflow generate GO code
 vars:
   local_repo_dir: ./workspace/avila-easychat-goals
   source_branch: dev
-  branch_name: model3turbo
+  branch_name: create-product
   repo_name: avila-easychat-goals
   additional_model: gpt-4o-mini
   model2: ModelGpt4Turbo
-  model: ModelGpt35Turbo
+  model4: ModelGpt35Turbo
   model3: ModelOllama
-  model4: ModelDeepSeekCoder67
+  model: ModelDeepSeekCoder67
 
   product_fields: |
         ID (int)
@@ -486,15 +576,15 @@ steps:
       branch_name: ${branch_name}
       local_repo_dir: ${local_repo_dir}
 
-  - name: generate_product
-    type: ai
-    agent: GoCRUDAgent
-    model: ${model4}
-    template_name: go_crud
-    input:
-      model: "Product"
-      fields: ${product_fields}
-      local_repo_dir: ${local_repo_dir}
+  # - name: generate_product
+  #   type: ai
+  #   agent: GoCRUDAgent
+  #   model: ${model4}
+  #   template_name: go_crud
+  #   input:
+  #     model: "Product"
+  #     fields: ${product_fields}
+  #     local_repo_dir: ${local_repo_dir}
 
   - name: generate_data_layer_product
     type: ai
@@ -507,27 +597,27 @@ steps:
       fields: ${product_fields}
       local_repo_dir: ${local_repo_dir}
 
-  - name: generate_data_layer_detail
-    type: ai
-    agent: GoCRUDDataAgent
-    model: ${model3}
-    prompt_template: data_only
-    temperature: 0.2
-    input:
-      model: Order
-      fields: ${order_fields}
-      local_repo_dir: ${local_repo_dir}
+  # - name: generate_data_layer_detail
+  #   type: ai
+  #   agent: GoCRUDDataAgent
+  #   model: ${model3}
+  #   prompt_template: data_only
+  #   temperature: 0.2
+  #   input:
+  #     model: Order
+  #     fields: ${order_fields}
+  #     local_repo_dir: ${local_repo_dir}
 
-  - name: generate_data_layer_detail
-    type: ai
-    agent: GoCRUDDataAgent
-    model: ${model3}
-    prompt_template: data_only
-    temperature: 0.2
-    input:
-      model: OrderDetail
-      fields: ${orderdetail_fields}
-      local_repo_dir: ${local_repo_dir}
+  # - name: generate_data_layer_detail
+  #   type: ai
+  #   agent: GoCRUDDataAgent
+  #   model: ${model3}
+  #   prompt_template: data_only
+  #   temperature: 0.2
+  #   input:
+  #     model: OrderDetail
+  #     fields: ${orderdetail_fields}
+  #     local_repo_dir: ${local_repo_dir}
 
   - name: stage_commit_push
     type: git
@@ -684,26 +774,26 @@ steps:
       save_to_file: true
       file_name: ${file_name}
 
-  - name: chapter_2
-    type: ai
-    agent: ChatAgent
-    model: ModelGpt35Turbo
-    template_name: chinese
-    when: "{{ chapter_1.status != 'fail' }}"
-    input:
-      question: "{{ header }} with their best friend a Dragon named {{ dragon }} traveling to the volcano Vesubio"
-      save_to_file: true
-      file_name: ${file_name}
+  # - name: chapter_2
+  #   type: ai
+  #   agent: ChatAgent
+  #   model: ModelGpt35Turbo
+  #   template_name: chinese
+  #   when: "{{ chapter_1.status != 'fail' }}"
+  #   input:
+  #     question: "{{ header }} with their best friend a Dragon named {{ dragon }} traveling to the volcano Vesubio"
+  #     save_to_file: true
+  #     file_name: ${file_name}
 
-  - name: chapter_3
-    type: ai
-    agent: ChatAgent
-    model: ModelOllama
-    when: "{{ doit }}"
-    input:
-      question: "{{ header }} with their best friend a Dragon named {{ dragon }} traveling to the enchanged city Ocapuna"
-      save_to_file: true
-      file_name: ${file_name}
+  # - name: chapter_3
+  #   type: ai
+  #   agent: ChatAgent
+  #   model: ModelOllama
+  #   when: "{{ doit }}"
+  #   input:
+  #     question: "{{ header }} with their best friend a Dragon named {{ dragon }} traveling to the enchanged city Ocapuna"
+  #     save_to_file: true
+  #     file_name: ${file_name}
 
 ===
 examples/content/wf_content.yaml

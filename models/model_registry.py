@@ -10,6 +10,9 @@ from models.local.image_model_stable_diffusion import ImageModelStableDiffusion
 from models.openai.model_gpt_image_1 import ModelGptImage1
 from models.openai.model_gpt_dalle_3 import ModelDalle3
 from models.openai.model_gpt_dalle_2 import ModelDalle2
+from models.local.model_mistral import ModelOllamaMistral
+from models.local.model_qwen3_8b import ModelQwen3_8b
+from models.local.model_llama31_claude import ModelLlama31Claude
 
 # Optional: if you expect to add more local models later
 
@@ -25,7 +28,10 @@ MODEL_REGISTRY = {
     "ImageModelStableDiffusion" : ImageModelStableDiffusion,
     "ModelGptImage1": ModelGptImage1,
     "ModelDalle3": ModelDalle3,
-    "ModelDalle2": ModelDalle2
+    "ModelDalle2": ModelDalle2,
+    "ModelOllamaMistral": ModelOllamaMistral,
+    "ModelQwen3_8b": ModelQwen3_8b,
+    "ModelLlama31Claude": ModelLlama31Claude
 }
 
 # ✅ Model catalog for UI display
@@ -140,5 +146,33 @@ MODEL_CATALOG = {
             "Lower fidelity and detail compared to DALL·E 3, but more efficient for some tasks."
         ],
         "tags": ["OpenAI", "Image", "Text-to-Image", "DALL·E 2"]
-}
+    },
+    "ModelOllamaMistral": {
+        "short_description": "Local Mistral model via Ollama",
+        "detailed_description": (
+            "Mistral is a dense 7B parameter language model optimized for reasoning and code generation. "
+            "This model runs locally via Ollama, supports chat-style prompts with multi-turn memory, "
+            "and provides strong performance in natural language understanding, making it ideal for dev tools, chatbots, and agents."
+        ),
+        "tags": ["Local", "LLM"]
+    },
+    "ModelQwen3_8b": {
+        "short_description": "Qwen3 8B model via Ollama",
+        "detailed_description": (
+            "Qwen3 8B is part of Alibaba's third-generation language models. It features 8.19B dense parameters with "
+            "an optimized architecture for general-purpose AI tasks, chat, and code reasoning. "
+            "This model is served locally via Ollama with Q4_K_M quantization, supports Chinese and English fluency, and uses a dual-token format with stop control."
+        ),
+        "tags": ["Local", "LLM"]
+    },
+    "ModelLlama31Claude": {
+        "short_description": "Llama 3.1 Claude-style via Ollama",
+        "detailed_description": (
+            "This model blends Meta's LLaMA 3.1 architecture with Claude Sonnet 3.5 system behavior. "
+            "It has 8.03B parameters, runs via Ollama, and is configured with Claude-style role prompting. "
+            "It's ideal for structured reasoning, document analysis, and assistant tasks that benefit from anthropic-style dialogue formatting and safety alignment."
+        ),
+        "tags": ["Local", "LLM"]
+    }
+
 }
