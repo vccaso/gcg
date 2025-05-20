@@ -33,7 +33,7 @@ from agents.images.image_analysis_agent import ImageAnalysisAgent
 from agents.notify.email_agent import GenericEmailAgent
 from agents.notify.webhook_agent import WebhookAgent
 from agents.notify.slack_agent import SlackAgent
-
+from agents.utils.camera_capture_agent import CameraCaptureAgent
 
 # ✅ Agent registry for loading agents dynamically
 AGENT_REGISTRY = {
@@ -68,8 +68,8 @@ AGENT_REGISTRY = {
     "ImageAnalysisAgent": ImageAnalysisAgent,
     "GenericEmailAgent": GenericEmailAgent,
     "WebhookAgent": WebhookAgent,
-    "SlackAgent": SlackAgent
-
+    "SlackAgent": SlackAgent,
+    "CameraCaptureAgent": CameraCaptureAgent
 }
 
 # ✅ Agent catalog for UI display
@@ -412,5 +412,14 @@ AGENT_CATALOG = {
             "Use for alerts, updates, and chatops workflows."
         ],
         "tags": ["Utility", "Slack"]
+    },
+    "CameraCaptureAgent": {
+        "short_description": "Capture photo from system camera",
+        "detailed_description": [
+            "This utility agent uses the system's default camera (e.g., webcam) to capture a single image frame on-demand.",
+            "It supports both Mac and Windows environments and uses OpenCV to access and operate the camera device.",
+            "Captured images are saved with timestamped filenames in the specified output directory, and the full path is returned for downstream use."
+        ],
+        "tags": ["Utility", "Camera"]
     }
 }

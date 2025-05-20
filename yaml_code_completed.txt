@@ -486,6 +486,46 @@ steps:
       image_path: ${base_dir}/dalle3_${filename}.png
 
 ===
+examples/images/wf_camera_analysis.yaml
+===
+name: capture_photo_workflow
+description: |
+  Cross-platform workflow to capture a photo using the system camera, analyze its visual content using GPT-4 Vision, 
+  and generate a spoken audio summary. Useful for image logging, accessibility narration, or visual journaling.
+
+
+vars:
+  base_dir: "workspace/images/camera"
+  pic_name: "picture_006.jpg"
+
+steps:
+  - name: capture_mac_photo
+    type: utils
+    agent: CameraCaptureAgent
+    input:
+      device: 1
+      save_path: ${base_dir}
+      pic_name: ${pic_name}
+
+  - name: analyze_image
+    type: ai-image
+    agent: ImageAnalysisAgent
+    model: ModelGptImage1
+    input:
+      prompt: "Describe the scene depicted in this image"
+      image_path: ${base_dir}/${pic_name}
+
+  - name: generate_voice_analysis
+    type: ai-audio
+    agent: AudioAgent
+    model: AudioModelCoqui
+    input:
+      mode: tts
+      text: "{{ analyze_image.details }}"
+      voice: alloy
+      output_path: ${base_dir}/analysis_006.wav
+
+===
 examples/include/main_workflow.yaml
 ===
 name: main-example

@@ -21,7 +21,7 @@ class CreateAlertAgent(BaseAgent):
 
         for alert in data["alerts"]:
             if alert.get("name") == name:
-                return {"status": "error", "message": f"Alert '{name}' already exists."}
+                return {"status": "Fail", "details": f"Alert '{name}' already exists."}
 
         data["alerts"].append({
             "name": name,
@@ -34,4 +34,4 @@ class CreateAlertAgent(BaseAgent):
         with open(self.alert_path, "w") as f:
             yaml.safe_dump(data, f)
 
-        return {"status": "success", "message": f"Created alert '{name}' with interval {interval}"}
+        return {"status": "Success", "details": f"Created alert '{name}' with interval {interval}"}

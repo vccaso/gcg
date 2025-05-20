@@ -724,6 +724,43 @@ x-api-key: your-key
 
 ---
 
+📷 Camera Utilities
+CameraCaptureAgent
+Capture still images from the system's webcam using this utility agent. Supports both Mac and Windows environments via OpenCV.
+
+📥 Inputs:
+
+ - device: (int) Camera index (default is 0)
+
+ - save_path: (str) Directory to store the captured image
+
+📤 Outputs:
+
+- image_path: Full path to the saved image file
+
+🧠 Features:
+
+Cross-platform (Mac, PC)
+
+Auto-creates timestamped filenames
+
+Built-in brightness correction to fix dark captures
+
+Optional camera warm-up delay for better lighting
+
+💡 Example Step
+```
+- name: capture_photo
+  type: utils
+  agent: CameraCaptureAgent
+  input:
+    device: 0
+    save_path: output/photos
+```
+Tip: If your image appears dark, the agent automatically adjusts brightness and waits a few seconds for camera stabilization.
+
+---
+
 ## 📜 License
 
 MIT — Fork it, use it, build your own!

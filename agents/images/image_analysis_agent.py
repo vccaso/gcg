@@ -18,8 +18,8 @@ class ImageAnalysisAgent:
         Printer.success("✅ Analysis complete")
 
         return {
-            "status": "success",
-            "details": image_path,
+            "status": "Success",
+            "details": analysis,
             "image_path": image_path,
             "analysis": analysis
         }
