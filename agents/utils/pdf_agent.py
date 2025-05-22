@@ -17,7 +17,6 @@ class PdfAgent:
     def clean_text(self, text):
         return unicodedata.normalize('NFKD', text).encode('latin-1', 'ignore').decode('latin-1')
     
-
     def run(self, page_size="A4", content="", save_path="workspace/pdf", filename="styled.pdf", mode="override"):
         os.makedirs(save_path, exist_ok=True)
         temp_path = os.path.join(save_path, "temp_new.pdf")

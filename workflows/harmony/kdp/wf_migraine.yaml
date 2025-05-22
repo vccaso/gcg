@@ -3,6 +3,8 @@ description: this workflow is example to create a pdf from a text AI generated
   
 vars:
   model: ModelOllama
+  font: Helvetica
+  font_size: 12
 
 steps:
 
@@ -11,8 +13,10 @@ steps:
     agent: PdfAgent
     input:
       content: |
+        <font face="{{ font }}" size="{{ font_size }}">
         <h2>How to Use This Book</h2>
           The Harmony Health: Migraine Tracker is designed to help you understand your headaches more clearly, identify patterns, and support your journey toward fewer and less severe episodes. You can use this book daily or only when a migraine occurs.
+        </font>
       page_size: "A4"
       save_path: workspace/harmony/kdp
       filename: migraine.pdf
@@ -23,6 +27,7 @@ steps:
     input:
       content: |
         <section>
+          <font face="{{ font }}" size="{{ font_size }}">
           <h2>What's Inside:</h2>
           <ul>
             <li><strong>Daily Migraine Logs</strong> - 90+ pages to track symptoms, triggers, pain type, and medication</li>
@@ -60,6 +65,7 @@ steps:
             <li>Bring this journal to medical appointments</li>
             <li>Use a pen color code or symbols if helpful (for triggers, for remedies, for meds)</li>
           </ul>
+          </font>
         </section>
 
       page_size: "A4"
@@ -68,52 +74,51 @@ steps:
       mode: append
 
 
-
-
-
   - name: generate_dayly_logs
     type: tool
     agent: PdfAgent
     loop:
       var: index
-      count: 2
+      count: 1
     input:
       content: |
         <section>
-          <h1>Daily Migraine Log</h1>
+          <font face="{{ font }}" size="{{ font_size }}">
+          <h1>{{ index }} - Daily Migraine Log</h1>
 
-          <p><b>Date & Time:</b> ____________________________</p>
-          <p><b>Duration:</b> ____________________________</p>
+          <p><b>Date & Time:</b> ____________________________</p><br/>
+          <p><b>Duration:</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;____________________________</p><br/>
 
-          <p><b>Pain Level (1–10):</b></p>
+          <p><b>Pain Level (1-10):</b></p>
           <p>
-          [ ] 1 &nbsp;&nbsp; [ ] 2 &nbsp;&nbsp; [ ] 3 &nbsp;&nbsp; [ ] 4 &nbsp;&nbsp; [ ] 5 &nbsp;&nbsp;
-          [ ] 6 &nbsp;&nbsp; [ ] 7 &nbsp;&nbsp; [ ] 8 &nbsp;&nbsp; [ ] 9 &nbsp;&nbsp; [ ] 10
-          </p>
+          [ ] 1 &nbsp;&nbsp;&nbsp; [ ] 2 &nbsp;&nbsp;&nbsp; [ ] 3 &nbsp;&nbsp;&nbsp; [ ] 4 &nbsp;&nbsp;&nbsp; [ ] 5 &nbsp;&nbsp;
+          [ ] 6 &nbsp;&nbsp;&nbsp; [ ] 7 &nbsp;&nbsp;&nbsp; [ ] 8 &nbsp;&nbsp;&nbsp; [ ] 9 &nbsp;&nbsp;&nbsp; [ ] 10
+          </p><br/>
 
-          <p><b>Pain Location:</b> ____________________________</p>
+          <p><b>Pain Location:</b> ____________________________</p><br/>
 
           <p><b>Pain Type:</b></p>
           <p>
-          [ ] Throbbing / Pulsating &nbsp;&nbsp; [ ] Sharp &nbsp;&nbsp; [ ] Dull <br/>
-          [ ] Stabbing &nbsp;&nbsp; [ ] Burning &nbsp;&nbsp; [ ] Pressure / Squeezing <br/>
-          [ ] Aching &nbsp;&nbsp; [ ] Electric / Shock-like &nbsp;&nbsp; [ ] Cramping <br/>
-          [ ] Shooting &nbsp;&nbsp; [ ] Radiating
-          </p>
+          [ ] Throbbing / Pulsating &nbsp;&nbsp;&nbsp; [ ] Sharp &nbsp;&nbsp;&nbsp; [ ] Dull <br/>
+          [ ] Stabbing &nbsp;&nbsp;&nbsp; [ ] Burning &nbsp;&nbsp;&nbsp; [ ] Pressure / Squeezing <br/>
+          [ ] Aching &nbsp;&nbsp;&nbsp; [ ] Electric / Shock-like &nbsp;&nbsp;&nbsp; [ ] Cramping <br/>
+          [ ] Shooting &nbsp;&nbsp;&nbsp; [ ] Radiating
+          </p><br/>
 
-          <p><b>Aura Present?</b> &nbsp;&nbsp; [ ] Yes &nbsp;&nbsp; [ ] No</p>
+          <p><b>Aura Present?</b> &nbsp;&nbsp; [ ] Yes &nbsp;&nbsp; [ ] No</p><br/>
 
-          <p><b>Possible Triggers:</b> ____________________________</p>
-          <p><b>Food/Drink Before Onset:</b> ____________________________</p>
-          <p><b>Medication Taken:</b> ____________________________</p>
-          <p><b>Relief Outcome:</b> ____________________________</p>
+          <p><b>Possible Triggers:</b> ____________________________</p><br/>
+          <p><b>Food/Drink Before Onset:</b> ____________________________</p><br/>
+          <p><b>Medication Taken:</b> ____________________________</p><br/>
+          <p><b>Relief Outcome:</b> ____________________________</p><br/>
 
-          <p><b>Lifestyle Notes & Reflections:</b></p>
+          <p><b>Lifestyle Notes & Reflections:</b></p><br/>
           <p>
-          _____________________________________________________________________<br/>
-          _____________________________________________________________________<br/>
+          _____________________________________________________________________<br/><br/>
+          _____________________________________________________________________<br/><br/>
           _____________________________________________________________________
           </p>
+          </font>
         </section>
       page_size: "A4"
       save_path: workspace/harmony/kdp
@@ -125,46 +130,48 @@ steps:
     agent: PdfAgent
     loop:
       var: index
-      count: 2
+      count: 1
     input:
       content: |
         <section>
-          <h1>Monthly Summary</h1>
-            <p><b>Month:</b> ____________________________</p>
+        <font face="{{ font }}" size="{{ font_size }}">
+          <h1>Monthly Summary {{ index }}</h1>
+            <p><b>Month:</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; _______________________________________________________________</p><br/>
 
-            <p><b>Number of Migraine Days:</b> ____________________________</p>
-            <p><b>Average Pain Level:</b> ____________________________</p>
+            <p><b>Number of Migraine Days:</b> _________________________________________________</p><br/>
+            <p><b>Average Pain Level:</b> ______________________________________________________</p><br/>
 
-            <p><b>Most Common Triggers:</b></p>
+            <p><b>Most Common Triggers:</b></p><br/>
             <p>
-            _____________________________________________________________________<br/>
+            _____________________________________________________________________<br/><br/>
+            _____________________________________________________________________
+            </p><br/>
+
+            <p><b>Effective Medications:</b></p><br/>
+            <p>
+            _____________________________________________________________________<br/><br/>
+            _____________________________________________________________________
+            </p><br/>
+
+            <p><b>Lifestyle Factors (Sleep, Diet, Stress):</b></p><br/>
+            <p>
+            _____________________________________________________________________<br/><br/>
+            _____________________________________________________________________
+            </p><br/>
+
+            <p><b>Other Observations:</b></p><br/>
+            <p>
+            _____________________________________________________________________<br/><br/>
+            _____________________________________________________________________
+            </p><br/>
+
+            <p><b>Action Plan for Next Month:</b></p><br/>
+            <p>
+            _____________________________________________________________________<br/><br/>
+            _____________________________________________________________________<br/><br/>
             _____________________________________________________________________
             </p>
-
-            <p><b>Effective Medications:</b></p>
-            <p>
-            _____________________________________________________________________<br/>
-            _____________________________________________________________________
-            </p>
-
-            <p><b>Lifestyle Factors (Sleep, Diet, Stress):</b></p>
-            <p>
-            _____________________________________________________________________<br/>
-            _____________________________________________________________________
-            </p>
-
-            <p><b>Other Observations:</b></p>
-            <p>
-            _____________________________________________________________________<br/>
-            _____________________________________________________________________
-            </p>
-
-            <p><b>Action Plan for Next Month:</b></p>
-            <p>
-            _____________________________________________________________________<br/>
-            _____________________________________________________________________<br/>
-            _____________________________________________________________________
-            </p>
+            </font>
         </section>
       page_size: "A4"
       save_path: workspace/harmony/kdp
@@ -177,6 +184,7 @@ steps:
     input:
       content: |
         <section>
+          <font face="{{ font }}" size="{{ font_size }}">
           <h1>Pain Type Checklist</h1>
 
           <p><strong>Understanding the Pain Type Checklist</strong></p>
@@ -214,6 +222,7 @@ steps:
           </ul>
 
           <p><strong>Tip:</strong> Some people experience more than one pain type during the same migraine. It's okay to check multiple boxes!</p>
+        </font>
         </section>
 
       page_size: "A4"
@@ -227,6 +236,7 @@ steps:
     input:
       content: |
         <section>
+          <font face="{{ font }}" size="{{ font_size }}">
           <h2>Medication and Trigger Notes</h2>
 
           <p>
@@ -262,6 +272,7 @@ steps:
             <li>Use shorthand symbols if helpful (💧 = hydration, ☁️ = weather, 😴 = sleep).</li>
             <li>Over time, you may notice that certain triggers only cause migraines when combined (e.g., stress + poor sleep).</li>
           </ul>
+          </font>
         </section>
       page_size: "A4"
       save_path: workspace/harmony/kdp
