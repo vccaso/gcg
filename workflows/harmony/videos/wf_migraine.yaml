@@ -1,0 +1,18 @@
+  
+name: video about migraine
+description: this workflow is to create a short video about migraine
+  
+vars:
+  script_topic: "One tip to improve my health"
+  name: "testnewmodels02"
+  audio_model1: AudioModelOpenAI
+  audio_model2: AudioModelCoqui
+
+steps:
+  - name: generate_script
+    type: ai
+    agent: ChatAgent
+    model: ModelOllama
+    input:
+      question: ${script_topic}
+
