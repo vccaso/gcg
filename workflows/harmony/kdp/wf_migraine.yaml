@@ -76,11 +76,44 @@ steps:
     agent: PdfAgent
     loop:
       var: index
-      count: 90
+      count: 2
     input:
       content: |
         <section>
-          <h1>Daily Migraine Logs</h1>
+          <h1>Daily Migraine Log</h1>
+
+          <p><b>Date & Time:</b> ____________________________</p>
+          <p><b>Duration:</b> ____________________________</p>
+
+          <p><b>Pain Level (1–10):</b></p>
+          <p>
+          [ ] 1 &nbsp;&nbsp; [ ] 2 &nbsp;&nbsp; [ ] 3 &nbsp;&nbsp; [ ] 4 &nbsp;&nbsp; [ ] 5 &nbsp;&nbsp;
+          [ ] 6 &nbsp;&nbsp; [ ] 7 &nbsp;&nbsp; [ ] 8 &nbsp;&nbsp; [ ] 9 &nbsp;&nbsp; [ ] 10
+          </p>
+
+          <p><b>Pain Location:</b> ____________________________</p>
+
+          <p><b>Pain Type:</b></p>
+          <p>
+          [ ] Throbbing / Pulsating &nbsp;&nbsp; [ ] Sharp &nbsp;&nbsp; [ ] Dull <br/>
+          [ ] Stabbing &nbsp;&nbsp; [ ] Burning &nbsp;&nbsp; [ ] Pressure / Squeezing <br/>
+          [ ] Aching &nbsp;&nbsp; [ ] Electric / Shock-like &nbsp;&nbsp; [ ] Cramping <br/>
+          [ ] Shooting &nbsp;&nbsp; [ ] Radiating
+          </p>
+
+          <p><b>Aura Present?</b> &nbsp;&nbsp; [ ] Yes &nbsp;&nbsp; [ ] No</p>
+
+          <p><b>Possible Triggers:</b> ____________________________</p>
+          <p><b>Food/Drink Before Onset:</b> ____________________________</p>
+          <p><b>Medication Taken:</b> ____________________________</p>
+          <p><b>Relief Outcome:</b> ____________________________</p>
+
+          <p><b>Lifestyle Notes & Reflections:</b></p>
+          <p>
+          _____________________________________________________________________<br/>
+          _____________________________________________________________________<br/>
+          _____________________________________________________________________
+          </p>
         </section>
       page_size: "A4"
       save_path: workspace/harmony/kdp
@@ -92,11 +125,46 @@ steps:
     agent: PdfAgent
     loop:
       var: index
-      count: 12
+      count: 2
     input:
       content: |
         <section>
-          <h1>Monthly Summaries</h1>
+          <h1>Monthly Summary</h1>
+            <p><b>Month:</b> ____________________________</p>
+
+            <p><b>Number of Migraine Days:</b> ____________________________</p>
+            <p><b>Average Pain Level:</b> ____________________________</p>
+
+            <p><b>Most Common Triggers:</b></p>
+            <p>
+            _____________________________________________________________________<br/>
+            _____________________________________________________________________
+            </p>
+
+            <p><b>Effective Medications:</b></p>
+            <p>
+            _____________________________________________________________________<br/>
+            _____________________________________________________________________
+            </p>
+
+            <p><b>Lifestyle Factors (Sleep, Diet, Stress):</b></p>
+            <p>
+            _____________________________________________________________________<br/>
+            _____________________________________________________________________
+            </p>
+
+            <p><b>Other Observations:</b></p>
+            <p>
+            _____________________________________________________________________<br/>
+            _____________________________________________________________________
+            </p>
+
+            <p><b>Action Plan for Next Month:</b></p>
+            <p>
+            _____________________________________________________________________<br/>
+            _____________________________________________________________________<br/>
+            _____________________________________________________________________
+            </p>
         </section>
       page_size: "A4"
       save_path: workspace/harmony/kdp
