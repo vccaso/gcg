@@ -81,6 +81,43 @@ pip install --no-cache-dir -r requirements.txt
 - `ScriptFeedbackValidatorAgent` — Gives recommendations + scores
 - (Custom validators support `status/pass/fail`, conditions)
 
+### 🔁 Step Looping
+You can repeat any step using the loop field. This enables dynamic iteration with variable substitution.
+
+✅ Loop Over Fixed Count
+Run a step a specific number of times using count:
+
+```
+- name: generate_logs
+  type: tool
+  agent: PdfAgent
+  loop:
+    var: index
+    count: 10
+  input:
+    content: "<h1>Log Entry {{ index }}</h1>"
+    filename: log_{{ index }}.pdf
+```
+✅ Loop Over List of Values
+Run a step for each value in a list:
+```
+- name: ask_tip
+  type: ai
+  agent: ChatAgent
+  model: ModelGpt35Turbo
+  loop:
+    var: topic
+    values:
+      - sleep
+      - hydration
+      - exercise
+  input:
+    question: "Give me one tip about {{ topic }}"
+```
+
+Each looped step is automatically suffixed (_1, _2, etc.) and fully supports {{ }} templating in input, filename, etc.
+
+
 ### 🛠️ Utilities
 - `SaveToFileAgent`, `RequirementsExtractorAgent`
 - GitHub automation agents (branch, commit, PR)

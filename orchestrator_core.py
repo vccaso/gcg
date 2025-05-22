@@ -256,10 +256,146 @@ def load_workflow_with_includes(workflow_path, loaded_paths=None):
     return workflow
 
 
-
-
-
 def run_workflow(workflow_path, streamlit_mode=False):
+    import copy
+    start_time = time.time()
+
+    workflow = load_workflow_with_includes(workflow_path)
+
+    vars_dict = workflow.get("vars", {})
+    steps = resolve_vars(workflow["steps"], vars_dict)
+
+    results = {}
+
+    for step in steps:
+        loop = step.get("loop")
+        loop_values = []
+        loop_var = None
+
+        if loop:
+            loop_var = loop.get("var")
+            if "values" in loop:
+                loop_values = loop["values"]
+            elif "count" in loop:
+                loop_values = list(range(1, loop["count"] + 1))
+        else:
+            loop_values = [None]
+
+        for idx, loop_val in enumerate(loop_values):
+            local_step = copy.deepcopy(step)
+            name = local_step["name"]
+            local_name = f"{name}_{idx+1}" if loop else name
+
+            local_vars = vars_dict.copy()
+            if loop_var:
+                local_vars[loop_var] = loop_val
+
+            input_spec = resolve_vars(local_step["input"], local_vars)
+            inputs = resolve_inputs(input_spec, results, local_vars)
+
+            # 🧠 Evaluate `when` condition (optional)
+            when = local_step.get("when", True)
+            if isinstance(when, str) and when.startswith("{{"):
+                try:
+                    context = {**local_vars, **results}
+                    rendered_when = render_template(when, context)
+                    try:
+                        when_result = eval(rendered_when)
+                    except Exception as e:
+                        Printer.info(f"⚠️ Eval error in step '{local_name}': {e}")
+                        when_result = False
+                except Exception as e:
+                    Printer.info(f"⚠️ Failed to evaluate 'when' for step '{local_name}': {e}")
+                    when_result = False
+            else:
+                when_result = bool(when)
+
+            if not when_result:
+                Printer.info(f"⏭ Skipping step '{local_name}' due to 'when: {when}'")
+                results[local_name] = {"status": "Skipped", "details": f"when={when}"}
+                continue
+
+            step_type = local_step["type"]
+            agent_name = local_step["agent"]
+
+            if step_type == "ai":
+                template_name = local_step.get("template_name", "default")
+                temperature = local_step.get("temperature", 0.2)
+                model = local_step["model"]
+                llm = get_model(model, temperature)
+                agent = get_ai_agent(llm, agent_name, template_name)
+                if not streamlit_mode:
+                    print(f"▶️ {local_name} using {agent_name}")
+                output = agent.run(**inputs)
+                results[local_name] = output
+                handle_result(local_name, output)
+
+            elif step_type == "validator":
+                agent = globals()[agent_name]()
+                output = agent.validate(**inputs)
+                results[local_name] = output
+                handle_result(local_name, output)
+
+            elif step_type == "ai-image":
+                if agent_name == "ImageAgent":
+                    model = local_step["model"]
+                    temperature = local_step.get("temperature", 0.2)
+                    llm = get_model(model, temperature)
+                    agent = ImageAgent(llm)
+                    result = agent.run(**inputs)
+                elif agent_name == "ImageAnalysisAgent":
+                    temperature = local_step.get("temperature", 0.2)
+                    model = ModelGptImage1(temperature)
+                    agent = ImageAnalysisAgent(model)
+                    result = agent.run(**inputs)
+                elif agent_name == "SegmentedImageAgent":
+                    agent = SegmentedImageAgent()
+                    result = agent.run(**inputs)
+                else:
+                    raise ValueError(f"Unknown ai-image agent '{agent_name}'")
+                results[local_name] = result
+                handle_result(local_name, result)
+
+            elif step_type == "ai-audio":
+                if agent_name == "AudioAgent":
+                    model_name = local_step.get("model")
+                    if model_name not in MODEL_REGISTRY:
+                        raise ValueError(f"Unknown model '{model_name}'")
+                    model_instance = MODEL_REGISTRY[model_name]()
+                    agent = AudioAgent(model_instance)
+                elif agent_name == "SegmentedAudioAgent":
+                    agent = SegmentedAudioAgent()
+                output = agent.run(**inputs)
+                results[local_name] = output
+                handle_result(local_name, output)
+
+            elif step_type == "rag":
+                agent = get_rag_agent(agent_name, local_step["collection_name"], local_step["storage_path"])
+                if not streamlit_mode:
+                    print(f"▶️ {local_name} using {agent_name}")
+                output = agent.run(**inputs)
+                results[local_name] = output
+                handle_result(local_name, output)
+
+            else:
+                agent = load_agent(agent_name)
+                if not streamlit_mode:
+                    print(f"▶️ {local_name} using {agent_name}")
+                output = agent.run(**inputs)
+                results[local_name] = output
+                handle_result(local_name, output)
+
+    duration = round(time.time() - start_time, 2)
+    if not streamlit_mode:
+        print(f"\n✅ Workflow completed in {duration} seconds.")
+    else:
+        results["_execution_duration"] = duration
+
+    return results
+
+
+
+def run_workflow_original(workflow_path, streamlit_mode=False):
     start_time = time.time()
 
     # with open(workflow_path) as f:

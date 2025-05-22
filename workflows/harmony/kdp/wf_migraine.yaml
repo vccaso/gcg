@@ -74,6 +74,9 @@ steps:
   - name: generate_dayly_logs
     type: tool
     agent: PdfAgent
+    loop:
+      var: index
+      count: 90
     input:
       content: |
         <section>
@@ -87,6 +90,9 @@ steps:
   - name: generate_monthly_summaries
     type: tool
     agent: PdfAgent
+    loop:
+      var: index
+      count: 12
     input:
       content: |
         <section>
