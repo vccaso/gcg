@@ -17,3 +17,5 @@ apscheduler
 graphviz
 watchdog
 opencv-python
+fpdf
+PyPDF2

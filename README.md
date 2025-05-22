@@ -643,6 +643,35 @@ Iteration goals (target_score, max_iterations, etc.)
 
 Download final workflow as .yaml with custom filename
 
+---
+
+### 📄 PdfAgent
+
+`PdfAgent` is a utility agent that converts text content into a PDF document. It supports both creating new files and appending to existing PDFs.
+
+#### ✅ Features
+- Generates PDFs with specified page size and font
+- Optionally appends new content to existing PDFs
+- Suitable for report generation, document exports, and KDP preparation
+
+#### 🛠️ Inputs
+- `content` (str): The textual content to include in the PDF
+- `page_size` (str): PDF page size (e.g., `"A4"`, `"Letter"`)
+- `font` (str): Font name (e.g., `"Arial"`, `"Times"`)
+- `save_path` (str): Directory to save the PDF (default: `workspace/pdf`)
+- `filename` (str): Output PDF filename (default: `mypdf.pdf`)
+- `mode` (str): `"override"` to replace the file or `"append"` to add content
+
+#### 📤 Output
+- `pdf_path` (str): Path to the generated PDF
+
+#### 📦 Dependencies
+Add to `requirements.txt`:
+
+```
+fpdf
+PyPDF2
+```
 
 ---
 

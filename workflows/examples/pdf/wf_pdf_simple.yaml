@@ -1,0 +1,64 @@
+  
+name: pdf simple example
+description: this workflow is example to create a pdf from a text AI generated
+  
+vars:
+  model: ModelOllama
+
+steps:
+
+  - name: generate_introduction
+    type: ai
+    agent: ChatAgent
+    model: ${model}
+    temperature: 1.0
+    input:
+      question: "Create an introductory text with the importance of AI"
+
+  - name: generate_content
+    type: ai
+    agent: ChatAgent
+    model: ${model}
+    temperature: 1.0
+    input:
+      question: "Create a description with around 300 words of the importance of AI"
+
+  - name: generate_conclusion
+    type: ai
+    agent: ChatAgent
+    model: ${model}
+    temperature: 1.0
+    input:
+      question: "Create a conclusion of the importance of AI"
+
+  - name: generate_pdf_introduction
+    type: tool
+    agent: PdfAgent
+    input:
+      content: "{{ generate_introduction.details }}"
+      page_size: "A4"
+      font: "Arial"
+      save_path: workspace/pdf
+      filename: simple_01.pdf
+
+  - name: append_pdf_content
+    type: tool
+    agent: PdfAgent
+    input:
+      content: "{{ generate_content.details }}"
+      page_size: "A4"
+      font: "Arial"
+      save_path: workspace/pdf
+      filename: simple_01.pdf
+      mode: append
+
+  - name: append_pdf_conclusion
+    type: tool
+    agent: PdfAgent
+    input:
+      content: "{{ generate_conclusion.details }}"
+      page_size: "A4"
+      font: "Arial"
+      save_path: workspace/pdf
+      filename: simple_01.pdf
+      mode: append

@@ -6,7 +6,7 @@ description: |
 
 vars:
   base_dir: "workspace/images/camera"
-  pic_name: "picture_006.jpg"
+  pic_name: "picture_007.jpg"
 
 steps:
   - name: capture_mac_photo
@@ -33,4 +33,4 @@ steps:
       mode: tts
       text: "{{ analyze_image.details }}"
       voice: alloy
-      output_path: ${base_dir}/analysis_006.wav
+      output_path: ${base_dir}/analysis_007.wav

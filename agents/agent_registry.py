@@ -34,6 +34,7 @@ from agents.notify.email_agent import GenericEmailAgent
 from agents.notify.webhook_agent import WebhookAgent
 from agents.notify.slack_agent import SlackAgent
 from agents.utils.camera_capture_agent import CameraCaptureAgent
+from agents.utils.pdf_agent import PdfAgent
 
 # ✅ Agent registry for loading agents dynamically
 AGENT_REGISTRY = {
@@ -69,7 +70,8 @@ AGENT_REGISTRY = {
     "GenericEmailAgent": GenericEmailAgent,
     "WebhookAgent": WebhookAgent,
     "SlackAgent": SlackAgent,
-    "CameraCaptureAgent": CameraCaptureAgent
+    "CameraCaptureAgent": CameraCaptureAgent,
+    "PdfAgent": PdfAgent
 }
 
 # ✅ Agent catalog for UI display
@@ -421,5 +423,15 @@ AGENT_CATALOG = {
             "Captured images are saved with timestamped filenames in the specified output directory, and the full path is returned for downstream use."
         ],
         "tags": ["Utility", "Camera"]
-    }
+    },
+    "PdfAgent": {
+        "type": "tool",
+        "short_description": "Generates PDF files from text content.",
+        "detailed_description": [
+            "This agent takes raw text content and converts it into a PDF document.",
+            "You can specify the page size (e.g., A4, Letter) and font (e.g., Arial, Times).",
+            "Useful for generating KDP-ready or report-style documents."
+        ],
+        "tags": ["PDF", "Export", "Document", "Tool"]
+}
 }
