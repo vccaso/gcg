@@ -7,65 +7,190 @@ vars:
 
 steps:
 
-  - name: generate_pdf_introduction
+  - name: generate_how_tu_use
     type: tool
     agent: PdfAgent
     input:
       content: |
         <h2>How to Use This Book</h2>
           The Harmony Health: Migraine Tracker is designed to help you understand your headaches more clearly, identify patterns, and support your journey toward fewer and less severe episodes. You can use this book daily or only when a migraine occurs.
-        <br/><br/><br/>
-        <h2>What's Inside:</h2>
-          Daily Migraine Logs - 90+ pages to track symptoms, triggers, pain type, and medication
-          Monthly Summaries - Pages to reflect on trends and adjust your wellness plan
-          Pain Type Checklist - To help describe the nature of each episode
-          Medication and Trigger Notes - For consistent and detailed records
-        <br/><br/><br/>
-        <h2>Filling Out a Daily Log</h2>
-          Use one page per migraine episode. Each log includes space to note:
-          Date & Time - When symptoms began
-          Duration - How long it lasted
-          Pain Level - Rate your pain (1-10) using the checkboxes
-          Location & Type - Describe where the pain is felt and the sensation
-          Aura Present? - Indicate if you experienced any warning signs
-          Triggers - Food, stress, light, weather, sleep issues, etc.
-          Medications Taken - Name, dose, and effectiveness
-          Relief Outcome - Did the treatment help?
-          Lifestyle Notes - Include sleep quality, hydration, mood, and any important context
-        <br/><br/><br/>
-        <h2>Using Monthly Summaries</h2>
-          At the end of each month, review your logs and fill out the Monthly Summary to identify:
-          Frequency of migraines
-          Most common triggers
-          What helped or didn't help
-          Goals or adjustments for the next month
-        <br/><br/><br/>
-        <h2>Tips for Getting the Most Out of This Tracker</h2>
-          Be consistent — even a few weeks of tracking can reveal meaningful trends
-          Bring this journal to medical appointments
-          Use a pen color code or symbols if helpful ( for triggers,  for remedies,  for meds)
       page_size: "A4"
       save_path: workspace/harmony/kdp
       filename: migraine.pdf
 
-  # - name: append_pdf_content
-  #   type: tool
-  #   agent: PdfAgent
-  #   input:
-  #     content: "{{ generate_content.details }}"
-  #     page_size: "A4"
-  #     font: "Arial"
-  #     save_path: workspace/pdf
-  #     filename: simple_01.pdf
-  #     mode: append
+  - name: generate_Inside
+    type: tool
+    agent: PdfAgent
+    input:
+      content: |
+        <section>
+          <h2>What's Inside:</h2>
+          <ul>
+            <li><strong>Daily Migraine Logs</strong> - 90+ pages to track symptoms, triggers, pain type, and medication</li>
+            <li><strong>Monthly Summaries</strong> - Pages to reflect on trends and adjust your wellness plan</li>
+            <li><strong>Pain Type Checklist</strong> - To help describe the nature of each episode</li>
+            <li><strong>Medication and Trigger Notes</strong> - For consistent and detailed records</li>
+          </ul><br/>
 
-  # - name: append_pdf_conclusion
-  #   type: tool
-  #   agent: PdfAgent
-  #   input:
-  #     content: "{{ generate_conclusion.details }}"
-  #     page_size: "A4"
-  #     font: "Arial"
-  #     save_path: workspace/pdf
-  #     filename: simple_01.pdf
-  #     mode: append
+          <h2>Filling Out a Daily Log</h2>
+          <p>Use one page per migraine episode. Each log includes space to note:</p>
+          <ul>
+            <li><strong>Date & Time:</strong> When symptoms began</li>
+            <li><strong>Duration:</strong> How long it lasted</li>
+            <li><strong>Pain Level:</strong> Rate your pain (1-10) using the checkboxes</li>
+            <li><strong>Location & Type:</strong> Describe where the pain is felt and the sensation</li>
+            <li><strong>Aura Present?:</strong> Indicate if you experienced any warning signs</li>
+            <li><strong>Triggers:</strong> Food, stress, light, weather, sleep issues, etc.</li>
+            <li><strong>Medications Taken:</strong> Name, dose, and effectiveness</li>
+            <li><strong>Relief Outcome:</strong> Did the treatment help?</li>
+            <li><strong>Lifestyle Notes:</strong> Include sleep quality, hydration, mood, and any important context</li>
+          </ul><br/>
+
+          <h2>Using Monthly Summaries</h2>
+          <p>At the end of each month, review your logs and fill out the Monthly Summary to identify:</p>
+          <ul>
+            <li>Frequency of migraines</li>
+            <li>Most common triggers</li>
+            <li>What helped or didn't help</li>
+            <li>Goals or adjustments for the next month</li>
+          </ul><br/>
+
+          <h2>Tips for Getting the Most Out of This Tracker</h2>
+          <ul>
+            <li>Be consistent — even a few weeks of tracking can reveal meaningful trends</li>
+            <li>Bring this journal to medical appointments</li>
+            <li>Use a pen color code or symbols if helpful (for triggers, for remedies, for meds)</li>
+          </ul>
+        </section>
+
+      page_size: "A4"
+      save_path: workspace/harmony/kdp
+      filename: migraine.pdf
+      mode: append
+
+
+
+
+
+  - name: generate_dayly_logs
+    type: tool
+    agent: PdfAgent
+    input:
+      content: |
+        <section>
+          <h1>Daily Migraine Logs</h1>
+        </section>
+      page_size: "A4"
+      save_path: workspace/harmony/kdp
+      filename: migraine.pdf
+      mode: append
+
+  - name: generate_monthly_summaries
+    type: tool
+    agent: PdfAgent
+    input:
+      content: |
+        <section>
+          <h1>Monthly Summaries</h1>
+        </section>
+      page_size: "A4"
+      save_path: workspace/harmony/kdp
+      filename: migraine.pdf
+      mode: append
+
+  - name: generate_pain_types
+    type: tool
+    agent: PdfAgent
+    input:
+      content: |
+        <section>
+          <h1>Pain Type Checklist</h1>
+
+          <p><strong>Understanding the Pain Type Checklist</strong></p>
+          <p>
+            Migraine pain can feel different from person to person — and even change from one episode to the next.
+            That's why this Pain Type Checklist is included in each log entry: to help you describe your migraine sensations more precisely.
+          </p>
+
+          <p>By identifying the <strong>quality</strong> of the pain, you can:</p>
+          <ul>
+            <li>Better communicate with your doctor</li>
+            <li>Spot recurring patterns or changes</li>
+            <li>Understand how treatments affect different types of pain</li>
+          </ul><br/>
+
+          <h3>How to Use It:</h3>
+          <p>
+            Simply check off one or more descriptions that match what you're experiencing during a migraine.
+            You can also add your own notes if the pain changes throughout the episode.
+          </p><br/>
+
+          <h3>Pain Type Descriptions:</h3>
+          <ul>
+            <li><strong>Throbbing / Pulsating:</strong> Rhythmic beating or pulsing sensation, common in migraines</li>
+            <li><strong>Sharp:</strong> Intense, sudden, stabbing sensation</li>
+            <li><strong>Dull:</strong> Mild, aching sensation that feels deep but not sharp</li>
+            <li><strong>Stabbing:</strong> Short, sudden bursts of sharp pain</li>
+            <li><strong>Burning:</strong> Warm, irritated, or inflamed sensation</li>
+            <li><strong>Pressure / Squeezing:</strong> Feels like something tight or pressing inside the head</li>
+            <li><strong>Aching:</strong> General discomfort, similar to muscle soreness</li>
+            <li><strong>Electric / Shock-like:</strong> Quick, jabbing pain that feels like a nerve is firing</li>
+            <li><strong>Cramping:</strong> Tense, gripping pain similar to a muscle cramp</li>
+            <li><strong>Shooting:</strong> Pain that travels rapidly across or down the head</li>
+            <li><strong>Radiating:</strong> Pain that spreads from one point outward (e.g., behind the eye to temple)</li>
+          </ul>
+
+          <p><strong>Tip:</strong> Some people experience more than one pain type during the same migraine. It's okay to check multiple boxes!</p>
+        </section>
+
+      page_size: "A4"
+      save_path: workspace/harmony/kdp
+      filename: migraine.pdf
+      mode: append
+
+  - name: generate_medication
+    type: tool
+    agent: PdfAgent
+    input:
+      content: |
+        <section>
+          <h2>Medication and Trigger Notes</h2>
+
+          <p>
+            Understanding <strong>what causes</strong> your migraines and <strong>how you respond to treatments</strong> is key to managing them effectively. This section helps you track both your potential <strong>triggers</strong> and the <strong>medications or remedies</strong> you use during each episode.
+          </p><br/>
+
+          <h3>Medication Notes</h3>
+          <p>Use this section to log:</p>
+          <ul>
+            <li><strong>Name of medication or remedy</strong> (e.g., Ibuprofen, Sumatriptan, cold compress, essential oil)</li>
+            <li><strong>Dosage taken</strong></li>
+            <li><strong>Time it was taken</strong></li>
+            <li><strong>How effective it was</strong> (e.g., complete relief, partial relief, no effect)</li>
+          </ul>
+          <p><em>Why it matters:</em> Over time, you'll be able to see which treatments work best for different pain types, triggers, or intensities.</p>
+          <br/>
+          <h3>Trigger Notes</h3>
+          <p>Use this space to note anything that may have contributed to the onset of your migraine, such as:</p>
+          <ul>
+            <li><strong>Sleep disturbances</strong> (too little or too much sleep)</li>
+            <li><strong>Stress or anxiety</strong></li>
+            <li><strong>Certain foods or drinks</strong> (e.g., chocolate, cheese, caffeine, wine)</li>
+            <li><strong>Weather or barometric changes</strong></li>
+            <li><strong>Screen time or bright lights</strong></li>
+            <li><strong>Hormonal changes</strong></li>
+            <li><strong>Skipped meals or dehydration</strong></li>
+          </ul>
+          <p><em>Why it matters:</em> Identifying common triggers can help you avoid future episodes or prepare ahead of time.</p>
+          <br/>
+          <h4>Tips:</h4>
+          <ul>
+            <li>Be honest and thorough — even subtle things can be relevant.</li>
+            <li>Use shorthand symbols if helpful (💧 = hydration, ☁️ = weather, 😴 = sleep).</li>
+            <li>Over time, you may notice that certain triggers only cause migraines when combined (e.g., stress + poor sleep).</li>
+          </ul>
+        </section>
+      page_size: "A4"
+      save_path: workspace/harmony/kdp
+      filename: migraine.pdf
+      mode: append
