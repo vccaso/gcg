@@ -1,24 +1,38 @@
 import os
-from fpdf import FPDF
+from fpdf import FPDF, HTMLMixin
 from PyPDF2 import PdfMerger, PdfReader
+import unicodedata
+from fpdf.html import HTML2FPDF
+import html
+
+# Patch unescape to fix compatibility issue
+HTML2FPDF.unescape = staticmethod(html.unescape)
+
+
+class HTMLPDF(FPDF, HTMLMixin):
+    pass
 
 class PdfAgent:
 
-    def run(self, page_size="A4", font="Arial", content=0, save_path="workspace/pdf", filename="mypdf.pdf", mode="override"):
+    def clean_text(self, text):
+        return unicodedata.normalize('NFKD', text).encode('latin-1', 'ignore').decode('latin-1')
+    
+
+    def run(self, page_size="A4", content="", save_path="workspace/pdf", filename="styled.pdf", mode="override"):
         os.makedirs(save_path, exist_ok=True)
-        if not isinstance(content, str):
-            return {"status": "Fail", "details": "Content must be a string"}
-        
         temp_path = os.path.join(save_path, "temp_new.pdf")
         full_path = os.path.join(save_path, filename)
 
-        # Generate new PDF from content
-        pdf = FPDF(format=page_size)
+        pdf = HTMLPDF(format=page_size)
         pdf.add_page()
         pdf.set_auto_page_break(auto=True, margin=15)
-        pdf.set_font(font, size=12)
-        for line in content.splitlines():
-            pdf.multi_cell(0, 10, line)
+
+        content = self.clean_text(content)
+        try:
+            pdf.write_html(content)
+        except Exception as e:
+            return {"status": "Fail", "details": str(e)}
+
         pdf.output(temp_path)
 
         if mode == "append" and os.path.exists(full_path):

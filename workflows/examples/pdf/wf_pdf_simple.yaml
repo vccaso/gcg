@@ -37,7 +37,6 @@ steps:
     input:
       content: "{{ generate_introduction.details }}"
       page_size: "A4"
-      font: "Arial"
       save_path: workspace/pdf
       filename: simple_01.pdf
 
@@ -47,7 +46,6 @@ steps:
     input:
       content: "{{ generate_content.details }}"
       page_size: "A4"
-      font: "Arial"
       save_path: workspace/pdf
       filename: simple_01.pdf
       mode: append
@@ -58,7 +56,6 @@ steps:
     input:
       content: "{{ generate_conclusion.details }}"
       page_size: "A4"
-      font: "Arial"
       save_path: workspace/pdf
       filename: simple_01.pdf
       mode: append

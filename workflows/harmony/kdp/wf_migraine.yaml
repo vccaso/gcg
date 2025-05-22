@@ -1,0 +1,71 @@
+  
+name: pdf simple example
+description: this workflow is example to create a pdf from a text AI generated
+  
+vars:
+  model: ModelOllama
+
+steps:
+
+  - name: generate_pdf_introduction
+    type: tool
+    agent: PdfAgent
+    input:
+      content: |
+        <h2>How to Use This Book</h2>
+          The Harmony Health: Migraine Tracker is designed to help you understand your headaches more clearly, identify patterns, and support your journey toward fewer and less severe episodes. You can use this book daily or only when a migraine occurs.
+        <br/><br/><br/>
+        <h2>What's Inside:</h2>
+          Daily Migraine Logs - 90+ pages to track symptoms, triggers, pain type, and medication
+          Monthly Summaries - Pages to reflect on trends and adjust your wellness plan
+          Pain Type Checklist - To help describe the nature of each episode
+          Medication and Trigger Notes - For consistent and detailed records
+        <br/><br/><br/>
+        <h2>Filling Out a Daily Log</h2>
+          Use one page per migraine episode. Each log includes space to note:
+          Date & Time - When symptoms began
+          Duration - How long it lasted
+          Pain Level - Rate your pain (1-10) using the checkboxes
+          Location & Type - Describe where the pain is felt and the sensation
+          Aura Present? - Indicate if you experienced any warning signs
+          Triggers - Food, stress, light, weather, sleep issues, etc.
+          Medications Taken - Name, dose, and effectiveness
+          Relief Outcome - Did the treatment help?
+          Lifestyle Notes - Include sleep quality, hydration, mood, and any important context
+        <br/><br/><br/>
+        <h2>Using Monthly Summaries</h2>
+          At the end of each month, review your logs and fill out the Monthly Summary to identify:
+          Frequency of migraines
+          Most common triggers
+          What helped or didn't help
+          Goals or adjustments for the next month
+        <br/><br/><br/>
+        <h2>Tips for Getting the Most Out of This Tracker</h2>
+          Be consistent — even a few weeks of tracking can reveal meaningful trends
+          Bring this journal to medical appointments
+          Use a pen color code or symbols if helpful ( for triggers,  for remedies,  for meds)
+      page_size: "A4"
+      save_path: workspace/harmony/kdp
+      filename: migraine.pdf
+
+  # - name: append_pdf_content
+  #   type: tool
+  #   agent: PdfAgent
+  #   input:
+  #     content: "{{ generate_content.details }}"
+  #     page_size: "A4"
+  #     font: "Arial"
+  #     save_path: workspace/pdf
+  #     filename: simple_01.pdf
+  #     mode: append
+
+  # - name: append_pdf_conclusion
+  #   type: tool
+  #   agent: PdfAgent
+  #   input:
+  #     content: "{{ generate_conclusion.details }}"
+  #     page_size: "A4"
+  #     font: "Arial"
+  #     save_path: workspace/pdf
+  #     filename: simple_01.pdf
+  #     mode: append
