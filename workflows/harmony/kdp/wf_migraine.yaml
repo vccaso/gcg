@@ -3,34 +3,126 @@ description: this workflow is example to create a pdf from a text AI generated
   
 vars:
   model: ModelOllama
-  font: Helvetica
+  font: Arial
   font_size: 12
   font_text_size: 10
   page_size: 6x9
   link_google_font: <link href="https://fonts.googleapis.com/css2?family=Lora&display=swap" rel="stylesheet">
   style: |
     <style>
+
       section {
-        font-family: 'Helvetica';
+        font-family: 'Arial';
         font-size: 12pt;
-        line-height: 1.5;
+        line-height: 1.6;
+        margin-top: 10px;
+      }
+
+      section div {
+        margin-bottom: 8px;
       }
       section h2 {
         font-size: 1.4em;
         margin-top: 0.5em;
       }
-      section ul {
-        margin-left: 1.2em;
-        padding-left: 0;
-      }
-      section li {
-        margin-bottom: 0.6em;
+
+      p {
         text-align: justify;
       }
-      section p {
+
+      li {
         text-align: justify;
+      }
+
+      .header-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-family: Arial, sans-serif;
+        font-size: 18pt;
+        font-weight: bold;
+        margin-bottom: 12px;
+        border-bottom: 2px solid #ddd;
+        padding-bottom: 12px;
+      }
+
+      .header-row img {
+        width: 50px;
+        height: 50px;
+      }
+
+      .header-row .highlight-number {
+        font-family: 'Courier New', monospace;
+        font-weight: 900;
+        font-size: 22pt;
+        color: #0055aa;
+        background-color: #e0f0ff;
+        padding: 2px 6px;
+        border-radius: 8px;
+        margin-left: 8px;
+      }
+
+      .section-tab {
+        position: fixed;
+        top: 30mm;                /* Vertical position from top */
+        right: 0;                 /* Attach to right edge of page */
+        width: 8mm;
+        height: 30mm;
+        background-color: #a9a9cc;
+        border-radius: 9px 0 0 9px;
+        z-index: -10;
+        display: none;
+      }
+
+
+      .pain-level {
+        font-family: Arial, sans-serif;
+        font-size: 10pt;
+        line-height: 1.6;
+        margin-bottom: 10px;
+      }
+
+      .pain-level-options {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 4px;
+      }
+
+      .pain-level-options span {
+        display: inline-block;
+        min-width: 31px;
+      }
+
+      table {
+        margin-top: 8px;
+        margin-bottom: 12px;
+      }
+
+      table td {
+        padding: 2px 6px;
+        vertical-align: top;
+      }
+
+      .index-entry {
+        display: flex;
+        justify-content: space-between;
+        padding: 4px 0;
+        border-bottom: 1px dotted #aaa;
+        font-family: Arial, sans-serif;
+        font-size: 12pt;
+      }
+
+      .index-entry span:first-child {
+        padding-right: 10px;
+      }
+
+      .index-entry span:last-child {
+        text-align: right;
+        min-width: 30px;
       }
     </style>
+
 
 steps:
 
@@ -40,15 +132,45 @@ steps:
     input:
       content: |
         <section>
-          <br/><br/><br/>
-          <h1>Harmony Health: Migraine Tracker</h1>
-          <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
-          <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
-          <h3>Published by Harmony Health Journals 2025</h3>
+          <div style="font-family: 'Arial', sans-serif; text-align: center; padding-top: 100px; padding-bottom: 120px;">
+            <h1 style="margin-bottom: 40px; font-size: 28pt;">Harmony Health: Migraine Tracker</h1>
+            <h2 style="margin-bottom: 180px; font-size: 16pt; font-weight: normal; color: #444;">
+              A Guided Journal for Tracking Headaches, Triggers & Relief Patterns
+            </h2>
+            <div style="font-size: 12pt; margin-bottom: 10px;">
+              Published by Harmony Health Journals
+            </div>
+            <div style="font-size: 10pt; color: #666;">
+              © 2025 Harmony Health. All rights reserved.
+            </div>
+          </div>
         </section>
       page_size: ${page_size}
       save_path: workspace/harmony/kdp
       filename: migraine.pdf
+      add_page_number: False
+
+  - name: generate_inspirational
+    type: tool
+    agent: PdfAgent
+    input:
+      content: |
+        {{ style }}
+        <section>
+            <div style="display: flex; justify-content: center; align-items: center; height: 100vh; text-align: center; padding: 0 20px;">
+              <div>
+                <p style="font-size: 20px; font-style: italic;">
+                  "You are not defined by the pain you endure, but by the strength you show in facing it — one moment, one breath, one day at a time."
+                </p>
+                <p style="font-size: 16px; font-weight: bold;">— Harmony Health</p>
+              </div>
+            </div>
+        </section>
+      page_size: ${page_size}
+      save_path: workspace/harmony/kdp
+      filename: migraine.pdf
+      mode: append
+      add_page_number: False
 
   - name: generate_index
     type: tool
@@ -57,23 +179,23 @@ steps:
       content: |
         {{ style }}
         <section>
-          <h2>Index:</h2>
-          <ul>
-            <li>How to Use This Book ..... 1</li>
-            <li>What's Inside ..... 2</li>
-            <li>Filling Out a Daily Log ..... 3</li>
-            <li>Using Monthly Summaries ..... 4</li>
-            <li>Tips for Getting the Most Out of This Tracker ..... 5</li>
-            <li>Pain Type Checklist ..... 6</li>
-            <li>Medication and Trigger Notes ..... 7</li> 
-            <li>Daily Migraine Log ..... 8</li>
-            <li>Monthly Summary ..... 98</li>
-          </ul>
+          <h2>Index</h2>
+          <div class="index-entry"><span>How to Use This Book</span><span>4</span></div>
+          <div class="index-entry"><span>What's Inside</span><span>5</span></div>
+          <div class="index-entry"><span>Filling Out a Daily Log</span><span>6</span></div>
+          <div class="index-entry"><span>Using Monthly Summaries</span><span>8</span></div>
+          <div class="index-entry"><span>Tips for Getting the Most Out of This Tracker</span><span>10</span></div>
+          <div class="index-entry"><span>Pain Type Checklist</span><span>11</span></div>
+          <div class="index-entry"><span>Medication and Trigger Notes</span><span>13</span></div>
+          <div class="index-entry"><span>Daily Migraine Log</span><span>15</span></div>
+          <div class="index-entry"><span>Monthly Summary</span><span>105</span></div>
+          <div class="index-entry"><span>Notes</span><span>117</span></div>
         </section>
       page_size: ${page_size}
       save_path: workspace/harmony/kdp
       filename: migraine.pdf
       mode: append
+      add_page_number: False
 
   - name: generate_how_tu_use
     type: tool
@@ -82,10 +204,11 @@ steps:
       content: |
         {{ style }}
         <section>
-          <br/><br/><br/><br/><br/><br/><br/><br/><br/>
-          <h2>How to Use This Book</h2>
-          <br/>
-          <p><b>The Harmony Health: Migraine Tracker</b> is designed to help you understand your headaches more clearly, identify patterns, and support your journey toward fewer and less severe episodes. You can use this book daily or only when a migraine occurs.</p>
+          <div class="section-tab"></div>
+          <h2 style="margin-top: 80px;">How to Use This Book</h2>
+          <p style="">
+            <b>The Harmony Health: Migraine Tracker</b> is designed to help you understand your headaches more clearly, identify patterns, and support your journey toward fewer and less severe episodes. You can use this book daily or only when a migraine occurs.
+          </p>
         </section>
       page_size: ${page_size}
       save_path: workspace/harmony/kdp
@@ -99,13 +222,15 @@ steps:
       content: |
         {{ style }}
         <section>
+        <div class="section-tab"></div>
           <h2>What's Inside:</h2>
           <ul>
-            <li><b>Daily Migraine Logs:</b><br/> 90+ pages to track symptoms, triggers, pain type, and medication<br/></li>
-            <li><b>Monthly Summaries:</b><br/> Pages to reflect on trends and adjust your wellness plan<br/></li>
-            <li><b>Pain Type Checklist:</b><br/> To help describe the nature of each episode<br/></li>
-            <li><b>Medication and Trigger Notes:</b><br/> For consistent and detailed records<br/></li>
-          </ul><br/>
+            <li><b>Daily Migraine Logs:</b> 90+ pages to track symptoms, triggers, pain type, and medication<br/></li>
+            <li><b>Monthly Summaries:</b> Pages to reflect on trends and adjust your wellness plan<br/></li>
+            <li><b>Pain Type Checklist:</b> To help describe the nature of each episode<br/></li>
+            <li><b>Medication and Trigger Notes:</b> For consistent and detailed records<br/></li>
+            <li><b>Notes Section:</b>Extra pages at the end for writing general thoughts, questions, or ideas related to your migraine journey</li>
+          </ul>
         </section>
       page_size: ${page_size}
       save_path: workspace/harmony/kdp
@@ -119,6 +244,7 @@ steps:
       content: |
         {{ style }}
         <section>
+          <div class="section-tab"></div>
           <h2>Filling Out a Daily Log</h2>
           <p>
           Use one page to document each individual migraine episode. Filling this out soon after symptoms begin will help you capture the most accurate details. Over time, these logs will help you identify triggers, evaluate treatments, and discuss patterns with your healthcare provider.
@@ -151,6 +277,7 @@ steps:
       content: |
         {{ style }}
         <section>
+          <div class="section-tab"></div>
           <h2>Using Monthly Summaries</h2>
           <p>
             At the end of each month, take a few minutes to review your daily migraine entries and complete the Monthly Summary page. This reflection helps you connect the dots between your symptoms, triggers, habits, and treatment responses.
@@ -185,6 +312,7 @@ steps:
       content: |
         {{ style }}
         <section>
+          <div class="section-tab"></div>
           <h2>Tips for Getting the Most Out of This Tracker</h2>
           <ul>
             <li><b>Be consistent</b> — even a few weeks of tracking can reveal meaningful patterns in symptoms, triggers, and treatment effectiveness.</li>
@@ -208,6 +336,7 @@ steps:
       content: |
         {{ style }}
         <section>
+          <div class="section-tab"></div>
           <h2>Pain Type Checklist</h2>
           <p><b>Understanding the Pain Type Checklist.</b></p>
           <p>
@@ -220,14 +349,13 @@ steps:
             <li>Better communicate with your doctor</li>
             <li>Spot recurring patterns or changes</li>
             <li>Understand how treatments affect different types of pain</li>
-          </ul><br/>
+          </ul>
 
           <h3>How to Use It:</h3>
           <p>
             Simply check off one or more descriptions that match what you're experiencing during a migraine.
             You can also add your own notes if the pain changes throughout the episode.
-          </p><br/>
-
+          </p>
           <h3>Pain Type Descriptions:</h3>
           <ul>
             <li><b>Throbbing / Pulsating:</b> Rhythmic beating or pulsing sensation, common in migraines</li>
@@ -242,7 +370,13 @@ steps:
             <li><b>Shooting:</b> Pain that travels rapidly across or down the head</li>
             <li><b>Radiating:</b> Pain that spreads from one point outward (e.g., behind the eye to temple)</li>
           </ul>
-          <p><b>Tip:</b> Some people experience more than one pain type during the same migraine. It's okay to check multiple boxes!</p>
+          <h3>Tips:</h3>
+          <li>
+            <li>Many people experience more than one type of pain during a migraine episode.</li>
+            <li>It's completely normal for pain to shift in quality over time — for example, starting as dull and evolving into throbbing or sharp.</li>
+            <li>You can check multiple boxes to reflect this. </li>
+            <li>Being specific and thorough helps uncover how your migraines behave and which treatments are most effective for different pain types.</li>
+          </ul>
         </section>
       page_size: ${page_size}
       save_path: workspace/harmony/kdp
@@ -256,11 +390,12 @@ steps:
       content: |
         {{ style }}
         <section>
+          <div class="section-tab"></div>
           <h2>Medication and Trigger Notes</h2>
 
           <p>
             Understanding <strong>what causes</strong> your migraines and <strong>how you respond to treatments</strong> is key to managing them effectively. This section helps you track both your potential <strong>triggers</strong> and the <strong>medications or remedies</strong> you use during each episode.
-          </p><br/>
+          </p>
 
           <h3>Medication Notes</h3>
           <p>Use this section to log:</p>
@@ -284,7 +419,7 @@ steps:
             <li><b>Skipped meals or dehydration</b></li>
           </ul>
           <p><i>Why it matters:</i> Identifying common triggers can help you avoid future episodes or prepare ahead of time.</p>
-          <br/><br/><br/><br/>
+          <br/>
           <h4>Tips:</h4>
           <ul>
             <li>Be honest and thorough — even subtle things can be relevant.</li>
@@ -302,28 +437,27 @@ steps:
     agent: PdfAgent
     loop:
       var: index
-      count: 10
+      count: 1
     input:
       content: |
         {{ style }}
         <section>
-          <img src="workspace/harmony/images/logo2.png" width="40" height="40"><br/>
-          <font face="Helvetica" size="24"><b>{{ index }} - Daily Migraine Log</b></font><br/>
-
-
-          <p><b>Date & Time:</b> ___________________________________________</p><br/>
-          <p><b>Duration:</b> ______________________________________________</p><br/>
-
-          <p><b>Pain Level (1-10):</b></p>
-          <p>
-          [ ] 1 &nbsp;&nbsp; [ ] 2 &nbsp;&nbsp; [ ] 3 &nbsp;&nbsp; [ ] 4 &nbsp;&nbsp; [ ] 5 &nbsp;&nbsp;
-          [ ] 6 &nbsp;&nbsp; [ ] 7 &nbsp;&nbsp; [ ] 8 &nbsp;&nbsp; [ ] 9 &nbsp;&nbsp; [ ] 10
-          </p><br/>
-
-          <p><b>Pain Location:</b> _________________________________________</p><br/>
-
-          <p><b>Pain Type:</b></p>
-          <p>
+          <div class="section-tab" style="top: 60mm; background-color: #aaa9a9;"></div>
+          <div class="header-row">
+            <img src="workspace/harmony/images/logo2.png" alt="Logo">
+            <div>Daily Migraine Log <span class="highlight-number">{{ index }}</span></div>
+          </div>
+          <div><b>Date & Time:</b> __________________________________</div>
+          <div><b>Duration:</b> _____________________________________</div>
+          <div class="pain-level">
+            <b>Pain Level (1-10):</b>
+            <div class="pain-level-options">
+              <span>[ ] 1</span> <span>[ ] 2</span> <span>[ ] 3</span> <span>[ ] 4</span> <span>[ ] 5</span>
+              <span>[ ] 6</span> <span>[ ] 7</span> <span>[ ] 8</span> <span>[ ] 9</span> <span>[ ] 10</span>
+            </div>
+          </div>
+          <div><b>Pain Location:</b> ________________________________</div>
+          <div><b>Pain Type:</b></div>
           <table width="100%">
             <tr>
               <td width="200">[ ] Dull</td>
@@ -346,19 +480,14 @@ steps:
               <td width="200"></td>
             </tr>
           </table>
-
-          <p><b>Aura Present?</b> &nbsp;&nbsp; [ ] Yes &nbsp;&nbsp; [ ] No</p><br/>
-
-          <p><b>Possible Triggers:</b> ______________________________________</p><br/>
-          <p><b>Food/Drink Before Onset:</b> ________________________________</p><br/>
-          <p><b>Medication Taken:</b> ______________________________________</p><br/>
-          <p><b>Relief Outcome:</b> ________________________________________</p><br/>
-
-          <p><b>Lifestyle Notes & Reflections:</b></p><br/>
-          <p>
-          _____________________________________________________<br/><br/>
-          _____________________________________________________
-          </p>
+          <div><b>Aura Present?</b> &nbsp;&nbsp; [ ] Yes &nbsp;&nbsp; [ ] No</div>
+          <div><b>Possible Triggers:</b> _____________________________</div>
+          <div><b>Food/Drink Before Onset:</b> _______________________</div>
+          <div><b>Medication Taken:</b> _____________________________</div>
+          <div><b>Relief Outcome:</b> _______________________________</div>
+          <div><b>Lifestyle Notes & Reflections:</b></div>
+          <div>_____________________________________________</div>
+          <div>_____________________________________________</div>
         </section>
       page_size: ${page_size}
       save_path: workspace/harmony/kdp
@@ -370,52 +499,34 @@ steps:
     agent: PdfAgent
     loop:
       var: index
-      count: 12
+      count: 1
     input:
       content: |
         {{ style }}
         <section>
-
-        <img src="workspace/harmony/images/logo2.png" width="40" height="40"><br/>
-        <font face="Helvetica" size="24"><b>Monthly Summary {{ index }}</b></font><br/>
-
-        <table width="100%" border="0" cellspacing="1">
-          <tr>
-            <td width="150" align="left"><b>Month:</b></td>
-            <td width="200" align="left">____________</td>
-            <td width="250" align="left"><b># of Migraine Days:</b></td>
-            <td width="200" align="left">____________<br/></td>
-          </tr>
-          <tr>
-            <td width="250" align="left"><b>Average Pain Level:</b></td>
-            <td width="200" align="left">_____________________________________</td>
-          </tr>
-        </table>
-            <p><b>Most Common Triggers:</b></p><br/>
-            <p>
-            ______________________________________________________
-            </p>
-
-            <p><b>Effective Medications:</b></p><br/>
-            <p>
-            ______________________________________________________
-            </p>
-
-            <p><b>Lifestyle Factors</b> (Sleep, Diet, Stress):</p><br/>
-            <p>
-            _______________________________________________________
-            </p>
-
-            <p><b>Other Observations:</b></p><br/>
-            <p>
-            ______________________________________________________
-            </p>
-
-            <p><b>Action Plan for Next Month:</b></p><br/>
-            <p>
-            ______________________________________________________<br/><br/>
-            ______________________________________________________
-            </p>
+          <div class="section-tab" style="top: 90mm; background-color: #a9aaa9;"></div>
+          <div class="header-row">
+            <img src="workspace/harmony/images/logo2.png" alt="Logo">
+            <div>Monthly Summary <span class="highlight-number">{{ index }}</span></div>
+          </div>
+          <div class="monthly-summary">
+            <div><b>Month:</b> _________ <b>&nbsp;&nbsp;&nbsp;# of Migraine Days:</b> ___________</div>
+            <div><b>Average Pain Level:</b></div>
+            <div>______________________________________________</div>
+            <div><b>Most Common Triggers:</b></div>
+            <div>______________________________________________</div>
+            <div><b>Effective Medications:</b></div>
+            <div>______________________________________________</div>
+            <div><b>Lifestyle Factors</b> (Sleep, Diet, Stress):</div>
+            <div>______________________________________________</div>
+            <div><b>Other Observations:</b></div>
+            <div>______________________________________________</div>
+            <div><b>Action Plan for Next Month:</b></div>
+            <div>______________________________________________</div>
+            <div>______________________________________________</div>
+            <div>______________________________________________</div>
+            <div>______________________________________________</div>
+          </div>
         </section>
       page_size: ${page_size}
       save_path: workspace/harmony/kdp
@@ -425,26 +536,35 @@ steps:
   - name: generate_notes
     type: tool
     agent: PdfAgent
+    loop:
+      var: index
+      count: 1
     input:
       content: |
-        <{{ style }}
+        {{ style }}
         <section>
-
-        <img src="workspace/harmony/images/logo2.png" width="40" height="40"><br/>
-        <h2>Notes</h2><br/><br/>
-          <p>
-            ______________________________________________________<br/><br/>
-            ______________________________________________________<br/><br/>
-            ______________________________________________________<br/><br/>
-            ______________________________________________________<br/><br/>
-            ______________________________________________________<br/><br/>
-            ______________________________________________________<br/><br/>
-            ______________________________________________________<br/><br/>
-            ______________________________________________________<br/><br/>
-            ______________________________________________________<br/><br/>
-            ______________________________________________________<br/><br/>
-            ______________________________________________________
-            </p>
+          <div class="section-tab" style="top: 120mm; background-color: #a9a9aa;"></div>
+          <div class="header-row">
+            <img src="workspace/harmony/images/logo2.png" alt="Logo">
+            <div>Notes</div><br/><br/>
+          </div>
+            <div>______________________________________________</div>
+            <div>______________________________________________</div>
+            <div>______________________________________________</div>
+            <div>______________________________________________</div>
+            <div>______________________________________________</div>
+            <div>______________________________________________</div>
+            <div>______________________________________________</div>
+            <div>______________________________________________</div>
+            <div>______________________________________________</div>
+            <div>______________________________________________</div>
+            <div>______________________________________________</div>
+            <div>______________________________________________</div>
+            <div>______________________________________________</div>
+            <div>______________________________________________</div>
+            <div>______________________________________________</div>
+            <div>______________________________________________</div>
+            <div>______________________________________________</div>
         </section>
       page_size: ${page_size}
       save_path: workspace/harmony/kdp
