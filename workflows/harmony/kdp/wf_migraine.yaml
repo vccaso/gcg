@@ -165,7 +165,7 @@ vars:
       }
 
       .form-block-cell img {
-        width: 50px;
+        width: 100px;
         height: 50px;
       }
     </style>
@@ -527,7 +527,7 @@ steps:
                <div class="form-block-cell">Food/Drink before</div>
             </div>
             <div class="form-block-row">
-              <div class="form-block-cell"><img src="workspace/harmony/images/head.png" alt="Pain Location"></div>
+              <div class="form-block-cell"><img src="workspace/harmony/images/heads.png" alt="Pain Location"></div>
               <div class="form-block-cell">&nbsp;</div>
               <div class="form-block-cell">&nbsp;</div>
             </div>
