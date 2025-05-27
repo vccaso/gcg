@@ -74,29 +74,45 @@ vars:
         display: none;
       }
 
-
-      .pain-level {
-        font-family: Arial, sans-serif;
-        font-size: 10pt;
-        line-height: 1.6;
-        margin-bottom: 10px;
+      .pain-scale-table {
+        display: table;
+        width: 100%;
+        margin-top: 1px;
+        font-family: Helvetica, sans-serif;
+        font-size: 9pt;
       }
 
-      .pain-level-options {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-        margin-top: 4px;
+      .pain-scale-header {
+        display: table-row;
+        background-color: #f2f2f2;
+        font-weight: bold;
+        text-align: center;
       }
 
-      .pain-level-options span {
+      .pain-scale-row-single {
+        display: table-row;
+        text-align: center;
+      }
+
+      .pain-scale-cell-header {
+        display: table-cell;
+        padding: 6px 6px;
+      }
+
+      .pain-scale-cell-numbers {
+        display: table-cell;
+        padding: 4px;
+        border: 1px solid #ccc;
+      }
+
+      .pain-scale-numbers span {
         display: inline-block;
-        min-width: 31px;
+        margin: 0 6px;
       }
 
       table {
         margin-top: 8px;
-        margin-bottom: 12px;
+        margin-bottom: 10px;
       }
 
       table td {
@@ -120,6 +136,37 @@ vars:
       .index-entry span:last-child {
         text-align: right;
         min-width: 30px;
+      }
+
+      .form-block {
+        display: table;
+        width: 100%;
+        margin-top: 12px;
+        font-family: Helvetica, sans-serif;
+        font-size: 10pt;
+      }
+
+      .form-block-header {
+        display: table-row;
+        background-color: #f2f2f2;
+        font-weight: bold;
+        text-align: left;
+      }
+
+      .form-block-row {
+        display: table-row;
+      }
+
+      .form-block-cell {
+        display: table-cell;
+        padding: 6px 8px;
+        border: 1px solid #ccc;
+        vertical-align: top;
+      }
+
+      .form-block-cell img {
+        width: 50px;
+        height: 50px;
       }
     </style>
 
@@ -150,287 +197,287 @@ steps:
       filename: migraine.pdf
       add_page_number: False
 
-  - name: generate_inspirational
-    type: tool
-    agent: PdfAgent
-    input:
-      content: |
-        {{ style }}
-        <section>
-            <div style="display: flex; justify-content: center; align-items: center; height: 100vh; text-align: center; padding: 0 20px;">
-              <div>
-                <p style="font-size: 20px; font-style: italic;">
-                  "You are not defined by the pain you endure, but by the strength you show in facing it — one moment, one breath, one day at a time."
-                </p>
-                <p style="font-size: 16px; font-weight: bold;">— Harmony Health</p>
-              </div>
-            </div>
-        </section>
-      page_size: ${page_size}
-      save_path: workspace/harmony/kdp
-      filename: migraine.pdf
-      mode: append
-      add_page_number: False
+  # - name: generate_inspirational
+  #   type: tool
+  #   agent: PdfAgent
+  #   input:
+  #     content: |
+  #       {{ style }}
+  #       <section>
+  #           <div style="display: flex; justify-content: center; align-items: center; height: 100vh; text-align: center; padding: 0 20px;">
+  #             <div>
+  #               <p style="font-size: 20px; font-style: italic;">
+  #                 "You are not defined by the pain you endure, but by the strength you show in facing it — one moment, one breath, one day at a time."
+  #               </p>
+  #               <p style="font-size: 16px; font-weight: bold;">— Harmony Health</p>
+  #             </div>
+  #           </div>
+  #       </section>
+  #     page_size: ${page_size}
+  #     save_path: workspace/harmony/kdp
+  #     filename: migraine.pdf
+  #     mode: append
+  #     add_page_number: False
 
-  - name: generate_index
-    type: tool
-    agent: PdfAgent
-    input:
-      content: |
-        {{ style }}
-        <section>
-          <h2>Index</h2>
-          <div class="index-entry"><span>How to Use This Book</span><span>4</span></div>
-          <div class="index-entry"><span>What's Inside</span><span>5</span></div>
-          <div class="index-entry"><span>Filling Out a Daily Log</span><span>6</span></div>
-          <div class="index-entry"><span>Using Monthly Summaries</span><span>8</span></div>
-          <div class="index-entry"><span>Tips for Getting the Most Out of This Tracker</span><span>10</span></div>
-          <div class="index-entry"><span>Pain Type Checklist</span><span>11</span></div>
-          <div class="index-entry"><span>Medication and Trigger Notes</span><span>13</span></div>
-          <div class="index-entry"><span>Daily Migraine Log</span><span>15</span></div>
-          <div class="index-entry"><span>Monthly Summary</span><span>105</span></div>
-          <div class="index-entry"><span>Notes</span><span>117</span></div>
-        </section>
-      page_size: ${page_size}
-      save_path: workspace/harmony/kdp
-      filename: migraine.pdf
-      mode: append
-      add_page_number: False
+  # - name: generate_index
+  #   type: tool
+  #   agent: PdfAgent
+  #   input:
+  #     content: |
+  #       {{ style }}
+  #       <section>
+  #         <h2>Index</h2>
+  #         <div class="index-entry"><span>How to Use This Book</span><span>4</span></div>
+  #         <div class="index-entry"><span>What's Inside</span><span>5</span></div>
+  #         <div class="index-entry"><span>Filling Out a Daily Log</span><span>6</span></div>
+  #         <div class="index-entry"><span>Using Monthly Summaries</span><span>8</span></div>
+  #         <div class="index-entry"><span>Tips for Getting the Most Out of This Tracker</span><span>10</span></div>
+  #         <div class="index-entry"><span>Pain Type Checklist</span><span>11</span></div>
+  #         <div class="index-entry"><span>Medication and Trigger Notes</span><span>13</span></div>
+  #         <div class="index-entry"><span>Daily Migraine Log</span><span>15</span></div>
+  #         <div class="index-entry"><span>Monthly Summary</span><span>105</span></div>
+  #         <div class="index-entry"><span>Notes</span><span>117</span></div>
+  #       </section>
+  #     page_size: ${page_size}
+  #     save_path: workspace/harmony/kdp
+  #     filename: migraine.pdf
+  #     mode: append
+  #     add_page_number: False
 
-  - name: generate_how_tu_use
-    type: tool
-    agent: PdfAgent
-    input:
-      content: |
-        {{ style }}
-        <section>
-          <div class="section-tab"></div>
-          <h2 style="margin-top: 80px;">How to Use This Book</h2>
-          <p style="">
-            <b>The Harmony Health: Migraine Tracker</b> is designed to help you understand your headaches more clearly, identify patterns, and support your journey toward fewer and less severe episodes. You can use this book daily or only when a migraine occurs.
-          </p>
-        </section>
-      page_size: ${page_size}
-      save_path: workspace/harmony/kdp
-      filename: migraine.pdf
-      mode: append
+  # - name: generate_how_tu_use
+  #   type: tool
+  #   agent: PdfAgent
+  #   input:
+  #     content: |
+  #       {{ style }}
+  #       <section>
+  #         <div class="section-tab"></div>
+  #         <h2 style="margin-top: 80px;">How to Use This Book</h2>
+  #         <p style="">
+  #           <b>The Harmony Health: Migraine Tracker</b> is designed to help you understand your headaches more clearly, identify patterns, and support your journey toward fewer and less severe episodes. You can use this book daily or only when a migraine occurs.
+  #         </p>
+  #       </section>
+  #     page_size: ${page_size}
+  #     save_path: workspace/harmony/kdp
+  #     filename: migraine.pdf
+  #     mode: append
 
-  - name: generate_Inside
-    type: tool
-    agent: PdfAgent
-    input:
-      content: |
-        {{ style }}
-        <section>
-        <div class="section-tab"></div>
-          <h2>What's Inside:</h2>
-          <ul>
-            <li><b>Daily Migraine Logs:</b> 90+ pages to track symptoms, triggers, pain type, and medication<br/></li>
-            <li><b>Monthly Summaries:</b> Pages to reflect on trends and adjust your wellness plan<br/></li>
-            <li><b>Pain Type Checklist:</b> To help describe the nature of each episode<br/></li>
-            <li><b>Medication and Trigger Notes:</b> For consistent and detailed records<br/></li>
-            <li><b>Notes Section:</b>Extra pages at the end for writing general thoughts, questions, or ideas related to your migraine journey</li>
-          </ul>
-        </section>
-      page_size: ${page_size}
-      save_path: workspace/harmony/kdp
-      filename: migraine.pdf
-      mode: append
+  # - name: generate_Inside
+  #   type: tool
+  #   agent: PdfAgent
+  #   input:
+  #     content: |
+  #       {{ style }}
+  #       <section>
+  #       <div class="section-tab"></div>
+  #         <h2>What's Inside:</h2>
+  #         <ul>
+  #           <li><b>Daily Migraine Logs:</b> 90+ pages to track symptoms, triggers, pain type, and medication<br/></li>
+  #           <li><b>Monthly Summaries:</b> Pages to reflect on trends and adjust your wellness plan<br/></li>
+  #           <li><b>Pain Type Checklist:</b> To help describe the nature of each episode<br/></li>
+  #           <li><b>Medication and Trigger Notes:</b> For consistent and detailed records<br/></li>
+  #           <li><b>Notes Section:</b>Extra pages at the end for writing general thoughts, questions, or ideas related to your migraine journey</li>
+  #         </ul>
+  #       </section>
+  #     page_size: ${page_size}
+  #     save_path: workspace/harmony/kdp
+  #     filename: migraine.pdf
+  #     mode: append
 
-  - name: generate_filling_daily
-    type: tool
-    agent: PdfAgent
-    input:
-      content: |
-        {{ style }}
-        <section>
-          <div class="section-tab"></div>
-          <h2>Filling Out a Daily Log</h2>
-          <p>
-          Use one page to document each individual migraine episode. Filling this out soon after symptoms begin will help you capture the most accurate details. Over time, these logs will help you identify triggers, evaluate treatments, and discuss patterns with your healthcare provider.
-          </p>
-          <p>Each daily log includes the following fields:</p>
-          <ul>
-            <li><b>Date & Time:</b> Record when the migraine started to help identify timing patterns (e.g., morning vs. evening).</li>
-            <li><b>Duration:</b> Note how long the episode lasted. If the pain came and went, use approximate total duration.</li>
-            <li><b>Pain Level:</b> Use the checkboxes to rate your pain intensity on a scale from 1 (very mild) to 10 (extremely severe).</li>
-            <li><b>Pain Location:</b> Write where you felt the pain (e.g., one side of head, behind eyes, neck, or forehead).</li>
-            <li><b>Pain Type:</b> Check all descriptors that apply to the nature of your pain (e.g., throbbing, sharp, burning). You may experience more than one.</li>
-            <li><b>Aura Present?:</b> Select Yes or No to indicate whether you experienced any warning symptoms before the migraine (like visual flashes, numbness, or sensitivity).</li>
-            <li><b>Possible Triggers:</b> List any factors that might have contributed to the onset of the migraine such as stress, certain foods, sleep disruption, or weather changes.</li>
-            <li><b>Food/Drink Before Onset:</b> Record what you ate or drank prior to the migraine. Certain foods (e.g., caffeine, chocolate, wine) may act as triggers.</li>
-            <li><b>Medication Taken:</b> Write down the name, dose, and timing of any medication or remedy used (prescription or over-the-counter).</li>
-            <li><b>Relief Outcome:</b> Note how well the treatment worked. Did the pain stop completely, partially, or not at all?</li>
-            <li><b>Lifestyle Notes & Reflections:</b> Use this space to describe sleep quality, emotional state, hydration, exercise, or anything else that may have influenced the episode. This section is also helpful for journaling how the day unfolded or what helped you cope.</li>
-          </ul><br/>
-          <p>Being consistent with your entries builds valuable insights over time — not just for spotting patterns, but for improving how you manage and prevent future migraines.</p>
-        </section>
-      page_size: ${page_size}
-      save_path: workspace/harmony/kdp
-      filename: migraine.pdf
-      mode: append
+  # - name: generate_filling_daily
+  #   type: tool
+  #   agent: PdfAgent
+  #   input:
+  #     content: |
+  #       {{ style }}
+  #       <section>
+  #         <div class="section-tab"></div>
+  #         <h2>Filling Out a Daily Log</h2>
+  #         <p>
+  #         Use one page to document each individual migraine episode. Filling this out soon after symptoms begin will help you capture the most accurate details. Over time, these logs will help you identify triggers, evaluate treatments, and discuss patterns with your healthcare provider.
+  #         </p>
+  #         <p>Each daily log includes the following fields:</p>
+  #         <ul>
+  #           <li><b>Date & Time:</b> Record when the migraine started to help identify timing patterns (e.g., morning vs. evening).</li>
+  #           <li><b>Duration:</b> Note how long the episode lasted. If the pain came and went, use approximate total duration.</li>
+  #           <li><b>Pain Level:</b> Use the checkboxes to rate your pain intensity on a scale from 1 (very mild) to 10 (extremely severe).</li>
+  #           <li><b>Pain Location:</b> Write where you felt the pain (e.g., one side of head, behind eyes, neck, or forehead).</li>
+  #           <li><b>Pain Type:</b> Check all descriptors that apply to the nature of your pain (e.g., throbbing, sharp, burning). You may experience more than one.</li>
+  #           <li><b>Aura Present?:</b> Select Yes or No to indicate whether you experienced any warning symptoms before the migraine (like visual flashes, numbness, or sensitivity).</li>
+  #           <li><b>Possible Triggers:</b> List any factors that might have contributed to the onset of the migraine such as stress, certain foods, sleep disruption, or weather changes.</li>
+  #           <li><b>Food/Drink Before Onset:</b> Record what you ate or drank prior to the migraine. Certain foods (e.g., caffeine, chocolate, wine) may act as triggers.</li>
+  #           <li><b>Medication Taken:</b> Write down the name, dose, and timing of any medication or remedy used (prescription or over-the-counter).</li>
+  #           <li><b>Relief Outcome:</b> Note how well the treatment worked. Did the pain stop completely, partially, or not at all?</li>
+  #           <li><b>Lifestyle Notes & Reflections:</b> Use this space to describe sleep quality, emotional state, hydration, exercise, or anything else that may have influenced the episode. This section is also helpful for journaling how the day unfolded or what helped you cope.</li>
+  #         </ul><br/>
+  #         <p>Being consistent with your entries builds valuable insights over time — not just for spotting patterns, but for improving how you manage and prevent future migraines.</p>
+  #       </section>
+  #     page_size: ${page_size}
+  #     save_path: workspace/harmony/kdp
+  #     filename: migraine.pdf
+  #     mode: append
 
-  - name: generate_filling_monthly
-    type: tool
-    agent: PdfAgent
-    input:
-      content: |
-        {{ style }}
-        <section>
-          <div class="section-tab"></div>
-          <h2>Using Monthly Summaries</h2>
-          <p>
-            At the end of each month, take a few minutes to review your daily migraine entries and complete the Monthly Summary page. This reflection helps you connect the dots between your symptoms, triggers, habits, and treatment responses.
-          </p>
+  # - name: generate_filling_monthly
+  #   type: tool
+  #   agent: PdfAgent
+  #   input:
+  #     content: |
+  #       {{ style }}
+  #       <section>
+  #         <div class="section-tab"></div>
+  #         <h2>Using Monthly Summaries</h2>
+  #         <p>
+  #           At the end of each month, take a few minutes to review your daily migraine entries and complete the Monthly Summary page. This reflection helps you connect the dots between your symptoms, triggers, habits, and treatment responses.
+  #         </p>
 
-          <p>Here's how to use each part of the Monthly Summary:</p>
+  #         <p>Here's how to use each part of the Monthly Summary:</p>
 
-          <ul>
-            <li><b>Month / # of Migraine Days:</b> Write the calendar month and count how many days you recorded migraine symptoms.</li>
-            <li><b>Average Pain Level:</b> Review your pain level ratings and calculate an average — this helps track progress over time.</li>
-            <li><b>Most Common Triggers:</b> List any triggers that repeatedly appeared in your logs (e.g., stress, certain foods, lack of sleep).</li>
-            <li><b>Effective Medications:</b> Note which treatments provided the most relief. Include timing or combinations that worked well.</li>
-            <li><b>Lifestyle Factors:</b> Reflect on how things like sleep, stress, hydration, and diet may have contributed to better or worse days.</li>
-            <li><b>Other Observations:</b> Include anything else that stood out—mood changes, weather shifts, or unusual symptoms.</li>
-            <li><b>Action Plan for Next Month:</b> Set realistic goals or reminders based on what you've learned (e.g., stay hydrated, avoid a known trigger, adjust bedtime).</li>
-          </ul>
+  #         <ul>
+  #           <li><b>Month / # of Migraine Days:</b> Write the calendar month and count how many days you recorded migraine symptoms.</li>
+  #           <li><b>Average Pain Level:</b> Review your pain level ratings and calculate an average — this helps track progress over time.</li>
+  #           <li><b>Most Common Triggers:</b> List any triggers that repeatedly appeared in your logs (e.g., stress, certain foods, lack of sleep).</li>
+  #           <li><b>Effective Medications:</b> Note which treatments provided the most relief. Include timing or combinations that worked well.</li>
+  #           <li><b>Lifestyle Factors:</b> Reflect on how things like sleep, stress, hydration, and diet may have contributed to better or worse days.</li>
+  #           <li><b>Other Observations:</b> Include anything else that stood out—mood changes, weather shifts, or unusual symptoms.</li>
+  #           <li><b>Action Plan for Next Month:</b> Set realistic goals or reminders based on what you've learned (e.g., stay hydrated, avoid a known trigger, adjust bedtime).</li>
+  #         </ul>
 
-          <p>
-            By consistently reviewing your monthly patterns, you'll gain a clearer understanding of your migraines and feel more empowered to manage them proactively.
-          </p>
-        </section>
-      page_size: ${page_size}
-      save_path: workspace/harmony/kdp
-      filename: migraine.pdf
-      mode: append
+  #         <p>
+  #           By consistently reviewing your monthly patterns, you'll gain a clearer understanding of your migraines and feel more empowered to manage them proactively.
+  #         </p>
+  #       </section>
+  #     page_size: ${page_size}
+  #     save_path: workspace/harmony/kdp
+  #     filename: migraine.pdf
+  #     mode: append
 
 
-  - name: generate_tips
-    type: tool
-    agent: PdfAgent
-    input:
-      content: |
-        {{ style }}
-        <section>
-          <div class="section-tab"></div>
-          <h2>Tips for Getting the Most Out of This Tracker</h2>
-          <ul>
-            <li><b>Be consistent</b> — even a few weeks of tracking can reveal meaningful patterns in symptoms, triggers, and treatment effectiveness.</li>
-            <li><b>Bring this journal to medical appointments</b> — detailed logs provide your doctor with valuable insights that memory alone may miss.</li>
-            <li><b>Use pen color codes or symbols</b> — for example: ⚡ for triggers, 🌿 for remedies, 💊 for medications, 😊 for good days.</li>
-            <li><b>Log migraines as soon as possible</b> — fresh details help ensure accuracy in recording onset, duration, and symptoms.</li>
-            <li><b>Review your monthly summaries</b> — identify common patterns and use them to adjust your diet, sleep, stress levels, or medications.</li>
-            <li><b>Share patterns with your support network</b> — keeping loved ones informed can help with empathy and support during tough episodes.</li>
-            <li><b>Celebrate progress</b> — fewer days with pain or improved treatment responses are worth noting. Tracking is about growth and awareness, not perfection.</li>
-          </ul>
-        </section>
-      page_size: ${page_size}
-      save_path: workspace/harmony/kdp
-      filename: migraine.pdf
-      mode: append
+  # - name: generate_tips
+  #   type: tool
+  #   agent: PdfAgent
+  #   input:
+  #     content: |
+  #       {{ style }}
+  #       <section>
+  #         <div class="section-tab"></div>
+  #         <h2>Tips for Getting the Most Out of This Tracker</h2>
+  #         <ul>
+  #           <li><b>Be consistent</b> — even a few weeks of tracking can reveal meaningful patterns in symptoms, triggers, and treatment effectiveness.</li>
+  #           <li><b>Bring this journal to medical appointments</b> — detailed logs provide your doctor with valuable insights that memory alone may miss.</li>
+  #           <li><b>Use pen color codes or symbols</b> — for example: ⚡ for triggers, 🌿 for remedies, 💊 for medications, 😊 for good days.</li>
+  #           <li><b>Log migraines as soon as possible</b> — fresh details help ensure accuracy in recording onset, duration, and symptoms.</li>
+  #           <li><b>Review your monthly summaries</b> — identify common patterns and use them to adjust your diet, sleep, stress levels, or medications.</li>
+  #           <li><b>Share patterns with your support network</b> — keeping loved ones informed can help with empathy and support during tough episodes.</li>
+  #           <li><b>Celebrate progress</b> — fewer days with pain or improved treatment responses are worth noting. Tracking is about growth and awareness, not perfection.</li>
+  #         </ul>
+  #       </section>
+  #     page_size: ${page_size}
+  #     save_path: workspace/harmony/kdp
+  #     filename: migraine.pdf
+  #     mode: append
 
-  - name: generate_pain_types
-    type: tool
-    agent: PdfAgent
-    input:
-      content: |
-        {{ style }}
-        <section>
-          <div class="section-tab"></div>
-          <h2>Pain Type Checklist</h2>
-          <p><b>Understanding the Pain Type Checklist.</b></p>
-          <p>
-            Migraine pain can feel different from person to person — and even change from one episode to the next.
-            That's why this Pain Type Checklist is included in each log entry: to help you describe your migraine sensations more precisely.
-          </p>
+  # - name: generate_pain_types
+  #   type: tool
+  #   agent: PdfAgent
+  #   input:
+  #     content: |
+  #       {{ style }}
+  #       <section>
+  #         <div class="section-tab"></div>
+  #         <h2>Pain Type Checklist</h2>
+  #         <p><b>Understanding the Pain Type Checklist.</b></p>
+  #         <p>
+  #           Migraine pain can feel different from person to person — and even change from one episode to the next.
+  #           That's why this Pain Type Checklist is included in each log entry: to help you describe your migraine sensations more precisely.
+  #         </p>
 
-          <p>By identifying the <b>quality</b> of the pain, you can:</p>
-          <ul>
-            <li>Better communicate with your doctor</li>
-            <li>Spot recurring patterns or changes</li>
-            <li>Understand how treatments affect different types of pain</li>
-          </ul>
+  #         <p>By identifying the <b>quality</b> of the pain, you can:</p>
+  #         <ul>
+  #           <li>Better communicate with your doctor</li>
+  #           <li>Spot recurring patterns or changes</li>
+  #           <li>Understand how treatments affect different types of pain</li>
+  #         </ul>
 
-          <h3>How to Use It:</h3>
-          <p>
-            Simply check off one or more descriptions that match what you're experiencing during a migraine.
-            You can also add your own notes if the pain changes throughout the episode.
-          </p>
-          <h3>Pain Type Descriptions:</h3>
-          <ul>
-            <li><b>Throbbing / Pulsating:</b> Rhythmic beating or pulsing sensation, common in migraines</li>
-            <li><b>Sharp:</b> Intense, sudden, stabbing sensation</li>
-            <li><b>Dull:</b> Mild, aching sensation that feels deep but not sharp</li>
-            <li><b>Stabbing:</b> Short, sudden bursts of sharp pain</li>
-            <li><b>Burning:</b> Warm, irritated, or inflamed sensation</li>
-            <li><b>Pressure / Squeezing:</b> Feels like something tight or pressing inside the head</li>
-            <li><b>Aching:</b> General discomfort, similar to muscle soreness</li>
-            <li><b>Electric / Shock-like:</b> Quick, jabbing pain that feels like a nerve is firing</li>
-            <li><b>Cramping:</b> Tense, gripping pain similar to a muscle cramp</li>
-            <li><b>Shooting:</b> Pain that travels rapidly across or down the head</li>
-            <li><b>Radiating:</b> Pain that spreads from one point outward (e.g., behind the eye to temple)</li>
-          </ul>
-          <h3>Tips:</h3>
-          <li>
-            <li>Many people experience more than one type of pain during a migraine episode.</li>
-            <li>It's completely normal for pain to shift in quality over time — for example, starting as dull and evolving into throbbing or sharp.</li>
-            <li>You can check multiple boxes to reflect this. </li>
-            <li>Being specific and thorough helps uncover how your migraines behave and which treatments are most effective for different pain types.</li>
-          </ul>
-        </section>
-      page_size: ${page_size}
-      save_path: workspace/harmony/kdp
-      filename: migraine.pdf
-      mode: append
+  #         <h3>How to Use It:</h3>
+  #         <p>
+  #           Simply check off one or more descriptions that match what you're experiencing during a migraine.
+  #           You can also add your own notes if the pain changes throughout the episode.
+  #         </p>
+  #         <h3>Pain Type Descriptions:</h3>
+  #         <ul>
+  #           <li><b>Throbbing / Pulsating:</b> Rhythmic beating or pulsing sensation, common in migraines</li>
+  #           <li><b>Sharp:</b> Intense, sudden, stabbing sensation</li>
+  #           <li><b>Dull:</b> Mild, aching sensation that feels deep but not sharp</li>
+  #           <li><b>Stabbing:</b> Short, sudden bursts of sharp pain</li>
+  #           <li><b>Burning:</b> Warm, irritated, or inflamed sensation</li>
+  #           <li><b>Pressure / Squeezing:</b> Feels like something tight or pressing inside the head</li>
+  #           <li><b>Aching:</b> General discomfort, similar to muscle soreness</li>
+  #           <li><b>Electric / Shock-like:</b> Quick, jabbing pain that feels like a nerve is firing</li>
+  #           <li><b>Cramping:</b> Tense, gripping pain similar to a muscle cramp</li>
+  #           <li><b>Shooting:</b> Pain that travels rapidly across or down the head</li>
+  #           <li><b>Radiating:</b> Pain that spreads from one point outward (e.g., behind the eye to temple)</li>
+  #         </ul>
+  #         <h3>Tips:</h3>
+  #         <li>
+  #           <li>Many people experience more than one type of pain during a migraine episode.</li>
+  #           <li>It's completely normal for pain to shift in quality over time — for example, starting as dull and evolving into throbbing or sharp.</li>
+  #           <li>You can check multiple boxes to reflect this. </li>
+  #           <li>Being specific and thorough helps uncover how your migraines behave and which treatments are most effective for different pain types.</li>
+  #         </ul>
+  #       </section>
+  #     page_size: ${page_size}
+  #     save_path: workspace/harmony/kdp
+  #     filename: migraine.pdf
+  #     mode: append
 
-  - name: generate_medication
-    type: tool
-    agent: PdfAgent
-    input:
-      content: |
-        {{ style }}
-        <section>
-          <div class="section-tab"></div>
-          <h2>Medication and Trigger Notes</h2>
+  # - name: generate_medication
+  #   type: tool
+  #   agent: PdfAgent
+  #   input:
+  #     content: |
+  #       {{ style }}
+  #       <section>
+  #         <div class="section-tab"></div>
+  #         <h2>Medication and Trigger Notes</h2>
 
-          <p>
-            Understanding <strong>what causes</strong> your migraines and <strong>how you respond to treatments</strong> is key to managing them effectively. This section helps you track both your potential <strong>triggers</strong> and the <strong>medications or remedies</strong> you use during each episode.
-          </p>
+  #         <p>
+  #           Understanding <strong>what causes</strong> your migraines and <strong>how you respond to treatments</strong> is key to managing them effectively. This section helps you track both your potential <strong>triggers</strong> and the <strong>medications or remedies</strong> you use during each episode.
+  #         </p>
 
-          <h3>Medication Notes</h3>
-          <p>Use this section to log:</p>
-          <ul>
-            <li><strong>Name of medication or remedy</strong> (e.g., Ibuprofen, Sumatriptan, cold compress, essential oil)</li>
-            <li><strong>Dosage taken</strong></li>
-            <li><strong>Time it was taken</strong></li>
-            <li><strong>How effective it was</strong> (e.g., complete relief, partial relief, no effect)</li>
-          </ul>
-          <p><i>Why it matters:</i> Over time, you'll be able to see which treatments work best for different pain types, triggers, or intensities.</p>
-          <br/>
-          <h3>Trigger Notes</h3>
-          <p>Use this space to note anything that may have contributed to the onset of your migraine, such as:</p>
-          <ul>
-            <li><b>Sleep disturbances</b> (too little or too much sleep)</li>
-            <li><b>Stress or anxiety</b></li>
-            <li><b>Certain foods or drinks</b> (e.g., chocolate, cheese, caffeine, wine)</li>
-            <li><b>Weather or barometric changes</b></li>
-            <li><b>Screen time or bright lights</b></li>
-            <li><b>Hormonal changes</b></li>
-            <li><b>Skipped meals or dehydration</b></li>
-          </ul>
-          <p><i>Why it matters:</i> Identifying common triggers can help you avoid future episodes or prepare ahead of time.</p>
-          <br/>
-          <h4>Tips:</h4>
-          <ul>
-            <li>Be honest and thorough — even subtle things can be relevant.</li>
-            <li>Use shorthand symbols if helpful (💧 = hydration, ☁️ = weather, 😴 = sleep).</li>
-            <li>Over time, you may notice that certain triggers only cause migraines when combined (e.g., stress + poor sleep).</li>
-          </ul>
-        </section>
-      page_size: ${page_size}
-      save_path: workspace/harmony/kdp
-      filename: migraine.pdf
-      mode: append
+  #         <h3>Medication Notes</h3>
+  #         <p>Use this section to log:</p>
+  #         <ul>
+  #           <li><strong>Name of medication or remedy</strong> (e.g., Ibuprofen, Sumatriptan, cold compress, essential oil)</li>
+  #           <li><strong>Dosage taken</strong></li>
+  #           <li><strong>Time it was taken</strong></li>
+  #           <li><strong>How effective it was</strong> (e.g., complete relief, partial relief, no effect)</li>
+  #         </ul>
+  #         <p><i>Why it matters:</i> Over time, you'll be able to see which treatments work best for different pain types, triggers, or intensities.</p>
+  #         <br/>
+  #         <h3>Trigger Notes</h3>
+  #         <p>Use this space to note anything that may have contributed to the onset of your migraine, such as:</p>
+  #         <ul>
+  #           <li><b>Sleep disturbances</b> (too little or too much sleep)</li>
+  #           <li><b>Stress or anxiety</b></li>
+  #           <li><b>Certain foods or drinks</b> (e.g., chocolate, cheese, caffeine, wine)</li>
+  #           <li><b>Weather or barometric changes</b></li>
+  #           <li><b>Screen time or bright lights</b></li>
+  #           <li><b>Hormonal changes</b></li>
+  #           <li><b>Skipped meals or dehydration</b></li>
+  #         </ul>
+  #         <p><i>Why it matters:</i> Identifying common triggers can help you avoid future episodes or prepare ahead of time.</p>
+  #         <br/>
+  #         <h4>Tips:</h4>
+  #         <ul>
+  #           <li>Be honest and thorough — even subtle things can be relevant.</li>
+  #           <li>Use shorthand symbols if helpful (💧 = hydration, ☁️ = weather, 😴 = sleep).</li>
+  #           <li>Over time, you may notice that certain triggers only cause migraines when combined (e.g., stress + poor sleep).</li>
+  #         </ul>
+  #       </section>
+  #     page_size: ${page_size}
+  #     save_path: workspace/harmony/kdp
+  #     filename: migraine.pdf
+  #     mode: append
 
   - name: generate_dayly_logs
     type: tool
@@ -447,44 +494,89 @@ steps:
             <img src="workspace/harmony/images/logo2.png" alt="Logo">
             <div>Daily Migraine Log <span class="highlight-number">{{ index }}</span></div>
           </div>
-          <div><b>Date & Time:</b> __________________________________</div>
-          <div><b>Duration:</b> _____________________________________</div>
-          <div class="pain-level">
-            <b>Pain Level (1-10):</b>
-            <div class="pain-level-options">
-              <span>[ ] 1</span> <span>[ ] 2</span> <span>[ ] 3</span> <span>[ ] 4</span> <span>[ ] 5</span>
-              <span>[ ] 6</span> <span>[ ] 7</span> <span>[ ] 8</span> <span>[ ] 9</span> <span>[ ] 10</span>
+
+          <div class="form-block">
+            <div class="form-block-header">
+              <div class="form-block-cell">Date & Time</div>
+              <div class="form-block-cell">Duration</div>
+            </div>
+            <div class="form-block-row">
+              <div class="form-block-cell">&nbsp;</div>
+              <div class="form-block-cell">&nbsp;</div>
             </div>
           </div>
-          <div><b>Pain Location:</b> ________________________________</div>
-          <div><b>Pain Type:</b></div>
-          <table width="100%">
-            <tr>
-              <td width="200">[ ] Dull</td>
-               <td width="200">[ ] Sharp</td>
-              <td width="200">[ ] Throbbing / Pulsating</td>
-            </tr>
-            <tr>
-              <td width="200">[ ] Stabbing</td>
-              <td width="200">[ ] Burning</td>
-              <td width="200">[ ] Pressure / Squeezing</td>
-            </tr>
-            <tr>
-              <td width="200">[ ] Aching</td>
-              <td width="200">[ ] Cramping</td>
-              <td width="200">[ ] Electric / Shock-like</td>
-            </tr>
-            <tr>
-              <td width="200">[ ] Shooting</td>
-              <td width="200">[ ] Radiating</td>
-              <td width="200"></td>
-            </tr>
-          </table>
-          <div><b>Aura Present?</b> &nbsp;&nbsp; [ ] Yes &nbsp;&nbsp; [ ] No</div>
-          <div><b>Possible Triggers:</b> _____________________________</div>
-          <div><b>Food/Drink Before Onset:</b> _______________________</div>
-          <div><b>Medication Taken:</b> _____________________________</div>
-          <div><b>Relief Outcome:</b> _______________________________</div>
+          
+          <div class="pain-scale-table">
+            <div class="pain-scale-header">
+              <div class="pain-scale-cell-header">Pain Level (1-10):</div>
+            </div>
+            <div class="pain-scale-row-single">
+              <div class="pain-scale-cell-numbers">
+                <div class="pain-scale-numbers">
+                  <span>[ ] 1</span><span>[ ] 2</span><span>[ ] 3</span><span>[ ] 4</span><span>[ ] 5</span>
+                  <span>[ ] 6</span><span>[ ] 7</span><span>[ ] 8</span><span>[ ] 9</span><span>[ ] 10</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-block">
+            <div class="form-block-header">
+              <div class="form-block-cell">Pain Location</div>
+              <div class="form-block-cell">Triggers</div>
+               <div class="form-block-cell">Food/Drink before</div>
+            </div>
+            <div class="form-block-row">
+              <div class="form-block-cell"><img src="workspace/harmony/images/head.png" alt="Pain Location"></div>
+              <div class="form-block-cell">&nbsp;</div>
+              <div class="form-block-cell">&nbsp;</div>
+            </div>
+          </div>
+
+
+          <div class="pain-scale-table">
+            <div class="pain-scale-header">
+              <div class="pain-scale-cell-header">Pain Type</div>
+              <div class="pain-scale-cell-header">Other Symptoms</div>
+            </div>
+            <div class="pain-scale-row-single">
+              <div class="pain-scale-cell-numbers">
+                <div class="pain-scale-numbers">
+                  <span>[ ] Dull</span>
+                  <span>[ ] Sharp</span>
+                  <span>[ ] Throbbing / Pulsating</span>
+                  <span>[ ] Stabbing</span>
+                  <span>[ ] Burning</span>
+                  <span>[ ] Pressure / Squeezing</span>
+                  <span>[ ] Aching</span>
+                  <span>[ ] Cramping</span>
+                  <span>[ ] Electric / Shock-like</span>
+                  <span>[ ] Shooting</span>
+                  <span>[ ] Radiating</span>
+                </div>
+              </div>
+              <div class="pain-scale-cell-numbers">
+                <div class="pain-scale-numbers">
+                  <span>[ ] Dizziness</span>
+                  <span>[ ] Auras</span>
+                  <span>[ ] Light sensitive</span>
+                  <span>[ ] Sound sensitive</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-block">
+            <div class="form-block-header">
+              <div class="form-block-cell">Medication Taken</div>
+              <div class="form-block-cell">Relief Outcome</div>
+            </div>
+            <div class="form-block-row">
+              <div class="form-block-cell">&nbsp;</div>
+              <div class="form-block-cell">&nbsp;</div>
+            </div>
+          </div>
+
           <div><b>Lifestyle Notes & Reflections:</b></div>
           <div>_____________________________________________</div>
           <div>_____________________________________________</div>
@@ -494,79 +586,79 @@ steps:
       filename: migraine.pdf
       mode: append
 
-  - name: generate_monthly_summaries
-    type: tool
-    agent: PdfAgent
-    loop:
-      var: index
-      count: 1
-    input:
-      content: |
-        {{ style }}
-        <section>
-          <div class="section-tab" style="top: 90mm; background-color: #a9aaa9;"></div>
-          <div class="header-row">
-            <img src="workspace/harmony/images/logo2.png" alt="Logo">
-            <div>Monthly Summary <span class="highlight-number">{{ index }}</span></div>
-          </div>
-          <div class="monthly-summary">
-            <div><b>Month:</b> _________ <b>&nbsp;&nbsp;&nbsp;# of Migraine Days:</b> ___________</div>
-            <div><b>Average Pain Level:</b></div>
-            <div>______________________________________________</div>
-            <div><b>Most Common Triggers:</b></div>
-            <div>______________________________________________</div>
-            <div><b>Effective Medications:</b></div>
-            <div>______________________________________________</div>
-            <div><b>Lifestyle Factors</b> (Sleep, Diet, Stress):</div>
-            <div>______________________________________________</div>
-            <div><b>Other Observations:</b></div>
-            <div>______________________________________________</div>
-            <div><b>Action Plan for Next Month:</b></div>
-            <div>______________________________________________</div>
-            <div>______________________________________________</div>
-            <div>______________________________________________</div>
-            <div>______________________________________________</div>
-          </div>
-        </section>
-      page_size: ${page_size}
-      save_path: workspace/harmony/kdp
-      filename: migraine.pdf
-      mode: append
+  # - name: generate_monthly_summaries
+  #   type: tool
+  #   agent: PdfAgent
+  #   loop:
+  #     var: index
+  #     count: 1
+  #   input:
+  #     content: |
+  #       {{ style }}
+  #       <section>
+  #         <div class="section-tab" style="top: 90mm; background-color: #a9aaa9;"></div>
+  #         <div class="header-row">
+  #           <img src="workspace/harmony/images/logo2.png" alt="Logo">
+  #           <div>Monthly Summary <span class="highlight-number">{{ index }}</span></div>
+  #         </div>
+  #         <div class="monthly-summary">
+  #           <div><b>Month:</b> _________ <b>&nbsp;&nbsp;&nbsp;# of Migraine Days:</b> ___________</div>
+  #           <div><b>Average Pain Level:</b></div>
+  #           <div>______________________________________________</div>
+  #           <div><b>Most Common Triggers:</b></div>
+  #           <div>______________________________________________</div>
+  #           <div><b>Effective Medications:</b></div>
+  #           <div>______________________________________________</div>
+  #           <div><b>Lifestyle Factors</b> (Sleep, Diet, Stress):</div>
+  #           <div>______________________________________________</div>
+  #           <div><b>Other Observations:</b></div>
+  #           <div>______________________________________________</div>
+  #           <div><b>Action Plan for Next Month:</b></div>
+  #           <div>______________________________________________</div>
+  #           <div>______________________________________________</div>
+  #           <div>______________________________________________</div>
+  #           <div>______________________________________________</div>
+  #         </div>
+  #       </section>
+  #     page_size: ${page_size}
+  #     save_path: workspace/harmony/kdp
+  #     filename: migraine.pdf
+  #     mode: append
 
-  - name: generate_notes
-    type: tool
-    agent: PdfAgent
-    loop:
-      var: index
-      count: 1
-    input:
-      content: |
-        {{ style }}
-        <section>
-          <div class="section-tab" style="top: 120mm; background-color: #a9a9aa;"></div>
-          <div class="header-row">
-            <img src="workspace/harmony/images/logo2.png" alt="Logo">
-            <div>Notes</div><br/><br/>
-          </div>
-            <div>______________________________________________</div>
-            <div>______________________________________________</div>
-            <div>______________________________________________</div>
-            <div>______________________________________________</div>
-            <div>______________________________________________</div>
-            <div>______________________________________________</div>
-            <div>______________________________________________</div>
-            <div>______________________________________________</div>
-            <div>______________________________________________</div>
-            <div>______________________________________________</div>
-            <div>______________________________________________</div>
-            <div>______________________________________________</div>
-            <div>______________________________________________</div>
-            <div>______________________________________________</div>
-            <div>______________________________________________</div>
-            <div>______________________________________________</div>
-            <div>______________________________________________</div>
-        </section>
-      page_size: ${page_size}
-      save_path: workspace/harmony/kdp
-      filename: migraine.pdf
-      mode: append
+  # - name: generate_notes
+  #   type: tool
+  #   agent: PdfAgent
+  #   loop:
+  #     var: index
+  #     count: 1
+  #   input:
+  #     content: |
+  #       {{ style }}
+  #       <section>
+  #         <div class="section-tab" style="top: 120mm; background-color: #a9a9aa;"></div>
+  #         <div class="header-row">
+  #           <img src="workspace/harmony/images/logo2.png" alt="Logo">
+  #           <div>Notes</div><br/><br/>
+  #         </div>
+  #           <div>______________________________________________</div>
+  #           <div>______________________________________________</div>
+  #           <div>______________________________________________</div>
+  #           <div>______________________________________________</div>
+  #           <div>______________________________________________</div>
+  #           <div>______________________________________________</div>
+  #           <div>______________________________________________</div>
+  #           <div>______________________________________________</div>
+  #           <div>______________________________________________</div>
+  #           <div>______________________________________________</div>
+  #           <div>______________________________________________</div>
+  #           <div>______________________________________________</div>
+  #           <div>______________________________________________</div>
+  #           <div>______________________________________________</div>
+  #           <div>______________________________________________</div>
+  #           <div>______________________________________________</div>
+  #           <div>______________________________________________</div>
+  #       </section>
+  #     page_size: ${page_size}
+  #     save_path: workspace/harmony/kdp
+  #     filename: migraine.pdf
+  #     mode: append
