@@ -230,9 +230,8 @@ def get_rag_agent(agent_name, collection_name, storage_path):
     if agent_name=="RAGDatabaseUpdaterAgent":
         return RAGDatabaseUpdaterAgent(collection_name,storage_path)
 
-
 def load_workflow_with_includes(workflow_path, loaded_paths=None):
-    """ Recursively loads workflow YAML and included fragments. """
+    """ Recursively loads workflow YAML, included fragments, and external variables. """
     loaded_paths = loaded_paths or set()
     if workflow_path in loaded_paths:
         raise ValueError(f"Circular include detected with: {workflow_path}")
@@ -241,16 +240,27 @@ def load_workflow_with_includes(workflow_path, loaded_paths=None):
     with open(workflow_path) as f:
         workflow = yaml.safe_load(f)
 
+    # Handle variable includes first to ensure availability for resolving later
+    include_vars_file = workflow.get("include_vars")
+    if include_vars_file:
+        include_vars_path = os.path.join(os.path.dirname(workflow_path), include_vars_file)
+        with open(include_vars_path) as vf:
+            vars_file = yaml.safe_load(vf)
+            external_vars = vars_file.get("vars", {})
+            if "vars" not in workflow:
+                workflow["vars"] = {}
+            workflow["vars"].update(external_vars)
+
+    # Handle step includes
     steps = workflow.get("steps", [])
     includes = workflow.get("include", [])
-
     if not isinstance(includes, list):
         includes = [includes]
 
     for include_file in includes:
         include_path = os.path.join(os.path.dirname(workflow_path), include_file)
         included_workflow = load_workflow_with_includes(include_path, loaded_paths)
-        steps = included_workflow["steps"] + steps  # prepend included steps
+        steps = included_workflow.get("steps", []) + steps  # prepend included steps
 
     workflow["steps"] = steps
     return workflow

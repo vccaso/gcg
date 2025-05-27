@@ -1,0 +1,163 @@
+vars:
+  page_size: 6x9
+  style: |
+      <style>
+
+        section {
+          font-family: 'Arial';
+          font-size: 12pt;
+          line-height: 1.6;
+          margin-top: 10px;
+        }
+
+        section div {
+          margin-bottom: 8px;
+        }
+        section h2 {
+          font-size: 1.4em;
+          margin-top: 0.5em;
+        }
+
+        p {
+          text-align: justify;
+        }
+
+        li {
+          text-align: justify;
+        }
+
+        .header-row {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          font-family: Arial, sans-serif;
+          font-size: 18pt;
+          font-weight: bold;
+          margin-bottom: 12px;
+          border-bottom: 2px solid #ddd;
+          padding-bottom: 12px;
+        }
+
+        .header-row img {
+          width: 50px;
+          height: 50px;
+        }
+
+        .header-row .highlight-number {
+          font-family: 'Courier New', monospace;
+          font-weight: 900;
+          font-size: 22pt;
+          color: #0055aa;
+          background-color: #e0f0ff;
+          padding: 2px 6px;
+          border-radius: 8px;
+          margin-left: 8px;
+        }
+
+        .section-tab {
+          position: fixed;
+          top: 30mm;                /* Vertical position from top */
+          right: 0;                 /* Attach to right edge of page */
+          width: 8mm;
+          height: 30mm;
+          background-color: #a9a9cc;
+          border-radius: 9px 0 0 9px;
+          z-index: -10;
+          display: none;
+        }
+
+        .pain-scale-table {
+          display: table;
+          width: 100%;
+          margin-top: 1px;
+          font-family: Helvetica, sans-serif;
+          font-size: 9pt;
+        }
+
+        .pain-scale-header {
+          display: table-row;
+          background-color: #f2f2f2;
+          font-weight: bold;
+          text-align: center;
+        }
+
+        .pain-scale-row-single {
+          display: table-row;
+          text-align: center;
+        }
+
+        .pain-scale-cell-header {
+          display: table-cell;
+          padding: 6px 6px;
+        }
+
+        .pain-scale-cell-numbers {
+          display: table-cell;
+          padding: 4px;
+          border: 1px solid #ccc;
+        }
+
+        .pain-scale-numbers span {
+          display: inline-block;
+          margin: 0 6px;
+        }
+
+        table {
+          margin-top: 8px;
+          margin-bottom: 10px;
+        }
+
+        table td {
+          padding: 2px 6px;
+          vertical-align: top;
+        }
+
+        .index-entry {
+          display: flex;
+          justify-content: space-between;
+          padding: 4px 0;
+          border-bottom: 1px dotted #aaa;
+          font-family: Arial, sans-serif;
+          font-size: 12pt;
+        }
+
+        .index-entry span:first-child {
+          padding-right: 10px;
+        }
+
+        .index-entry span:last-child {
+          text-align: right;
+          min-width: 30px;
+        }
+
+        .form-block {
+          display: table;
+          width: 100%;
+          margin-top: 12px;
+          font-family: Helvetica, sans-serif;
+          font-size: 10pt;
+        }
+
+        .form-block-header {
+          display: table-row;
+          background-color: #f2f2f2;
+          font-weight: bold;
+          text-align: left;
+        }
+
+        .form-block-row {
+          display: table-row;
+        }
+
+        .form-block-cell {
+          display: table-cell;
+          padding: 6px 8px;
+          border: 1px solid #ccc;
+          vertical-align: top;
+        }
+
+        .form-block-cell img {
+          width: 100px;
+          height: 50px;
+        }
+      </style>
