@@ -23,7 +23,8 @@ steps:
               Published by Harmony Health Journals
             </div>
             <div style="font-size: 10pt; color: #666;">
-              © 2025 Harmony Health. All rights reserved.
+            <b>© 2025 Harmony Health. All rights reserved.</b>
+            No part of this publication may be reproduced, distributed, or transmitted in any form or by any means—including photocopying, recording, or other electronic or mechanical methods—without the prior written permission of the publisher, except in the case of brief quotations used in reviews, educational materials, or other non-commercial uses permitted under applicable copyright law.
             </div>
           </div>
         </section>
@@ -421,44 +422,69 @@ steps:
       filename: migraine.pdf
       mode: append
 
-  # - name: generate_monthly_summaries
-  #   type: tool
-  #   agent: PdfAgent
-  #   loop:
-  #     var: index
-  #     count: 1
-  #   input:
-  #     content: |
-  #       {{ style }}
-  #       <section>
-  #         <div class="section-tab" style="top: 90mm; background-color: #a9aaa9;"></div>
-  #         <div class="header-row">
-  #           <img src="workspace/harmony/images/logo2.png" alt="Logo">
-  #           <div>Monthly Summary <span class="highlight-number">{{ index }}</span></div>
-  #         </div>
-  #         <div class="monthly-summary">
-  #           <div><b>Month:</b> _________ <b>&nbsp;&nbsp;&nbsp;# of Migraine Days:</b> ___________</div>
-  #           <div><b>Average Pain Level:</b></div>
-  #           <div>______________________________________________</div>
-  #           <div><b>Most Common Triggers:</b></div>
-  #           <div>______________________________________________</div>
-  #           <div><b>Effective Medications:</b></div>
-  #           <div>______________________________________________</div>
-  #           <div><b>Lifestyle Factors</b> (Sleep, Diet, Stress):</div>
-  #           <div>______________________________________________</div>
-  #           <div><b>Other Observations:</b></div>
-  #           <div>______________________________________________</div>
-  #           <div><b>Action Plan for Next Month:</b></div>
-  #           <div>______________________________________________</div>
-  #           <div>______________________________________________</div>
-  #           <div>______________________________________________</div>
-  #           <div>______________________________________________</div>
-  #         </div>
-  #       </section>
-  #     page_size: ${page_size}
-  #     save_path: workspace/harmony/kdp
-  #     filename: migraine.pdf
-  #     mode: append
+  - name: generate_monthly_summaries
+    type: tool
+    agent: PdfAgent
+    loop:
+      var: index
+      count: 1
+    input:
+      content: |
+        {{ style }}
+        <section>
+          <div class="section-tab" style="top: 90mm; background-color: #a9aaa9;"></div>
+          <div class="header-row">
+            <img src="workspace/harmony/images/logo2.png" alt="Logo">
+            <div>Monthly Summary <span class="highlight-number">{{ index }}</span></div>
+          </div>
+          <div class="form-block">
+            <div class="form-block-header">
+              <div class="form-block-cell">Month</div>
+              <div class="form-block-cell"># of Migraine Days</div>
+              <div class="form-block-cell">Average Pain Level</div>
+            </div>
+            <div class="form-block-row">
+              <div class="form-block-cell">&nbsp;</div>
+              <div class="form-block-cell">&nbsp;</div>
+              <div class="form-block-cell">&nbsp;</div>
+            </div>
+          </div>
+          <div class="form-block">
+            <div class="form-block-header">
+              <div class="form-block-cell">Most Common Triggers</div>
+              <div class="form-block-cell">Effective Medications</div>
+            </div>
+            <div class="form-block-row">
+              <div class="form-block-cell">&nbsp;</div>
+              <div class="form-block-cell">&nbsp;</div>
+            </div>
+          </div>
+          <div class="form-block">
+            <div class="form-block-header">
+              <div class="form-block-cell">Lifestyle Factors</b> (Sleep, Diet, Stress)</div>
+            </div>
+            <div class="form-block-row">
+              <div class="form-block-cell">&nbsp;</div>
+            </div>
+          </div>
+          <div class="monthly-summary">
+            <div><b>Other Observations:</b></div>
+            <div>______________________________________________</div>
+            <div>______________________________________________</div>
+            <div>______________________________________________</div>
+            <div><b>Action Plan for Next Month:</b></div>
+            <div>______________________________________________</div>
+            <div>______________________________________________</div>
+            <div>______________________________________________</div>
+            <div>______________________________________________</div>
+            <div>______________________________________________</div>
+            <div>______________________________________________</div>
+          </div>
+        </section>
+      page_size: ${page_size}
+      save_path: workspace/harmony/kdp
+      filename: migraine.pdf
+      mode: append
 
   # - name: generate_notes
   #   type: tool
