@@ -1,59 +1,19 @@
 name: pdf simple example
-description: this workflow is example to create a pdf from a text AI generated
+description: this workflow is to create a pdf Migraine Tracker notebook to publish in kdp
   
 include_vars: vars/vars.yaml
 vars:
   model: ModelOllama
   link_google_font: <link href="https://fonts.googleapis.com/css2?family=Lora&display=swap" rel="stylesheet">
+  book_title: "Harmony Health: Migraine Tracker"
+  book_subtitle: A Guided Journal for Tracking Headaches, Triggers & Relief Patterns
+  inspirational_phrase: "You are not defined by the pain you endure, but by the strength you show in facing it — one moment, one breath, one day at a time."
+  inspirational_author: Harmony Health
+
+include:
+  - fragments/book_common_steps.yaml
 
 steps:
-
-  - name: generate_fist_page
-    type: tool
-    agent: PdfAgent
-    input:
-      content: |
-        <section>
-          <div style="font-family: 'Arial', sans-serif; text-align: center; padding-top: 100px; padding-bottom: 120px;">
-            <h1 style="margin-bottom: 40px; font-size: 28pt;">Harmony Health: Migraine Tracker</h1>
-            <h2 style="margin-bottom: 180px; font-size: 16pt; font-weight: normal; color: #444;">
-              A Guided Journal for Tracking Headaches, Triggers & Relief Patterns
-            </h2>
-            <div style="font-size: 12pt; margin-bottom: 10px;">
-              Published by Harmony Health Journals
-            </div>
-            <div style="font-size: 10pt; color: #666;">
-            <b>© 2025 Harmony Health. All rights reserved.</b>
-            No part of this publication may be reproduced, distributed, or transmitted in any form or by any means—including photocopying, recording, or other electronic or mechanical methods—without the prior written permission of the publisher, except in the case of brief quotations used in reviews, educational materials, or other non-commercial uses permitted under applicable copyright law.
-            </div>
-          </div>
-        </section>
-      page_size: ${page_size}
-      save_path: workspace/harmony/kdp
-      filename: migraine.pdf
-      add_page_number: False
-
-  - name: generate_inspirational
-    type: tool
-    agent: PdfAgent
-    input:
-      content: |
-        {{ style }}
-        <section>
-            <div style="display: flex; justify-content: center; align-items: center; height: 100vh; text-align: center; padding: 0 20px;">
-              <div>
-                <p style="font-size: 20px; font-style: italic;">
-                  "You are not defined by the pain you endure, but by the strength you show in facing it — one moment, one breath, one day at a time."
-                </p>
-                <p style="font-size: 16px; font-weight: bold;">— Harmony Health</p>
-              </div>
-            </div>
-        </section>
-      page_size: ${page_size}
-      save_path: workspace/harmony/kdp
-      filename: migraine.pdf
-      mode: append
-      add_page_number: False
 
   - name: generate_index
     type: tool

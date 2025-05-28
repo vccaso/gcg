@@ -32,13 +32,24 @@ st.sidebar.markdown(f"<div style='text-align:center; color: gray;'>v{__version__
 # ---------------------
 if menu == "Home":
     # Workflow list
-    workflow_files = sorted([
+    ignored_dirs = {"fragments", "vars"}
+    all_workflow_files = sorted([
         os.path.relpath(os.path.join(root, file), __workflow_path__)
-        for root, _, files in os.walk(__workflow_path__)
+        for root, dirs, files in os.walk(__workflow_path__)
+        if not any(ignored in root.split(os.sep) for ignored in ignored_dirs)
         for file in files if file.endswith((".yaml", ".yml"))
     ])
 
-    selected_file = st.selectbox("📂 Run Workflow", workflow_files)
+    col1, col2 = st.columns([2, 3])
+
+    with col1:
+        search_filter = st.text_input("🔍 Filter workflows", "")
+
+    with col2:
+        selected_file = st.selectbox("📂 Run Workflow", [
+            wf for wf in all_workflow_files if search_filter.lower() in wf.lower()
+        ])
+
     if "confirm_ready" not in st.session_state:
         st.session_state.confirm_ready = False
     if selected_file != st.session_state.get("last_selected_workflow"):
