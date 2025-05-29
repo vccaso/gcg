@@ -842,9 +842,8 @@ def get_rag_agent(agent_name, collection_name, storage_path):
     if agent_name=="RAGDatabaseUpdaterAgent":
         return RAGDatabaseUpdaterAgent(collection_name,storage_path)
 
-
 def load_workflow_with_includes(workflow_path, loaded_paths=None):
-    """ Recursively loads workflow YAML and included fragments. """
+    """ Recursively loads workflow YAML, included fragments, and external variables. """
     loaded_paths = loaded_paths or set()
     if workflow_path in loaded_paths:
         raise ValueError(f"Circular include detected with: {workflow_path}")
@@ -853,25 +852,172 @@ def load_workflow_with_includes(workflow_path, loaded_paths=None):
     with open(workflow_path) as f:
         workflow = yaml.safe_load(f)
 
+    # Handle variable includes first to ensure availability for resolving later
+    include_vars_file = workflow.get("include_vars")
+    if include_vars_file:
+        include_vars_path = os.path.join(os.path.dirname(workflow_path), include_vars_file)
+        with open(include_vars_path) as vf:
+            vars_file = yaml.safe_load(vf)
+            external_vars = vars_file.get("vars", {})
+            if "vars" not in workflow:
+                workflow["vars"] = {}
+            workflow["vars"].update(external_vars)
+
+    # Handle step includes
     steps = workflow.get("steps", [])
     includes = workflow.get("include", [])
-
     if not isinstance(includes, list):
         includes = [includes]
 
     for include_file in includes:
         include_path = os.path.join(os.path.dirname(workflow_path), include_file)
         included_workflow = load_workflow_with_includes(include_path, loaded_paths)
-        steps = included_workflow["steps"] + steps  # prepend included steps
+        steps = included_workflow.get("steps", []) + steps  # prepend included steps
 
     workflow["steps"] = steps
     return workflow
 
 
-
-
-
 def run_workflow(workflow_path, streamlit_mode=False):
+    import copy
+    start_time = time.time()
+
+    workflow = load_workflow_with_includes(workflow_path)
+
+    vars_dict = workflow.get("vars", {})
+    steps = resolve_vars(workflow["steps"], vars_dict)
+
+    results = {}
+
+    for step in steps:
+        loop = step.get("loop")
+        loop_values = []
+        loop_var = None
+
+        if loop:
+            loop_var = loop.get("var")
+            if "values" in loop:
+                loop_values = loop["values"]
+            elif "count" in loop:
+                loop_values = list(range(1, loop["count"] + 1))
+        else:
+            loop_values = [None]
+
+        for idx, loop_val in enumerate(loop_values):
+            local_step = copy.deepcopy(step)
+            name = local_step["name"]
+            local_name = f"{name}_{idx+1}" if loop else name
+
+            local_vars = vars_dict.copy()
+            if loop_var:
+                local_vars[loop_var] = loop_val
+
+            input_spec = resolve_vars(local_step["input"], local_vars)
+            inputs = resolve_inputs(input_spec, results, local_vars)
+
+            # 🧠 Evaluate `when` condition (optional)
+            when = local_step.get("when", True)
+            if isinstance(when, str) and when.startswith("{{"):
+                try:
+                    context = {**local_vars, **results}
+                    rendered_when = render_template(when, context)
+                    try:
+                        when_result = eval(rendered_when)
+                    except Exception as e:
+                        Printer.info(f"⚠️ Eval error in step '{local_name}': {e}")
+                        when_result = False
+                except Exception as e:
+                    Printer.info(f"⚠️ Failed to evaluate 'when' for step '{local_name}': {e}")
+                    when_result = False
+            else:
+                when_result = bool(when)
+
+            if not when_result:
+                Printer.info(f"⏭ Skipping step '{local_name}' due to 'when: {when}'")
+                results[local_name] = {"status": "Skipped", "details": f"when={when}"}
+                continue
+
+            step_type = local_step["type"]
+            agent_name = local_step["agent"]
+
+            if step_type == "ai":
+                template_name = local_step.get("template_name", "default")
+                temperature = local_step.get("temperature", 0.2)
+                model = local_step["model"]
+                llm = get_model(model, temperature)
+                agent = get_ai_agent(llm, agent_name, template_name)
+                if not streamlit_mode:
+                    print(f"▶️ {local_name} using {agent_name}")
+                output = agent.run(**inputs)
+                results[local_name] = output
+                handle_result(local_name, output)
+
+            elif step_type == "validator":
+                agent = globals()[agent_name]()
+                output = agent.validate(**inputs)
+                results[local_name] = output
+                handle_result(local_name, output)
+
+            elif step_type == "ai-image":
+                if agent_name == "ImageAgent":
+                    model = local_step["model"]
+                    temperature = local_step.get("temperature", 0.2)
+                    llm = get_model(model, temperature)
+                    agent = ImageAgent(llm)
+                    result = agent.run(**inputs)
+                elif agent_name == "ImageAnalysisAgent":
+                    temperature = local_step.get("temperature", 0.2)
+                    model = ModelGptImage1(temperature)
+                    agent = ImageAnalysisAgent(model)
+                    result = agent.run(**inputs)
+                elif agent_name == "SegmentedImageAgent":
+                    agent = SegmentedImageAgent()
+                    result = agent.run(**inputs)
+                else:
+                    raise ValueError(f"Unknown ai-image agent '{agent_name}'")
+                results[local_name] = result
+                handle_result(local_name, result)
+
+            elif step_type == "ai-audio":
+                if agent_name == "AudioAgent":
+                    model_name = local_step.get("model")
+                    if model_name not in MODEL_REGISTRY:
+                        raise ValueError(f"Unknown model '{model_name}'")
+                    model_instance = MODEL_REGISTRY[model_name]()
+                    agent = AudioAgent(model_instance)
+                elif agent_name == "SegmentedAudioAgent":
+                    agent = SegmentedAudioAgent()
+                output = agent.run(**inputs)
+                results[local_name] = output
+                handle_result(local_name, output)
+
+            elif step_type == "rag":
+                agent = get_rag_agent(agent_name, local_step["collection_name"], local_step["storage_path"])
+                if not streamlit_mode:
+                    print(f"▶️ {local_name} using {agent_name}")
+                output = agent.run(**inputs)
+                results[local_name] = output
+                handle_result(local_name, output)
+
+            else:
+                agent = load_agent(agent_name)
+                if not streamlit_mode:
+                    print(f"▶️ {local_name} using {agent_name}")
+                output = agent.run(**inputs)
+                results[local_name] = output
+                handle_result(local_name, output)
+
+    duration = round(time.time() - start_time, 2)
+    if not streamlit_mode:
+        print(f"\n✅ Workflow completed in {duration} seconds.")
+    else:
+        results["_execution_duration"] = duration
+
+    return results
+
+
+
+def run_workflow_original(workflow_path, streamlit_mode=False):
     start_time = time.time()
 
     # with open(workflow_path) as f:
@@ -1024,13 +1170,24 @@ st.sidebar.markdown(f"<div style='text-align:center; color: gray;'>v{__version__
 # ---------------------
 if menu == "Home":
     # Workflow list
-    workflow_files = sorted([
+    ignored_dirs = {"fragments", "vars"}
+    all_workflow_files = sorted([
         os.path.relpath(os.path.join(root, file), __workflow_path__)
-        for root, _, files in os.walk(__workflow_path__)
+        for root, dirs, files in os.walk(__workflow_path__)
+        if not any(ignored in root.split(os.sep) for ignored in ignored_dirs)
         for file in files if file.endswith((".yaml", ".yml"))
     ])
 
-    selected_file = st.selectbox("📂 Run Workflow", workflow_files)
+    col1, col2 = st.columns([2, 3])
+
+    with col1:
+        search_filter = st.text_input("🔍 Filter workflows", "")
+
+    with col2:
+        selected_file = st.selectbox("📂 Run Workflow", [
+            wf for wf in all_workflow_files if search_filter.lower() in wf.lower()
+        ])
+
     if "confirm_ready" not in st.session_state:
         st.session_state.confirm_ready = False
     if selected_file != st.session_state.get("last_selected_workflow"):
@@ -120861,6 +121018,7 @@ from agents.notify.email_agent import GenericEmailAgent
 from agents.notify.webhook_agent import WebhookAgent
 from agents.notify.slack_agent import SlackAgent
 from agents.utils.camera_capture_agent import CameraCaptureAgent
+from agents.utils.pdf_agent import PdfAgent
 
 # ✅ Agent registry for loading agents dynamically
 AGENT_REGISTRY = {
@@ -120896,7 +121054,8 @@ AGENT_REGISTRY = {
     "GenericEmailAgent": GenericEmailAgent,
     "WebhookAgent": WebhookAgent,
     "SlackAgent": SlackAgent,
-    "CameraCaptureAgent": CameraCaptureAgent
+    "CameraCaptureAgent": CameraCaptureAgent,
+    "PdfAgent": PdfAgent
 }
 
 # ✅ Agent catalog for UI display
@@ -121248,7 +121407,17 @@ AGENT_CATALOG = {
             "Captured images are saved with timestamped filenames in the specified output directory, and the full path is returned for downstream use."
         ],
         "tags": ["Utility", "Camera"]
-    }
+    },
+    "PdfAgent": {
+        "type": "tool",
+        "short_description": "Generates PDF files from text content.",
+        "detailed_description": [
+            "This agent takes raw text content and converts it into a PDF document.",
+            "You can specify the page size (e.g., A4, Letter) and font (e.g., Arial, Times).",
+            "Useful for generating KDP-ready or report-style documents."
+        ],
+        "tags": ["PDF", "Export", "Document", "Tool"]
+}
 }
 
 ===
@@ -122268,6 +122437,81 @@ class GoCRUDAgent:
             print(f"[📁] Files written:\n- " + "\n- ".join(written_files))
 
         return crud_code
+
+===
+agents/utils/pdf_agent.py
+===
+import os
+import unicodedata
+from PyPDF2 import PdfMerger, PdfReader, PdfWriter
+from weasyprint import HTML
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import letter
+from io import BytesIO
+
+class PdfAgent:
+
+    def clean_text(self, text):
+        return unicodedata.normalize('NFKD', text)
+
+    def run(self, page_size="A4", content="", save_path="workspace/pdf", filename="styled.pdf", mode="override", add_page_number="True"):
+        os.makedirs(save_path, exist_ok=True)
+        temp_path = os.path.join(save_path, "temp_new.pdf")
+        full_path = os.path.join(save_path, filename)
+
+        # Map known sizes
+        size_map = {
+            "A4": "210mm 297mm",
+            "6x9": "152.4mm 228.6mm",
+            "Letter": "216mm 279mm"
+        }
+        page_dimensions = size_map.get(page_size, "210mm 297mm")  # Default to A4
+
+        # Inject page size CSS
+        style = f"@page {{ size: {page_dimensions}; margin: 20mm; }}\n"
+        content = f"<style>{style}</style>\n" + self.clean_text(content)
+
+        try:
+            HTML(string=content, base_url=os.getcwd()).write_pdf(temp_path)
+        except Exception as e:
+            return {"status": "Fail", "details": str(e)}
+
+        if mode == "append" and os.path.exists(full_path):
+            merger = PdfMerger()
+            merger.append(PdfReader(full_path, strict=False))
+            merger.append(PdfReader(temp_path, strict=False))
+            merger.write(full_path)
+            merger.close()
+            os.remove(temp_path)
+        else:
+            os.rename(temp_path, full_path)
+
+        print(f"add_page_number: {add_page_number}")
+        if str(add_page_number).lower() in ["true", "1", "yes"]:
+            self.add_page_numbers(full_path)
+
+        return {"status": "Success", "details": full_path}
+
+    def add_page_numbers(self, pdf_path):
+        # Read existing PDF
+        reader = PdfReader(pdf_path)
+        writer = PdfWriter()
+
+        for page_num in range(len(reader.pages)):
+            packet = BytesIO()
+            can = canvas.Canvas(packet, pagesize=(432, 648))  # 6in x 9in in points
+            can.setFont("Helvetica", 10)
+            can.drawCentredString(216, 30, f"Page {page_num + 1}")
+            can.save()
+
+            packet.seek(0)
+            overlay = PdfReader(packet)
+            page = reader.pages[page_num]
+            page.merge_page(overlay.pages[0])
+            writer.add_page(page)
+
+        with open(pdf_path, "wb") as f:
+            writer.write(f)
 
 ===
 agents/utils/camera_capture_agent.py

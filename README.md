@@ -251,6 +251,25 @@ docker run -p 8501:8501 -e OPENAI_API_KEY=your-key gcg-agent streamlit run ui.py
 
 ---
 
+🖥️ Running Workflows from the Streamlit UI
+The Streamlit interface allows you to easily browse and run YAML-defined workflows.
+
+Features
+Workflow Selector
+A dropdown listing all .yaml and .yml files in the workflows/ directory, excluding files inside folders named fragments/ or vars/.
+
+Search Filter
+A filter box to narrow down workflows by filename. Type any substring to display matching results.
+
+Compact Layout
+The filter and selector appear side by side for improved usability and space efficiency.
+
+Example
+🔍 Filter workflows:    [ crud            ]
+📂 Run Workflow:        [ examples/code/wf_crud.yaml ▼ ]
+Once selected, click "🚀 Run Workflow" to execute the selected pipeline.
+---
+
 ## 📂 Project Layout
 
 | Folder | Purpose |
@@ -824,6 +843,41 @@ Optional camera warm-up delay for better lighting
     save_path: output/photos
 ```
 Tip: If your image appears dark, the agent automatically adjusts brightness and waits a few seconds for camera stabilization.
+
+---
+⚙️ Advanced Workflow Features
+The YAML-based orchestrator supports several advanced features for modular, reusable, and dynamic execution.
+
+🔁 Looping Steps
+Repeat a step multiple times with either a counter or list of values.
+
+- name: generate_log
+  type: tool
+  agent: PdfAgent
+  loop:
+    var: index
+    count: 10  # or use: values: [A, B, C]
+  input:
+    title: "Log Entry #${index}"
+📂 Including Step Fragments
+Use include to import external YAML files containing reusable step definitions. Steps are prepended in order.
+
+include:
+  - fragments/intro.yaml
+  - fragments/content.yaml
+🔧 Including Variables from External Files
+Use include_vars to load a separate YAML file containing a vars: block.
+
+include_vars: vars/global_settings.yaml
+And in vars/global_settings.yaml:
+
+vars:
+  book_title: "Harmony Health: Migraine Tracker"
+  page_size: "6x9"
+  author_name: "Harmony Health Journals"
+You can reference these variables anywhere using:
+
+title: ${book_title}
 
 ---
 
