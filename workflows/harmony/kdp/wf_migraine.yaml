@@ -1,4 +1,4 @@
-name: pdf simple example
+name: pdf Migraine Tracker notebook
 description: this workflow is to create a pdf Migraine Tracker notebook to publish in kdp
   
 include_vars: vars/vars.yaml
@@ -9,6 +9,7 @@ vars:
   book_subtitle: A Guided Journal for Tracking Headaches, Triggers & Relief Patterns
   inspirational_phrase: "You are not defined by the pain you endure, but by the strength you show in facing it — one moment, one breath, one day at a time."
   inspirational_author: Harmony Health
+  filename: migraine.pdf
 
 include:
   - fragments/book_common_steps.yaml

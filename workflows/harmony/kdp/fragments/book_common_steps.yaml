@@ -22,7 +22,7 @@ steps:
         </section>
       page_size: ${page_size}
       save_path: workspace/harmony/kdp
-      filename: migraine.pdf
+      filename: ${filename}
       add_page_number: False
 
   - name: generate_inspirational
@@ -43,6 +43,6 @@ steps:
         </section>
       page_size: ${page_size}
       save_path: workspace/harmony/kdp
-      filename: migraine.pdf
+      filename: ${filename}
       mode: append
       add_page_number: False
