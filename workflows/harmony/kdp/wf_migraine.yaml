@@ -281,7 +281,7 @@ steps:
     agent: PdfAgent
     loop:
       var: index
-      count: 1
+      count: 90
     input:
       content: |
         {{ style }}
@@ -330,7 +330,6 @@ steps:
             </div>
           </div>
 
-
           <div class="pain-scale-table">
             <div class="pain-scale-header">
               <div class="pain-scale-cell-header">Pain Type</div>
@@ -341,23 +340,24 @@ steps:
                 <div class="pain-scale-numbers">
                   <span>[ ] Dull</span>
                   <span>[ ] Sharp</span>
-                  <span>[ ] Throbbing / Pulsating</span>
+                  <span>[ ] Throbbing/Pulsating</span>
                   <span>[ ] Stabbing</span>
                   <span>[ ] Burning</span>
-                  <span>[ ] Pressure / Squeezing</span>
-                  <span>[ ] Aching</span>
+                  <span>[ ] Pressure/Squeezing</span>
                   <span>[ ] Cramping</span>
-                  <span>[ ] Electric / Shock-like</span>
+                  <span>[ ] Electric/Shock-like</span>
                   <span>[ ] Shooting</span>
                   <span>[ ] Radiating</span>
+                  <span>[ ] Aching</span>
                 </div>
               </div>
               <div class="pain-scale-cell-numbers">
                 <div class="pain-scale-numbers">
                   <span>[ ] Dizziness</span>
-                  <span>[ ] Auras</span>
                   <span>[ ] Light sensitive</span>
                   <span>[ ] Sound sensitive</span>
+                  <span>[ ] Auras</span>
+                  <span>[ ] Other ____________</span>
                 </div>
               </div>
             </div>
@@ -365,7 +365,7 @@ steps:
 
           <div class="form-block">
             <div class="form-block-header">
-              <div class="form-block-cell">Medication Taken</div>
+              <div class="form-block-cell">Medication</div>
               <div class="form-block-cell">Relief Outcome</div>
             </div>
             <div class="form-block-row">
@@ -375,7 +375,6 @@ steps:
           </div>
 
           <div><b>Lifestyle Notes & Reflections:</b></div>
-          <div>_____________________________________________</div>
           <div>_____________________________________________</div>
         </section>
       page_size: ${page_size}
@@ -388,7 +387,7 @@ steps:
     agent: PdfAgent
     loop:
       var: index
-      count: 1
+      count: 12
     input:
       content: |
         {{ style }}
