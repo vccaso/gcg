@@ -29,10 +29,10 @@ steps:
           <div class="index-entry"><span>Filling Out a Daily Log</span><span>6</span></div>
           <div class="index-entry"><span>Using Monthly Summaries</span><span>8</span></div>
           <div class="index-entry"><span>Tips for Getting the Most Out of This Tracker</span><span>10</span></div>
-          <div class="index-entry"><span>Daily Sleep Log</span><span>15</span></div>
-          <div class="index-entry"><span>Monthly Summary</span><span>105</span></div>
-          <div class="index-entry"><span>Notes</span><span>117</span></div>
-          <div class="index-entry"><span>About the publisher</span><span>118</span></div>
+          <div class="index-entry"><span>Daily Sleep Log</span><span>11</span></div>
+          <div class="index-entry"><span>Monthly Summary</span><span>101</span></div>
+          <div class="index-entry"><span>Notes</span><span>113</span></div>
+          <div class="index-entry"><span>About the publisher</span><span>115</span></div>
         </section>
       page_size: ${page_size}
       save_path: workspace/harmony/kdp
@@ -177,285 +177,206 @@ steps:
       filename: ${filename}
       mode: append
 
-  # - name: generate_dayly_logs
-  #   type: tool
-  #   agent: PdfAgent
-  #   loop:
-  #     var: index
-  #     count: 1
-  #   input:
-  #     content: |
-  #       {{ style }}
-  #       <section>
-  #         <div class="section-tab" style="top: 60mm; background-color: #aaa9a9;"></div>
-  #         <div class="header-row">
-  #           <img src="workspace/harmony/images/logo2.png" alt="Logo">
-  #           <div>Daily Sleep Log <span class="highlight-number">{{ index }}</span></div>
-  #         </div>
+  - name: generate_dayly_logs
+    type: tool
+    agent: PdfAgent
+    loop:
+      var: index
+      count: 90
+    input:
+      content: |
+        {{ style }}
+        <section>
+          <div class="section-tab" style="top: 60mm; background-color: #aaa9a9;"></div>
+          <div class="header-row">
+            <img src="workspace/harmony/images/logo2.png" alt="Logo">
+            <div>Daily Sleep Tracking <span class="highlight-number">{{ index }}</span></div>
+          </div>
 
-  #         <div class="form-block">
-  #           <div class="form-block-header">
-  #             <div class="form-block-cell">Date & Time</div>
-  #             <div class="form-block-cell">Duration</div>
-  #           </div>
-  #           <div class="form-block-row">
-  #             <div class="form-block-cell">&nbsp;</div>
-  #             <div class="form-block-cell">&nbsp;</div>
-  #           </div>
-  #         </div>
+          <div class="form-block">
+            <div class="form-block-header">
+              <div class="form-block-cell">Date</div>
+              <div class="form-block-cell">Sleep Duration</div>
+            </div>
+            <div class="form-block-row">
+              <div class="form-block-cell">&nbsp;</div>
+              <div class="form-block-cell">&nbsp;</div>
+            </div>
+          </div>
+
+          <div class="form-block">
+            <div class="form-block-header">
+              <div class="form-block-cell">Time you went to bed</div>
+              <div class="form-block-cell">Time you fell asleep</div>
+            </div>
+            <div class="form-block-row">
+              <div class="form-block-cell">&nbsp;</div>
+              <div class="form-block-cell">&nbsp;</div>
+            </div>
+          </div>
           
-  #         <div class="pain-scale-table">
-  #           <div class="pain-scale-header">
-  #             <div class="pain-scale-cell-header">Pain Level (1-10):</div>
-  #           </div>
-  #           <div class="pain-scale-row-single">
-  #             <div class="pain-scale-cell-numbers">
-  #               <div class="pain-scale-numbers">
-  #                 <span>[ ] 1</span><span>[ ] 2</span><span>[ ] 3</span><span>[ ] 4</span><span>[ ] 5</span>
-  #                 <span>[ ] 6</span><span>[ ] 7</span><span>[ ] 8</span><span>[ ] 9</span><span>[ ] 10</span>
-  #               </div>
-  #             </div>
-  #           </div>
-  #         </div>
+          <div class="form-block">
+            <div class="form-block-header">
+              <div class="form-block-cell">Woke up Time</div>
+              <div class="form-block-cell">got out of bed</div>
+            </div>
+            <div class="form-block-row">
+              <div class="form-block-cell">&nbsp;</div>
+              <div class="form-block-cell">&nbsp;</div>
+            </div>
+          </div>
 
-  #         <div class="form-block">
-  #           <div class="form-block-header">
-  #             <div class="form-block-cell">Pain Location</div>
-  #             <div class="form-block-cell">Triggers</div>
-  #              <div class="form-block-cell">Food/Drink before</div>
-  #           </div>
-  #           <div class="form-block-row">
-  #             <div class="form-block-cell"><img src="workspace/harmony/images/heads.png" alt="Pain Location"></div>
-  #             <div class="form-block-cell">&nbsp;</div>
-  #             <div class="form-block-cell">&nbsp;</div>
-  #           </div>
-  #         </div>
+          <div class="pain-scale-table">
+            <div class="pain-scale-header">
+              <div class="pain-scale-cell-header">Sleep Quality (1-10):</div>
+            </div>
+            <div class="pain-scale-row-single">
+              <div class="pain-scale-cell-numbers">
+                <div class="pain-scale-numbers">
+                  <span>[ ] 1</span><span>[ ] 2</span><span>[ ] 3</span><span>[ ] 4</span><span>[ ] 5</span>
+                  <span>[ ] 6</span><span>[ ] 7</span><span>[ ] 8</span><span>[ ] 9</span><span>[ ] 10</span>
+                </div>
+              </div>
+            </div>
+          </div>
 
-  #         <div class="pain-scale-table">
-  #           <div class="pain-scale-header">
-  #             <div class="pain-scale-cell-header">Pain Type</div>
-  #             <div class="pain-scale-cell-header">Other Symptoms</div>
-  #           </div>
-  #           <div class="pain-scale-row-single">
-  #             <div class="pain-scale-cell-numbers">
-  #               <div class="pain-scale-numbers">
-  #                 <span>[ ] Dull</span>
-  #                 <span>[ ] Sharp</span>
-  #                 <span>[ ] Throbbing/Pulsating</span>
-  #                 <span>[ ] Stabbing</span>
-  #                 <span>[ ] Burning</span>
-  #                 <span>[ ] Pressure/Squeezing</span>
-  #                 <span>[ ] Cramping</span>
-  #                 <span>[ ] Electric/Shock-like</span>
-  #                 <span>[ ] Shooting</span>
-  #                 <span>[ ] Radiating</span>
-  #                 <span>[ ] Aching</span>
-  #               </div>
-  #             </div>
-  #             <div class="pain-scale-cell-numbers">
-  #               <div class="pain-scale-numbers">
-  #                 <span>[ ] Dizziness</span>
-  #                 <span>[ ] Light sensitive</span>
-  #                 <span>[ ] Sound sensitive</span>
-  #                 <span>[ ] Auras</span>
-  #                 <span>[ ] Other ____________</span>
-  #               </div>
-  #             </div>
-  #           </div>
-  #         </div>
+          <div class="pain-scale-table">
+            <div class="pain-scale-header">
+              <div class="pain-scale-cell-header">Sleep Interruptions</div>
+              <div class="pain-scale-cell-header">Pre-Sleep Habits</div>
+            </div>
+            <div class="pain-scale-row-single">
+              <div class="pain-scale-cell-numbers">
+                <div class="pain-scale-numbers">
+                  <span>[ ] Woke up during the night</span>
+                  <span>[ ] Trouble falling asleep</span>
+                  <span>[ ] Vivid dreams / nightmares</span>
+                  <span>[ ] Got up to use bathroom</span>
+                  <span>[ ] Burning</span>
+                  <span>[ ] Pressure/Squeezing</span>
+                  <span>[ ] Cramping</span>
+                  <span>[ ] Electric/Shock-like</span>
+                  <span>[ ] Shooting</span>
+                  <span>[ ] Radiating</span>
+                  <span>[ ] Aching</span>
+                </div>
+              </div>
+              <div class="pain-scale-cell-numbers">
+                <div class="pain-scale-numbers">
+                  <span>[ ] Caffeine after 5pm? </span>
+                  <span>[ ] Screen time before bed?</span>
+                  <span>[ ] Other ____________</span>
+                </div>
+              </div>
+            </div>
+          </div>
 
-  #         <div class="form-block">
-  #           <div class="form-block-header">
-  #             <div class="form-block-cell">Medication</div>
-  #             <div class="form-block-cell">Relief Outcome</div>
-  #           </div>
-  #           <div class="form-block-row">
-  #             <div class="form-block-cell">&nbsp;</div>
-  #             <div class="form-block-cell">&nbsp;</div>
-  #           </div>
-  #         </div>
+          <div class="form-block">
+            <div class="form-block-header">
+              <div class="form-block-cell">Relaxation routine?</div>
+              <div class="form-block-cell">Morning Mood</div>
+              <div class="form-block-cell">Energy</div>
+            </div>
+            <div class="form-block-row">
+              <div class="form-block-cell">meditation, warm bath, reading</div>
+              <div class="form-block-cell" style="font-size:14pt;">😊 😐 😩</div>
+              <div class="form-block-cell">1- 10</div>
+            </div>
+          </div>
+          <div><b>Sleep Goal Reflection:</b></div>
+          <div>_____________________________________________</div>
+        </section>
+      page_size: ${page_size}
+      save_path: workspace/harmony/kdp
+      filename: ${filename}
+      mode: append
 
-  #         <div><b>Lifestyle Notes & Reflections:</b></div>
-  #         <div>_____________________________________________</div>
-  #       </section>
-
-  #     ✅ Daily Sleep Tracking Sections
-  #     💤 1. Date
-  #     🕰️ 2. Sleep & Wake Times
-  #     Time you went to bed
-
-  #     Time you fell asleep (if known)
-
-  #     Time you woke up
-
-  #     Time you got out of bed
-
-  #     ⏳ 3. Total Sleep Duration
-  #     Automatically calculated or manually recorded (e.g., “6.5 hours”)
-
-  #     😴 4. Sleep Quality Rating (1–5 stars or scale 1–10)
-  #     How restful or refreshing was your sleep?
-
-  #     🌙 5. Sleep Interruptions
-  #     Woke up during the night
-
-  #     Trouble falling asleep
-
-  #     Vivid dreams / nightmares
-
-  #     Got up to use bathroom
-
-  #     Free space for notes
-
-  #     🛏️ 6. Pre-Sleep Habits
-  #     Caffeine after 5pm? [ ] Yes [ ] No
-
-  #     Screen time before bed? [ ] Yes [ ] No
-
-  #     Relaxation routine? (e.g., meditation, warm bath, reading)
-
-  #     Free text: “Notes about evening routine”
-
-  #     🧠 7. Morning Mood & Energy
-  #     Mood on waking: (scale or emojis 😊😐😩)
-
-  #     Energy level: (scale 1–10)
-
-  #     Any grogginess, anxiety, or headaches?
-
-  #     📓 8. Dream Journal (Optional)
-  #     Space to jot down dreams, recurring themes, or sleep talking
-
-  #     📅 9. Sleep Goal Reflection
-  #     Met your sleep goal?
-
-  #     Slept consistently with previous nights?
-
-  #     Free note: “What helped or hurt sleep today?”
-
-
-  #     page_size: ${page_size}
-  #     save_path: workspace/harmony/kdp
-  #     filename: ${filename}
-  #     mode: append
-
-  # - name: generate_monthly_summaries
-  #   type: tool
-  #   agent: PdfAgent
-  #   loop:
-  #     var: index
-  #     count: 1
-  #   input:
-  #     content: |
-  #       {{ style }}
-  #       <section>
-  #         <div class="section-tab" style="top: 90mm; background-color: #a9aaa9;"></div>
-  #         <div class="header-row">
-  #           <img src="workspace/harmony/images/logo2.png" alt="Logo">
-  #           <div>Monthly Summary <span class="highlight-number">{{ index }}</span></div>
-  #         </div>
-  #         <div class="form-block">
-  #           <div class="form-block-header">
-  #             <div class="form-block-cell">Month</div>
-  #             <div class="form-block-cell"># of Migraine Days</div>
-  #             <div class="form-block-cell">Average Pain Level</div>
-  #           </div>
-  #           <div class="form-block-row">
-  #             <div class="form-block-cell">&nbsp;</div>
-  #             <div class="form-block-cell">&nbsp;</div>
-  #             <div class="form-block-cell">&nbsp;</div>
-  #           </div>
-  #         </div>
-  #         <div class="form-block">
-  #           <div class="form-block-header">
-  #             <div class="form-block-cell">Most Common Triggers</div>
-  #             <div class="form-block-cell">Effective Medications</div>
-  #           </div>
-  #           <div class="form-block-row">
-  #             <div class="form-block-cell">&nbsp;</div>
-  #             <div class="form-block-cell">&nbsp;</div>
-  #           </div>
-  #         </div>
-  #         <div class="form-block">
-  #           <div class="form-block-header">
-  #             <div class="form-block-cell">Lifestyle Factors</b> (Sleep, Diet, Stress)</div>
-  #           </div>
-  #           <div class="form-block-row">
-  #             <div class="form-block-cell">&nbsp;</div>
-  #           </div>
-  #         </div>
-  #         <div class="monthly-summary">
-  #           <div><b>Other Observations:</b></div>
-  #           <div>______________________________________________</div>
-  #           <div>______________________________________________</div>
-  #           <div>______________________________________________</div>
-  #           <div><b>Action Plan for Next Month:</b></div>
-  #           <div>______________________________________________</div>
-  #           <div>______________________________________________</div>
-  #           <div>______________________________________________</div>
-  #           <div>______________________________________________</div>
-  #           <div>______________________________________________</div>
-  #           <div>______________________________________________</div>
-  #         </div>
-  #       </section>
-
-
-  #       ✅ Monthly Sleep Summary Template
-  #       🗓️ Month: _______________
-  #       📊 1. Sleep Stats Overview
-  #       Number of nights tracked: ____________
-
-  #       Average hours slept per night: ____________
-
-  #       Best night (date & duration): ____________
-
-  #       Most interrupted night (date & issue): ____________
-
-  #       ⭐ 2. Sleep Quality Averages
-  #       Average sleep quality (1–10 or ★): ____________
-
-  #       Average morning energy level: ____________
-
-  #       Average mood upon waking: ____________
-
-  #       🔁 3. Most Common Disruptors
-  #       (check or list)
-
-  #       Stress
-
-  #       Caffeine or food late
-
-  #       Blue light / screens
-
-  #       Noise or light
-
-  #       Inconsistent bedtime
-
-  #       Physical discomfort
-
-  #       Other: _________________________
-
-  #       💡 4. Sleep Habits That Helped
-  #       🧠 5. Observations or Insights
-  #       (Did anything stand out this month? Did you notice patterns?)
-
-  #       🎯 6. Sleep Goals for Next Month
-  #       (e.g., consistent bedtime, limit caffeine, digital detox before bed)
-
-  #       Would you like me to generate this as a formatted PDF or HTML you can drop into your book layout?
-
-
-  #     page_size: ${page_size}
-  #     save_path: workspace/harmony/kdp
-  #     filename: ${filename}
-  #     mode: append
+  - name: generate_monthly_summaries
+    type: tool
+    agent: PdfAgent
+    loop:
+      var: index
+      count: 12
+    input:
+      content: |
+        {{ style }}
+        <section>
+          <div class="section-tab" style="top: 90mm; background-color: #a9aaa9;"></div>
+          <div class="header-row">
+            <img src="workspace/harmony/images/logo2.png" alt="Logo">
+            <div>Monthly Sleep Summary <span class="highlight-number">{{ index }}</span></div>
+          </div>
+          <div class="form-block">
+            <div class="form-block-header">
+              <div class="form-block-cell">Month</div>
+              <div class="form-block-cell"># of nights tracked:</div>
+              <div class="form-block-cell">Average hours slept/night</div>
+            </div>
+            <div class="form-block-row">
+              <div class="form-block-cell">&nbsp;</div>
+              <div class="form-block-cell">&nbsp;</div>
+              <div class="form-block-cell">&nbsp;</div>
+            </div>
+          </div>
+          <div class="form-block">
+            <div class="form-block-header">
+              <div class="form-block-cell">Best night (date & duration)</div>
+              <div class="form-block-cell">Most interrupted night</div>
+            </div>
+            <div class="form-block-row">
+              <div class="form-block-cell">&nbsp;</div>
+              <div class="form-block-cell">&nbsp;</div>
+            </div>
+          </div>
+          <div class="form-block">
+            <div class="form-block-header">
+              <div class="form-block-cell">Average sleep quality</div>
+              <div class="form-block-cell">Average morning energy level</div>
+              <div class="form-block-cell">Average mood upon waking</div>
+            </div>
+            <div class="form-block-row">
+              <div class="form-block-cell">&nbsp;</div>
+              <div class="form-block-cell">&nbsp;</div>
+              <div class="form-block-cell">&nbsp;</div>
+            </div>
+          </div>
+          <div class="form-block">
+            <div class="form-block-header">
+              <div class="form-block-cell">Lifestyle Factors</b> (Sleep, Diet, Stress)</div>
+            </div>
+            <div class="form-block-row">
+              <div class="form-block-cell">&nbsp;</div>
+            </div>
+          </div>
+          <div class="form-block">
+            <div class="form-block-header">
+              <div class="form-block-cell"> Most Common Disruptors</b></div>
+            </div>
+            <div class="form-block-row">
+              <div class="form-block-cell">Stress, Caffeine or food late,Blue light/screens, Noise or light, Inconsistent bedtime, Physical discomfort, Other: _____________</div>
+            </div>
+          </div>
+          <div class="monthly-summary">
+            <div><b>Sleep Habits That Helped:</b></div>
+            <div>______________________________________________</div>
+            <div><b>Observations or Insights:</b></div>
+            <div>______________________________________________</div>
+            <div><b>Sleep Goals for Next Month:</b></div>
+            <div>______________________________________________</div>
+            <div>______________________________________________</div>
+          </div>
+        </section>
+      page_size: ${page_size}
+      save_path: workspace/harmony/kdp
+      filename: ${filename}
+      mode: append
 
   - name: generate_notes
     type: tool
     agent: PdfAgent
     loop:
       var: index
-      count: 1
+      count: 2
     input:
       content: |
         {{ style }}
