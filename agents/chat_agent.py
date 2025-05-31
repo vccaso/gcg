@@ -1,6 +1,7 @@
 from models.modelbase import ModelBase
 from utils.printer import Printer
 from config import debug
+import os
 
 class ChatAgent:
     def __init__(self, llm: ModelBase, prompt_template):
@@ -26,6 +27,7 @@ class ChatAgent:
 
         if save_to_file:
             try:
+                os.makedirs(os.path.dirname(file_name), exist_ok=True)  # ensure path
                 with open(file_name, "a", encoding="utf-8") as f:
                     if debug:
                         f.write(f"Prompt: {final_prompt}\n")

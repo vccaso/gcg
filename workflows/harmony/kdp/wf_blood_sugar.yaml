@@ -1,0 +1,445 @@
+name: pdf Blood Sugar Tracker notebook
+description: this workflow is to create a pdf Sleep Tracker notebook to publish in kdp
+  
+include_vars: vars/vars.yaml
+vars:
+  model: ModelOllama
+  link_google_font: <link href="https://fonts.googleapis.com/css2?family=Lora&display=swap" rel="stylesheet">
+  book_title: "Harmony Health: Blood Sugar & Diabetes Tracker"
+  book_subtitle: A Daily Log for Monitoring Glucose Levels, Meals, Medications & Health Patterns
+  inspirational_phrase: "Rest is not a luxury—it's your foundation. Every night of sleep is a gift of renewal, a reset for your body, your mind, and your tomorrow."
+  inspirational_author: Harmony Health
+  filename: blood_sugar.pdf
+  filepath: workspace/harmony/kdp/blood_sugar_inspirational.txt
+
+include:
+  - fragments/book_common_steps.yaml
+
+steps:
+
+  - name: generate_inspirational_phrase
+    type: ai
+    agent: ChatAgent
+    model: ModelGpt35Turbo
+    template_name: inspirational_quote
+    when: "{{ not os.path.exists(filepath) }}"
+    input:
+      question: "A book titled '{{ book_title }}' that helps readers find strength during illness"
+      save_to_file: true
+      file_name: ${filepath}
+
+  # - name: generate_index
+  #   type: tool
+  #   agent: PdfAgent
+  #   input:
+  #     content: |
+  #       {{ style }}
+  #       <section>
+  #         <h2>Index</h2>
+  #         <div class="index-entry"><span>How to Use This Book</span><span>4</span></div>
+  #         <div class="index-entry"><span>What's Inside</span><span>5</span></div>
+  #         <div class="index-entry"><span>Filling Out a Daily Log</span><span>6</span></div>
+  #         <div class="index-entry"><span>Using Monthly Summaries</span><span>8</span></div>
+  #         <div class="index-entry"><span>Tips for Getting the Most Out of This Tracker</span><span>10</span></div>
+  #         <div class="index-entry"><span>Daily Sleep Log</span><span>11</span></div>
+  #         <div class="index-entry"><span>Monthly Summary</span><span>101</span></div>
+  #         <div class="index-entry"><span>Notes</span><span>113</span></div>
+  #         <div class="index-entry"><span>About the publisher</span><span>115</span></div>
+  #       </section>
+  #     page_size: ${page_size}
+  #     save_path: workspace/harmony/kdp
+  #     filename: ${filename}
+  #     mode: append
+  #     add_page_number: False
+
+  # - name: generate_how_tu_use
+  #   type: tool
+  #   agent: PdfAgent
+  #   input:
+  #     content: |
+  #       {{ style }}
+  #       <section>
+  #         <div class="section-tab"></div>
+  #         <h2 style="margin-top: 80px;">How to Use This Book</h2>
+  #         <p><b>The Harmony Health: Sleep Tracker</b> is designed to help you better understand your sleep patterns, improve nightly rest, and support your overall well-being. Whether you're aiming to build a consistent routine, identify what disrupts your sleep, or simply track your progress, this journal offers a simple, guided space for daily reflection. You can use this book every morning or evening — whatever fits best with your routine.</p>
+  #       </section>
+  #     page_size: ${page_size}
+  #     save_path: workspace/harmony/kdp
+  #     filename: ${filename}
+  #     mode: append
+
+  # - name: generate_Inside
+  #   type: tool
+  #   agent: PdfAgent
+  #   input:
+  #     content: |
+  #       {{ style }}
+  #       <section>
+  #         <div class="section-tab"></div>
+  #         <h2>What's Inside:</h2>
+  #         <ul>
+  #           <li><b>Daily Sleep Logs:</b> 90+ pages to record sleep/wake times, sleep quality, habits, and morning reflections<br/></li>
+  #           <li><b>Monthly Summaries:</b> Pages to review trends, reflect on habits, and set goals for better rest<br/></li>
+  #           <li><b>Sleep Quality & Disruption Checklist:</b> Track factors like screen time, caffeine, stress, or waking during the night<br/></li>
+  #           <li><b>Dream & Mood Notes:</b> Space to log dreams and monitor emotional patterns or next-day effects<br/></li>
+  #           <li><b>Notes Section:</b> Extra pages at the end for general reflections, personal strategies, or observations about your sleep journey</li>
+  #         </ul>
+  #       </section>
+  #     page_size: ${page_size}
+  #     save_path: workspace/harmony/kdp
+  #     filename: ${filename}
+  #     mode: append
+
+  # - name: generate_filling_daily
+  #   type: tool
+  #   agent: PdfAgent
+  #   input:
+  #     content: |
+  #       {{ style }}
+  #       <section>
+  #         <div class="section-tab"></div>
+  #         <h2>Filling Out a Daily Log</h2>
+  #         <p>
+  #         Each page of the Harmony Health: Sleep Tracker is designed to help you understand not just how long you sleep, but how well you sleep — and how your habits, environment, and emotions may affect your rest. Completing a log each morning (or right before bed) builds valuable awareness over time.
+  #         </p>
+  #         <p>Each daily log includes the following fields:</p>
+  #         <ul>
+  #           <li><b>Date:</b> Record the date of the night you're tracking.</li>
+  #           <li><b>Sleep & Wake Times:</b> Time you went to bed: When you got into bed (even if you didn't fall asleep right away).</li>
+  #           <li><b>Time you fell asleep (if known):</b> Estimate how long it took you to fall asleep.</li>
+  #           <li><b>Time you woke up:</b>  The first time you fully woke up for the day.</li>
+  #           <li><b>Time you got out of bed:</b> Helpful if you lay in bed after waking.</li>
+  #           <li><b>Total Sleep Duration</b> Estimate your total time asleep (subtract time awake during the night).</li>
+  #           <li><b>Sleep Quality Rating (1-10 or stars)</b> Rate how restful your sleep felt — not just how long you slept, but how good the rest was.</li>
+  #           <li><b>Sleep Interruptions:</b> Check any boxes that apply and note unusual events like:</li>
+  #           <li><b></b>Waking up multiple times, Vivid dreams or nightmares, Physical discomfort, Noise/light disruption</li>
+  #           <li><b>Evening Habits:</b> Note any activities before bed that could have helped or hurt your sleep (e.g., screen time, meditation, caffeine, alcohol, late meals).</li>
+  #           <li><b>Morning Mood & Energy</b> How did you feel when you woke up?</li>
+  #           <li><b>Mood:</b>calm, anxious, neutral, happy? </li>
+  #           <li><b>Energy level:</b>low, average, high?</li>
+  #           <li><b>Dream Notes (optional)</b> Write down any dreams you remember — helpful for those monitoring mental health or subconscious patterns.</li>
+  #           <li><b>Reflection / Sleep Goal Check-In</b> Briefly reflect: Did you follow a bedtime routine? Meet your sleep goal? What would you change tonight?</li>
+  #           <li><b></b> </li>
+  #         </ul><br/>
+  #         <h2>Tip</h2>
+  #         <p>You don't need to be perfect — the value of this tracker is in small, honest insights over time. A few weeks of consistent tracking can reveal habits, triggers, and solutions that lead to deeper, healthier sleep.</p>
+  #       </section>              
+  #     page_size: ${page_size}
+  #     save_path: workspace/harmony/kdp
+  #     filename: ${filename}
+  #     mode: append
+
+  # - name: generate_filling_monthly
+  #   type: tool
+  #   agent: PdfAgent
+  #   input:
+  #     content: |
+  #       {{ style }}
+  #       <section>
+  #         <div class="section-tab"></div>
+  #         <h2>Using Monthly Summaries</h2>
+  #         <p>
+  #           The Monthly Summary is where you step back and look at your sleep habits over the past few weeks. It helps you spot trends, identify what's working, and set small changes for better rest. Complete this page at the end of each month using the information from your daily logs.
+  #         </p>
+  #         <p>Here's how to use each part of the Monthly Summary:</p>
+  #         <ul>
+  #           <li><b>Month:</b> Write the name of the month you're summarizing (e.g., June 2025).</li>
+  #           <li><b>Number of Nights Tracked:</b> Count how many days you filled in your daily sleep log.</li>
+  #           <li><b>Average Hours Slept:</b> Review your daily totals and estimate your average sleep per night. This gives a clearer picture than a few “good” or “bad” nights.</li>
+  #           <li><b>Best & Worst Nights:</b> Pick one night you slept well and one night that was disrupted. Note the date and any key differences (e.g., routine, stress level, screen use).</li>
+  #           <li><b>Most Common Disruptors:</b>Check off any recurring issues that interfered with your sleep: </li>
+  #           <li><b></b>Stress, Screens before bed,  Diet or caffeine,Environmental noise or light, Irregular bedtime</li>
+  #           <li><b>Sleep Habits That Helped:</b> Write down any routines or habits that made a noticeable difference (e.g., reading before bed, blackout curtains, earlier dinner).</li>
+  #           <li><b>Observations or Insights:</b> This is space for personal reflection. Did your energy change? Were weekends different from weekdays? Did your mood improve with better sleep?</li>
+  #           <li><b>Goals for Next Month</b> Set 1-3 simple, realistic goals like:</li>
+  #           <li><b></b>  “Go to bed by 10:30 PM”,“Limit phone use after 9 PM”,“Track sleep 5 nights a week”</li>
+  #         </ul>
+  #         <h2>Tip</h2>
+  #         <p>
+  #           Don't worry if your month wasn't perfect. The real power of this tracker is in building awareness and making gradual improvements you can stick with.
+  #         </p>
+  #       </section>
+  #     page_size: ${page_size}
+  #     save_path: workspace/harmony/kdp
+  #     filename: ${filename}
+  #     mode: append
+
+
+  # - name: generate_tips
+  #   type: tool
+  #   agent: PdfAgent
+  #   input:
+  #     content: |
+  #       {{ style }}
+  #       <section>
+  #         <div class="section-tab"></div>
+  #         <h2>Tips for Getting the Most Out of This Tracker</h2>
+  #         <ul>
+  #           <li><b>Be consistent</b> — tracking even a few nights each week can reveal patterns and help you improve your sleep over time.</li>
+  #           <li><b>Fill out your log as soon as you wake up</b> — fresh memories help ensure more accurate notes about sleep quality, dreams, and mood.</li>
+  #           <li><b>Use symbols or color coding</b> — for example: 🌙 for peaceful sleep, 😴 for fatigue, 🔆 for waking early, ☕ for caffeine late in the day.</li>
+  #           <li><b>Reflect honestly</b> — your notes are for you, so feel free to include both good nights and rough ones without judgment.</li>
+  #           <li><b>Review your monthly summaries</b> — look for recurring habits or disruptions that may be helping or hurting your rest.</li>
+  #           <li><b>Pair your sleep tracking with self-care</b> — like journaling, meditation, or setting a wind-down routine to reinforce good habits.</li>
+  #           <li><b>Celebrate small wins</b> — even one extra hour of sleep or a smoother morning is a step forward. This tracker is about awareness and gentle progress.</li>
+  #         </ul>
+  #       </section>
+  #     page_size: ${page_size}
+  #     save_path: workspace/harmony/kdp
+  #     filename: ${filename}
+  #     mode: append
+
+  # - name: generate_dayly_logs
+  #   type: tool
+  #   agent: PdfAgent
+  #   loop:
+  #     var: index
+  #     count: 90
+  #   input:
+  #     content: |
+  #       {{ style }}
+  #       <section>
+  #         <div class="section-tab" style="top: 60mm; background-color: #aaa9a9;"></div>
+  #         <div class="header-row">
+  #           <img src="workspace/harmony/images/logo2.png" alt="Logo">
+  #           <div>Daily Sleep Tracking <span class="highlight-number">{{ index }}</span></div>
+  #         </div>
+
+  #         <div class="form-block">
+  #           <div class="form-block-header">
+  #             <div class="form-block-cell">Date</div>
+  #             <div class="form-block-cell">Sleep Duration</div>
+  #           </div>
+  #           <div class="form-block-row">
+  #             <div class="form-block-cell">&nbsp;</div>
+  #             <div class="form-block-cell">&nbsp;</div>
+  #           </div>
+  #         </div>
+
+  #         <div class="form-block">
+  #           <div class="form-block-header">
+  #             <div class="form-block-cell">Time you went to bed</div>
+  #             <div class="form-block-cell">Time you fell asleep</div>
+  #           </div>
+  #           <div class="form-block-row">
+  #             <div class="form-block-cell">&nbsp;</div>
+  #             <div class="form-block-cell">&nbsp;</div>
+  #           </div>
+  #         </div>
+          
+  #         <div class="form-block">
+  #           <div class="form-block-header">
+  #             <div class="form-block-cell">Woke up Time</div>
+  #             <div class="form-block-cell">got out of bed</div>
+  #           </div>
+  #           <div class="form-block-row">
+  #             <div class="form-block-cell">&nbsp;</div>
+  #             <div class="form-block-cell">&nbsp;</div>
+  #           </div>
+  #         </div>
+
+  #         <div class="pain-scale-table">
+  #           <div class="pain-scale-header">
+  #             <div class="pain-scale-cell-header">Sleep Quality (1-10):</div>
+  #           </div>
+  #           <div class="pain-scale-row-single">
+  #             <div class="pain-scale-cell-numbers">
+  #               <div class="pain-scale-numbers">
+  #                 <span>[ ] 1</span><span>[ ] 2</span><span>[ ] 3</span><span>[ ] 4</span><span>[ ] 5</span>
+  #                 <span>[ ] 6</span><span>[ ] 7</span><span>[ ] 8</span><span>[ ] 9</span><span>[ ] 10</span>
+  #               </div>
+  #             </div>
+  #           </div>
+  #         </div>
+
+  #         <div class="pain-scale-table">
+  #           <div class="pain-scale-header">
+  #             <div class="pain-scale-cell-header">Sleep Interruptions</div>
+  #             <div class="pain-scale-cell-header">Pre-Sleep Habits</div>
+  #           </div>
+  #           <div class="pain-scale-row-single">
+  #             <div class="pain-scale-cell-numbers">
+  #               <div class="pain-scale-numbers">
+  #                 <span>[ ] Woke up during the night</span>
+  #                 <span>[ ] Trouble falling asleep</span>
+  #                 <span>[ ] Vivid dreams / nightmares</span>
+  #                 <span>[ ] Got up to use bathroom</span>
+  #                 <span>[ ] Burning</span>
+  #                 <span>[ ] Pressure/Squeezing</span>
+  #                 <span>[ ] Cramping</span>
+  #                 <span>[ ] Electric/Shock-like</span>
+  #                 <span>[ ] Shooting</span>
+  #                 <span>[ ] Radiating</span>
+  #                 <span>[ ] Aching</span>
+  #               </div>
+  #             </div>
+  #             <div class="pain-scale-cell-numbers">
+  #               <div class="pain-scale-numbers">
+  #                 <span>[ ] Caffeine after 5pm? </span>
+  #                 <span>[ ] Screen time before bed?</span>
+  #                 <span>[ ] Other ____________</span>
+  #               </div>
+  #             </div>
+  #           </div>
+  #         </div>
+
+  #         <div class="form-block">
+  #           <div class="form-block-header">
+  #             <div class="form-block-cell">Relaxation routine?</div>
+  #             <div class="form-block-cell">Morning Mood</div>
+  #             <div class="form-block-cell">Energy</div>
+  #           </div>
+  #           <div class="form-block-row">
+  #             <div class="form-block-cell">meditation, warm bath, reading</div>
+  #             <div class="form-block-cell" style="font-size:14pt;">😊 😐 😩</div>
+  #             <div class="form-block-cell">1- 10</div>
+  #           </div>
+  #         </div>
+  #         <div><b>Sleep Goal Reflection:</b></div>
+  #         <div>_____________________________________________</div>
+  #       </section>
+  #     page_size: ${page_size}
+  #     save_path: workspace/harmony/kdp
+  #     filename: ${filename}
+  #     mode: append
+
+  # - name: generate_monthly_summaries
+  #   type: tool
+  #   agent: PdfAgent
+  #   loop:
+  #     var: index
+  #     count: 12
+  #   input:
+  #     content: |
+  #       {{ style }}
+  #       <section>
+  #         <div class="section-tab" style="top: 90mm; background-color: #a9aaa9;"></div>
+  #         <div class="header-row">
+  #           <img src="workspace/harmony/images/logo2.png" alt="Logo">
+  #           <div>Monthly Sleep Summary <span class="highlight-number">{{ index }}</span></div>
+  #         </div>
+  #         <div class="form-block">
+  #           <div class="form-block-header">
+  #             <div class="form-block-cell">Month</div>
+  #             <div class="form-block-cell"># of nights tracked:</div>
+  #             <div class="form-block-cell">Average hours slept/night</div>
+  #           </div>
+  #           <div class="form-block-row">
+  #             <div class="form-block-cell">&nbsp;</div>
+  #             <div class="form-block-cell">&nbsp;</div>
+  #             <div class="form-block-cell">&nbsp;</div>
+  #           </div>
+  #         </div>
+  #         <div class="form-block">
+  #           <div class="form-block-header">
+  #             <div class="form-block-cell">Best night (date & duration)</div>
+  #             <div class="form-block-cell">Most interrupted night</div>
+  #           </div>
+  #           <div class="form-block-row">
+  #             <div class="form-block-cell">&nbsp;</div>
+  #             <div class="form-block-cell">&nbsp;</div>
+  #           </div>
+  #         </div>
+  #         <div class="form-block">
+  #           <div class="form-block-header">
+  #             <div class="form-block-cell">Average sleep quality</div>
+  #             <div class="form-block-cell">Average morning energy level</div>
+  #             <div class="form-block-cell">Average mood upon waking</div>
+  #           </div>
+  #           <div class="form-block-row">
+  #             <div class="form-block-cell">&nbsp;</div>
+  #             <div class="form-block-cell">&nbsp;</div>
+  #             <div class="form-block-cell">&nbsp;</div>
+  #           </div>
+  #         </div>
+  #         <div class="form-block">
+  #           <div class="form-block-header">
+  #             <div class="form-block-cell">Lifestyle Factors</b> (Sleep, Diet, Stress)</div>
+  #           </div>
+  #           <div class="form-block-row">
+  #             <div class="form-block-cell">&nbsp;</div>
+  #           </div>
+  #         </div>
+  #         <div class="form-block">
+  #           <div class="form-block-header">
+  #             <div class="form-block-cell"> Most Common Disruptors</b></div>
+  #           </div>
+  #           <div class="form-block-row">
+  #             <div class="form-block-cell">Stress, Caffeine or food late,Blue light/screens, Noise or light, Inconsistent bedtime, Physical discomfort, Other: _____________</div>
+  #           </div>
+  #         </div>
+  #         <div class="monthly-summary">
+  #           <div><b>Sleep Habits That Helped:</b></div>
+  #           <div>______________________________________________</div>
+  #           <div><b>Observations or Insights:</b></div>
+  #           <div>______________________________________________</div>
+  #           <div><b>Sleep Goals for Next Month:</b></div>
+  #           <div>______________________________________________</div>
+  #           <div>______________________________________________</div>
+  #         </div>
+  #       </section>
+  #     page_size: ${page_size}
+  #     save_path: workspace/harmony/kdp
+  #     filename: ${filename}
+  #     mode: append
+
+  # - name: generate_notes
+  #   type: tool
+  #   agent: PdfAgent
+  #   loop:
+  #     var: index
+  #     count: 2
+  #   input:
+  #     content: |
+  #       {{ style }}
+  #       <section>
+  #         <div class="section-tab" style="top: 120mm; background-color: #a9a9aa;"></div>
+  #         <div class="header-row">
+  #           <img src="workspace/harmony/images/logo2.png" alt="Logo">
+  #           <div>Notes</div><br/><br/>
+  #         </div>
+  #           <div>______________________________________________</div>
+  #           <div>______________________________________________</div>
+  #           <div>______________________________________________</div>
+  #           <div>______________________________________________</div>
+  #           <div>______________________________________________</div>
+  #           <div>______________________________________________</div>
+  #           <div>______________________________________________</div>
+  #           <div>______________________________________________</div>
+  #           <div>______________________________________________</div>
+  #           <div>______________________________________________</div>
+  #           <div>______________________________________________</div>
+  #           <div>______________________________________________</div>
+  #           <div>______________________________________________</div>
+  #           <div>______________________________________________</div>
+  #           <div>______________________________________________</div>
+  #           <div>______________________________________________</div>
+  #           <div>______________________________________________</div>
+  #       </section>
+  #     page_size: ${page_size}
+  #     save_path: workspace/harmony/kdp
+  #     filename: ${filename}
+  #     mode: append
+
+
+  # - name: generate_about publisher
+  #   type: tool
+  #   agent: PdfAgent
+  #   input:
+  #     content: |
+  #        {{ style }}
+  #         <section>
+  #           <div class="section-tab"></div>
+  #           <h2>About the Publisher</h2>
+  #             <p>
+  #               Harmony Health is dedicated to empowering individuals on their personal wellness journeys through thoughtfully designed planners, trackers, and health journals. Each Harmony Health publication is created with care to support mindfulness, symptom management, and self-awareness—one page at a time.
+  #             </p>
+  #             <p>
+  #               Whether you are tracking migraines, sleep, blood sugar, mood, or overall well-being, our tools are designed to help you recognize patterns, make informed decisions, and take small daily steps toward a healthier life.
+  #             </p>
+  #         </section>
+  #     page_size: ${page_size}
+  #     save_path: workspace/harmony/kdp
+  #     filename: ${filename}
+  #     mode: append
+  #     add_page_number: False
