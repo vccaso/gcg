@@ -49,6 +49,38 @@ def resolve_vars_original(obj, variables: dict):
     return obj  # Return original type (int, bool, etc.)
 
 def resolve_vars(obj, variables: dict):
+
+    def resolve_value(val):
+        if isinstance(val, str):
+            # Handle file content loading
+            if val.startswith("$file:"):
+                path = val[len("$file:"):].strip()
+                try:
+                    with open(path, "r", encoding="utf-8") as f:
+                        file_content = f.read()
+                        print(file_content)
+                        return file_content
+                except Exception as e:
+                    return f"[Error loading file '{path}': {e}]"
+
+            # Handle environment variable fallback
+            pattern = re.compile(r"\$\{(.*?)\}")
+            matches = pattern.findall(val)
+            for match in matches:
+                value = variables.get(match, os.getenv(match))
+                if value is not None:
+                    val = val.replace(f"${{{match}}}", str(value))
+        return val
+
+    if isinstance(obj, dict):
+        return {k: resolve_vars(v, variables) for k, v in obj.items()}
+    elif isinstance(obj, list):
+        return [resolve_vars(i, variables) for i in obj]
+    else:
+        return resolve_value(obj)
+
+
+def resolve_vars_original(obj, variables: dict):
     pattern = re.compile(r"\$\{(.*?)\}")
 
     if isinstance(obj, dict):
@@ -272,7 +304,8 @@ def run_workflow(workflow_path, streamlit_mode=False):
 
     workflow = load_workflow_with_includes(workflow_path)
 
-    vars_dict = workflow.get("vars", {})
+    raw_vars = workflow.get("vars", {})
+    vars_dict = resolve_vars(raw_vars, {})  # file-based resolution
     steps = resolve_vars(workflow["steps"], vars_dict)
 
     results = {}

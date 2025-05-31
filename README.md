@@ -670,9 +670,6 @@ Each iteration begins with a new prompt revision, making the system increasingly
 Dynamic Agent Discovery
 If the planner identifies a goal that cannot be fulfilled by any known agent, it doesn't skip it — instead, it inserts a proposed_agent: block:
 
-yaml
-Copy
-Edit
 proposed_agent:
   name: LegalDocParserAgent
   description: Extracts structured metadata from scanned legal PDFs.
@@ -701,6 +698,34 @@ Download final workflow as .yaml with custom filename
 
 ---
 
+📥 Loading Variable Content from Files
+You can load content directly from a file into a variable using the $file: syntax inside vars:.
+
+✅ Syntax
+```
+vars:
+  my_quote: $file:workspace/quotes/inspiration.txt
+  output_path: workspace/output/inspiration.pdf
+```
+
+This will read the contents of workspace/quotes/inspiration.txt into the my_quote variable, which you can then use in steps:
+
+```
+steps:
+  - name: generate_pdf
+    type: utils
+    agent: PdfAgent
+    input:
+      content: "{{ my_quote }}"
+      filename: ${output_path}
+      ```
+⚠️ Notes
+Do not include spaces after $file:
+
+Relative paths are resolved from the project root
+
+Works only in vars: block
+---
 ### 📄 PdfAgent
 
 `PdfAgent` is a utility agent that converts text content into a PDF document. It supports both creating new files and appending to existing PDFs.

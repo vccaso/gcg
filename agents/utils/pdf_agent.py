@@ -5,11 +5,13 @@ from weasyprint import HTML
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
 from io import BytesIO
+import re
 
 class PdfAgent:
 
     def clean_text(self, text):
         return unicodedata.normalize('NFKD', text)
+
 
     def run(self, page_size="A4", content="", save_path="workspace/pdf", filename="styled.pdf", mode="override", add_page_number="True"):
         os.makedirs(save_path, exist_ok=True)

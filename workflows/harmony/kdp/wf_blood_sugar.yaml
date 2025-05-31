@@ -7,7 +7,7 @@ vars:
   link_google_font: <link href="https://fonts.googleapis.com/css2?family=Lora&display=swap" rel="stylesheet">
   book_title: "Harmony Health: Blood Sugar & Diabetes Tracker"
   book_subtitle: A Daily Log for Monitoring Glucose Levels, Meals, Medications & Health Patterns
-  inspirational_phrase: "Rest is not a luxury—it's your foundation. Every night of sleep is a gift of renewal, a reset for your body, your mind, and your tomorrow."
+  inspirational_phrase: $file:workspace/harmony/kdp/blood_sugar_inspirational.txt
   inspirational_author: Harmony Health
   filename: blood_sugar.pdf
   filepath: workspace/harmony/kdp/blood_sugar_inspirational.txt
@@ -28,29 +28,29 @@ steps:
       save_to_file: true
       file_name: ${filepath}
 
-  # - name: generate_index
-  #   type: tool
-  #   agent: PdfAgent
-  #   input:
-  #     content: |
-  #       {{ style }}
-  #       <section>
-  #         <h2>Index</h2>
-  #         <div class="index-entry"><span>How to Use This Book</span><span>4</span></div>
-  #         <div class="index-entry"><span>What's Inside</span><span>5</span></div>
-  #         <div class="index-entry"><span>Filling Out a Daily Log</span><span>6</span></div>
-  #         <div class="index-entry"><span>Using Monthly Summaries</span><span>8</span></div>
-  #         <div class="index-entry"><span>Tips for Getting the Most Out of This Tracker</span><span>10</span></div>
-  #         <div class="index-entry"><span>Daily Sleep Log</span><span>11</span></div>
-  #         <div class="index-entry"><span>Monthly Summary</span><span>101</span></div>
-  #         <div class="index-entry"><span>Notes</span><span>113</span></div>
-  #         <div class="index-entry"><span>About the publisher</span><span>115</span></div>
-  #       </section>
-  #     page_size: ${page_size}
-  #     save_path: workspace/harmony/kdp
-  #     filename: ${filename}
-  #     mode: append
-  #     add_page_number: False
+  - name: generate_index
+    type: tool
+    agent: PdfAgent
+    input:
+      content: |
+        {{ style }}
+        <section>
+          <h2>Index</h2>
+          <div class="index-entry"><span>How to Use This Book</span><span>4</span></div>
+          <div class="index-entry"><span>What's Inside</span><span>5</span></div>
+          <div class="index-entry"><span>Filling Out a Daily Log</span><span>6</span></div>
+          <div class="index-entry"><span>Using Monthly Summaries</span><span>8</span></div>
+          <div class="index-entry"><span>Tips for Getting the Most Out of This Tracker</span><span>10</span></div>
+          <div class="index-entry"><span>Daily Sleep Log</span><span>11</span></div>
+          <div class="index-entry"><span>Monthly Summary</span><span>101</span></div>
+          <div class="index-entry"><span>Notes</span><span>113</span></div>
+          <div class="index-entry"><span>About the publisher</span><span>115</span></div>
+        </section>
+      page_size: ${page_size}
+      save_path: workspace/harmony/kdp
+      filename: ${filename}
+      mode: append
+      add_page_number: False
 
   # - name: generate_how_tu_use
   #   type: tool
