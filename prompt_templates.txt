@@ -606,6 +606,23 @@ You are a helpful assistant. Please answer the following question:
 
 {question}
 ===
+ChatAgent/inspirational_quote.txt
+===
+You are an emotionally intelligent writer.
+
+Your task is to craft a powerful and poetic inspirational phrase tailored for the following book concept:
+
+{question}
+
+The quote should be:
+- 1 to 2 lines
+- Written in a profound, encouraging, and elegant tone
+- Metaphorical or symbolic if appropriate
+- Emotionally resonant, like:
+  "You are not defined by the pain you endure, but by the strength you show in facing it — one moment, one breath, one day at a time."
+
+Respond only with the quote.
+===
 ChatAgent/short.txt
 ===
 You are a helpful assistant. Please answer the following question in only one sentence:
