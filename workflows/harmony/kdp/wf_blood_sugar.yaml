@@ -197,7 +197,7 @@ steps:
     agent: PdfAgent
     loop:
       var: index
-      count: 1
+      count: 90
     input:
       content: |
         {{ style }}
@@ -205,49 +205,52 @@ steps:
           <div class="section-tab" style="top: 60mm; background-color: #aaa9a9;"></div>
           <div class="header-row">
             <img src="workspace/harmony/images/logo2.png" alt="Logo">
-            <div>Daily Blood Sugar Tracking <span class="highlight-number">{{ index }}</span></div>
+            <div>Daily Blood Sugar Track <span class="highlight-number">{{ index }}</span></div>
           </div>
 
           <div class="form-block">
             <div class="form-block-header">
               <div class="form-block-cell">Date</div>
-              <div class="form-block-cell">Fasting Glucose (Before Breakfast)</div>
+              <div class="form-block-cell">Physical Activity</div>
+              <div class="form-block-cell">Duration (min)</div>
             </div>
             <div class="form-block-row">
+              <div class="form-block-cell">&nbsp;</div>
               <div class="form-block-cell">&nbsp;</div>
               <div class="form-block-cell">&nbsp;</div>
             </div>
           </div>
 
           <div class="form-block">
-            <div class="form-block-header">
-              <div class="form-block-cell">Before Lunch</div>
-              <div class="form-block-cell">After Lunch</div>
+            <div class="form-block-row">
+              <div class="form-block-cell-h"><b>Glucose</div>
             </div>
             <div class="form-block-row">
-              <div class="form-block-cell">&nbsp;</div>
-              <div class="form-block-cell">&nbsp;</div>
-            </div>
-          </div>
-
-          <div class="form-block">
-            <div class="form-block-header">
-              <div class="form-block-cell">Before Dinner</div>
-              <div class="form-block-cell">After Dinner</div>
+              <div class="form-block-cell-h"><b>Fasting Before Breakfast</b></div>
+              <div class="form-block-cell" style="width:190px;">&nbsp;</div>
             </div>
             <div class="form-block-row">
+              <div class="form-block-cell-h"><b>Before Lunch</b></div>
               <div class="form-block-cell">&nbsp;</div>
-              <div class="form-block-cell">&nbsp;</div>
-            </div>
-          </div>
-
-          <div class="form-block">
-            <div class="form-block-header">
-              <div class="form-block-cell">Bedtime / Overnight</div>
-              <div class="form-block-cell">Total Carbs Today (Estimate)</div>
             </div>
             <div class="form-block-row">
+              <div class="form-block-cell-h"><b>After Lunch</b></div>
               <div class="form-block-cell">&nbsp;</div>
+            </div>
+            <div class="form-block-row">
+              <div class="form-block-cell-h"><b>Before Dinner</b></div>
+              <div class="form-block-cell">&nbsp;</div>
+            </div>
+            <div class="form-block-row">
+              <div class="form-block-cell-h"><b>After Dinner</b></div>
+              <div class="form-block-cell">&nbsp;</div>
+            </div>
+            <div class="form-block-row">
+              <div class="form-block-cell-h"><b>Bedtime / Overnight</b></div>
+              <div class="form-block-cell">&nbsp;</div>
+            </div>
+            <div class="form-block-row">
+              <div class="form-block-cell-h"><b>Total Carbs Today (Estimate)</b></div>
               <div class="form-block-cell">&nbsp;</div>
             </div>
           </div>
@@ -274,16 +277,6 @@ steps:
             </div>
           </div>
 
-          <div class="form-block">
-            <div class="form-block-header">
-              <div class="form-block-cell">Physical Activity</div>
-              <div class="form-block-cell">Duration (min)</div>
-            </div>
-            <div class="form-block-row">
-              <div class="form-block-cell">&nbsp;</div>
-              <div class="form-block-cell">&nbsp;</div>
-            </div>
-          </div>
 
           <div class="form-block">
             <div class="form-block-header">
@@ -294,13 +287,13 @@ steps:
             <div class="form-block-row">
               <div class="form-block-cell" style="font-size:14pt;">😊 😐 😩</div>
               <div class="form-block-cell">1-10</div>
-              <div class="form-block-cell">Dizzy, Shaky, Fatigue, Blurred Vision, etc.</div>
+              <div class="form-block-cell">Dizzy, Shaky, Fatigue,<br/> Blurred Vision, etc.</div>
             </div>
           </div>
 
           <div><b>Notes:</b></div>
-          <div>__________________________________________________________</div>
-          <div>__________________________________________________________</div>
+          <div>______________________________________________</div>
+          <div>______________________________________________</div>
         </section>
 
       page_size: ${page_size}
@@ -313,7 +306,7 @@ steps:
     agent: PdfAgent
     loop:
       var: index
-      count: 1
+      count: 12
     input:
       content: |
         {{ style }}
@@ -383,8 +376,6 @@ steps:
             <div><b>Strategies That Helped:</b></div>
             <div>______________________________________________</div>
             <div><b>Observations or Insights:</b></div>
-            <div>______________________________________________</div>
-            <div><b>Health Goals for Next Month:</b></div>
             <div>______________________________________________</div>
             <div>______________________________________________</div>
           </div>

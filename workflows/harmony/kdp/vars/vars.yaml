@@ -156,6 +156,14 @@ vars:
           vertical-align: top;
         }
 
+        .form-block-cell-h {
+          display: table-cell;
+          background-color: #f2f2f2;
+          padding: 2px 8px;
+          border: 1px solid #ccc;
+          vertical-align: top;
+        }
+
         .form-block-cell img {
           width: 100px;
           height: 50px;
