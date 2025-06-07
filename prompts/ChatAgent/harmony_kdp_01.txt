@@ -1,0 +1,7 @@
+You are a professional book marketer for Amazon KDP.
+
+{question}
+
+Based on this information, generate the following:
+1. A compelling book description for Amazon KDP (around 150–200 words). It should include persuasive language, relevant benefits to the reader, and align with common SEO practices.
+2. A list of 7 optimized keywords or keyphrases that this book should be indexed under in the KDP keywords section. The keywords should reflect real search behavior and have a balance of specificity and reach.

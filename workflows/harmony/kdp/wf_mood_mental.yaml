@@ -1,0 +1,461 @@
+name: pdf Blood Sugar Tracker notebook
+description: this workflow is to create a pdf Sleep Tracker notebook to publish in kdp
+  
+include_vars: vars/vars.yaml
+vars:
+  model: ModelOllama
+  link_google_font: <link href="https://fonts.googleapis.com/css2?family=Lora&display=swap" rel="stylesheet">
+  book_title: "Harmony Health: Mood & Mental Health Tracker"
+  book_subtitle: Covers emotional journaling, mood ratings, mental health patterns, and lifestyle triggers.
+  inspirational_phrase: $file:workspace/harmony/kdp/mood_mental/inspirational.txt
+  inspirational_author: Harmony Health
+  filename: mood_mental.pdf
+  filepath_keywords: workspace/harmony/kdp/mood_mental/keywords.txt
+  filepath: workspace/harmony/kdp/mood_mental/inspirational.txt
+
+
+include:
+  - fragments/book_common_steps.yaml
+
+steps:
+
+  - name: generate_description_and_keywords
+    type: ai
+    agent: ChatAgent
+    model: ModelGpt35Turbo
+    template_name: harmony_kdp_01
+    when: "{{ not os.path.exists(filepath_keywords) }}"
+    input:
+      question: "The book title is '{{ book_title }}' and the subtitle '{{ book_subtitle }}'."
+      save_to_file: true
+      file_name: ${filepath_keywords}
+
+  - name: generate_inspirational_phrase
+    type: ai
+    agent: ChatAgent
+    model: ModelGpt35Turbo
+    template_name: inspirational_quote
+    when: "{{ not os.path.exists(filepath) }}"
+    input:
+      question: "A book titled '{{ book_title }}' that helps readers find strength during illness"
+      save_to_file: true
+      file_name: ${filepath}
+
+  # - name: generate_index
+  #   type: tool
+  #   agent: PdfAgent
+  #   input:
+  #     content: |
+  #       {{ style }}
+  #       <section>
+  #         <h2>Index</h2>
+  #         <div class="index-entry"><span>How to Use This Book</span><span>4</span></div>
+  #         <div class="index-entry"><span>What's Inside</span><span>5</span></div>
+  #         <div class="index-entry"><span>Filling Out a Daily Log</span><span>6</span></div>
+  #         <div class="index-entry"><span>Using Monthly Summaries</span><span>8</span></div>
+  #         <div class="index-entry"><span>Tips for Getting the Most Out of This Tracker</span><span>10</span></div>
+  #         <div class="index-entry"><span>Daily Sleep Log</span><span>11</span></div>
+  #         <div class="index-entry"><span>Monthly Summary</span><span>101</span></div>
+  #         <div class="index-entry"><span>Notes</span><span>113</span></div>
+  #         <div class="index-entry"><span>About the publisher</span><span>115</span></div>
+  #       </section>
+  #     page_size: ${page_size}
+  #     save_path: workspace/harmony/kdp
+  #     filename: ${filename}
+  #     mode: append
+  #     add_page_number: False
+
+  # - name: generate_how_tu_use
+  #   type: tool
+  #   agent: PdfAgent
+  #   input:
+  #     content: |
+  #       {{ style }}
+  #       <section>
+  #         <div class="section-tab"></div>
+  #         <h2 style="margin-top: 80px;">How to Use This Book</h2>
+  #         <p>
+  #           <b>The Harmony Health: Blood Sugar & Diabetes Tracker</b> is designed to help you monitor your glucose levels, understand the impact of food, medications, and habits, and support your journey toward better daily and long-term health. Whether you're managing diabetes, prediabetes, or simply aiming to maintain healthy blood sugar, this journal provides a simple, structured way to track key health indicators and reflect on your patterns.
+  #           <br/><br/>
+  #           Use this book daily to record fasting and post-meal readings, medication use, meals, physical activity, and other health notes. Monthly summaries will help you identify trends, make informed decisions, and set achievable goals for your well-being.
+  #         </p>
+  #       </section>
+  #     page_size: ${page_size}
+  #     save_path: workspace/harmony/kdp
+  #     filename: ${filename}
+  #     mode: append
+
+  # - name: generate_Inside
+  #   type: tool
+  #   agent: PdfAgent
+  #   input:
+  #     content: |
+  #       {{ style }}
+  #       <section>
+  #         <div class="section-tab"></div>
+  #         <h2>What's Inside:</h2>
+  #         <ul>
+  #           <li><b>Daily Blood Sugar Logs:</b> 90+ pages to record glucose readings, meals, medications, activity, and symptoms<br/></li>
+  #           <li><b>Monthly Summaries:</b> Pages to review glucose trends, reflect on habits, and set goals for improved control<br/></li>
+  #           <li><b>Meal & Medication Tracking:</b> Space to note carbs, insulin doses, timing, and effectiveness of treatments<br/></li>
+  #           <li><b>Lifestyle & Mood Notes:</b> Track physical activity, hydration, energy, and stress alongside daily health logs<br/></li>
+  #           <li><b>Notes Section:</b> Extra pages at the end for personal insights, doctor questions, or long-term observations</li>
+  #         </ul>
+  #       </section>
+  #     page_size: ${page_size}
+  #     save_path: workspace/harmony/kdp
+  #     filename: ${filename}
+  #     mode: append
+
+  # - name: generate_filling_daily
+  #   type: tool
+  #   agent: PdfAgent
+  #   input:
+  #     content: |
+  #       {{ style }}
+  #       <section>
+  #         <div class="section-tab"></div>
+  #         <h2>Filling Out a Daily Log</h2>
+  #         <p>
+  #           Each page of the <b>Harmony Health: Blood Sugar & Diabetes Tracker</b> is designed to help you monitor key aspects of your glucose health. Tracking your blood sugar readings, meals, medications, and lifestyle habits consistently gives you a clearer understanding of what affects your levels — and how to manage them more effectively.
+  #         </p>
+
+  #         <p>Each daily log includes the following fields:</p>
+  #         <ul>
+  #           <li><b>Date:</b> Record the date for the day you're tracking.</li>
+  #           <li><b>Blood Sugar Readings:</b> Record your readings at multiple points (fasting, before and after meals, bedtime).</li>
+  #           <li><b>Meals & Carbohydrates:</b> Briefly note what you ate and estimate the carbs (if applicable).</li>
+  #           <li><b>Medications or Insulin:</b> Write the name, dosage, and time taken.</li>
+  #           <li><b>Hydration:</b> Check whether you drank enough water and log approximate intake.</li>
+  #           <li><b>Physical Activity:</b> Type of movement and how long you exercised.</li>
+  #           <li><b>Mood & Energy:</b> How you felt physically and emotionally during the day.</li>
+  #           <li><b>Symptoms:</b> Note any signs of low/high blood sugar (dizziness, fatigue, shakiness, etc.).</li>
+  #           <li><b>Reflection or Notes:</b> Use this space to add any extra context, such as stress, illness, or changes in medication or routine.</li>
+  #         </ul>
+  #         <br/>
+  #         <h2>Tip</h2>
+  #         <p>
+  #           You don't have to fill out every section perfectly every day — this tracker is about noticing patterns over time. Even a few consistent weeks of honest entries can help you understand your body, improve your habits, and feel more in control of your health.
+  #         </p>
+  #       </section>
+           
+  #     page_size: ${page_size}
+  #     save_path: workspace/harmony/kdp
+  #     filename: ${filename}
+  #     mode: append
+
+  # - name: generate_filling_monthly
+  #   type: tool
+  #   agent: PdfAgent
+  #   input:
+  #     content: |
+  #       {{ style }}
+  #       <section>
+  #         <div class="section-tab"></div>
+  #         <h2>Using Monthly Summaries</h2>
+  #         <p>
+  #           The Monthly Summary is where you step back and look at your blood sugar management over the past few weeks. It helps you spot trends, identify what's working, and set small changes to better support your health. Complete this page at the end of each month using the information from your daily logs.
+  #         </p>
+  #         <p>Here's how to use each part of the Monthly Summary:</p>
+  #         <ul>
+  #           <li><b>Month:</b> Write the name of the month you're reviewing (e.g., June 2025).</li>
+  #           <li><b>Number of Days Tracked:</b> Count how many days you completed a daily blood sugar log.</li>
+  #           <li><b>Average Fasting Glucose:</b> Calculate your typical fasting value over the month. This provides a big-picture indicator of glucose control.</li>
+  #           <li><b>Highest & Lowest Readings:</b> Note the date and value for the highest and lowest blood sugar readings of the month. Try to identify what contributed to each.</li>
+  #           <li><b>Readings In/Out of Range:</b> Estimate how often your levels were within your target range versus above or below.</li>
+  #           <li><b>Most Common Disruptors:</b> Check off any repeating factors that may have caused spikes or lows:</li>
+  #           <li><b></b>Stress, Skipped meals, Poor sleep, Illness, Med changes, Overeating, Lack of exercise</li>
+  #           <li><b>Helpful Habits or Strategies:</b> List any routines, tools, or approaches that improved your glucose control (e.g., walking after meals, low-carb breakfast, hydration).</li>
+  #           <li><b>Observations or Insights:</b> Reflect on anything you noticed this month — how you felt, what helped, what didn't, or patterns you didn't expect.</li>
+  #           <li><b>Goals for Next Month:</b> Set 1-3 clear and realistic goals like:</li>
+  #           <li><b></b>“Log meals more consistently”, “Walk 15 minutes daily”, “Avoid late-night snacking”</li>
+  #         </ul>
+  #         <h2>Tip</h2>
+  #         <p>
+  #           Don't stress if every day wasn't perfect. This tracker is here to help you build long-term awareness, not just track numbers. Focus on progress, not perfection.
+  #         </p>
+  #       </section>
+  #     page_size: ${page_size}
+  #     save_path: workspace/harmony/kdp
+  #     filename: ${filename}
+  #     mode: append
+
+
+  # - name: generate_tips
+  #   type: tool
+  #   agent: PdfAgent
+  #   input:
+  #     content: |
+  #       {{ style }}
+  #       <section>
+  #         <div class="section-tab"></div>
+  #         <h2>Tips for Getting the Most Out of This Tracker</h2>
+  #         <ul>
+  #           <li><b>Be consistent</b> — even a few weeks of logging can uncover patterns and help you better manage your blood sugar.</li>
+  #           <li><b>Record readings as soon as possible</b> — tracking values in the moment helps avoid missed or inaccurate entries.</li>
+  #           <li><b>Use symbols or color coding</b> — for example: 🍎 for healthy meals, 💉 for insulin, ⚠️ for spikes, 💧 for hydration.</li>
+  #           <li><b>Reflect honestly</b> — include both highs and lows; this is your space to understand what’s really happening day to day.</li>
+  #           <li><b>Review monthly summaries</b> — use them to adjust routines, eating habits, or medication timing with your healthcare provider.</li>
+  #           <li><b>Pair tracking with self-care</b> — stress management, hydration, and movement can positively impact your readings too.</li>
+  #           <li><b>Celebrate progress</b> — more in-range days, consistent tracking, or healthier habits all deserve acknowledgment. Progress builds confidence.</li>
+  #         </ul>
+  #       </section>
+  #     page_size: ${page_size}
+  #     save_path: workspace/harmony/kdp
+  #     filename: ${filename}
+  #     mode: append
+
+  # - name: generate_dayly_logs
+  #   type: tool
+  #   agent: PdfAgent
+  #   loop:
+  #     var: index
+  #     count: 90
+  #   input:
+  #     content: |
+  #       {{ style }}
+  #       <section>
+  #         <div class="section-tab" style="top: 60mm; background-color: #aaa9a9;"></div>
+  #         <div class="header-row">
+  #           <img src="workspace/harmony/images/logo2.png" alt="Logo">
+  #           <div>Daily Blood Sugar Track <span class="highlight-number">{{ index }}</span></div>
+  #         </div>
+
+  #         <div class="form-block">
+  #           <div class="form-block-header">
+  #             <div class="form-block-cell">Date</div>
+  #             <div class="form-block-cell">Physical Activity</div>
+  #             <div class="form-block-cell">Duration (min)</div>
+  #           </div>
+  #           <div class="form-block-row">
+  #             <div class="form-block-cell">&nbsp;</div>
+  #             <div class="form-block-cell">&nbsp;</div>
+  #             <div class="form-block-cell">&nbsp;</div>
+  #           </div>
+  #         </div>
+
+  #         <div class="form-block">
+  #           <div class="form-block-row">
+  #             <div class="form-block-cell-h"><b>Glucose</div>
+  #           </div>
+  #           <div class="form-block-row">
+  #             <div class="form-block-cell-h"><b>Fasting Before Breakfast</b></div>
+  #             <div class="form-block-cell" style="width:190px;">&nbsp;</div>
+  #           </div>
+  #           <div class="form-block-row">
+  #             <div class="form-block-cell-h"><b>Before Lunch</b></div>
+  #             <div class="form-block-cell">&nbsp;</div>
+  #           </div>
+  #           <div class="form-block-row">
+  #             <div class="form-block-cell-h"><b>After Lunch</b></div>
+  #             <div class="form-block-cell">&nbsp;</div>
+  #           </div>
+  #           <div class="form-block-row">
+  #             <div class="form-block-cell-h"><b>Before Dinner</b></div>
+  #             <div class="form-block-cell">&nbsp;</div>
+  #           </div>
+  #           <div class="form-block-row">
+  #             <div class="form-block-cell-h"><b>After Dinner</b></div>
+  #             <div class="form-block-cell">&nbsp;</div>
+  #           </div>
+  #           <div class="form-block-row">
+  #             <div class="form-block-cell-h"><b>Bedtime / Overnight</b></div>
+  #             <div class="form-block-cell">&nbsp;</div>
+  #           </div>
+  #           <div class="form-block-row">
+  #             <div class="form-block-cell-h"><b>Total Carbs Today (Estimate)</b></div>
+  #             <div class="form-block-cell">&nbsp;</div>
+  #           </div>
+  #         </div>
+
+  #         <div class="pain-scale-table">
+  #           <div class="pain-scale-header">
+  #             <div class="pain-scale-cell-header">Medications / Insulin</div>
+  #             <div class="pain-scale-cell-header">Hydration</div>
+  #           </div>
+  #           <div class="pain-scale-row-single">
+  #             <div class="pain-scale-cell-numbers">
+  #               <div class="pain-scale-numbers">
+  #                 <span>Name:</span> ____________________
+  #                 <span>Dose:</span> ____________________
+  #                 <span>Time:</span> ____________________
+  #               </div>
+  #             </div>
+  #             <div class="pain-scale-cell-numbers">
+  #               <div class="pain-scale-numbers">
+  #                 <span>[ ] Drank enough water</span>
+  #                 <span>Amount (ml/L): _______________</span>
+  #               </div>
+  #             </div>
+  #           </div>
+  #         </div>
+
+
+  #         <div class="form-block">
+  #           <div class="form-block-header">
+  #             <div class="form-block-cell">Mood</div>
+  #             <div class="form-block-cell">Energy Level</div>
+  #             <div class="form-block-cell">Symptoms</div>
+  #           </div>
+  #           <div class="form-block-row">
+  #             <div class="form-block-cell" style="font-size:14pt;">😊 😐 😩</div>
+  #             <div class="form-block-cell">1-10</div>
+  #             <div class="form-block-cell">Dizzy, Shaky, Fatigue,<br/> Blurred Vision, etc.</div>
+  #           </div>
+  #         </div>
+
+  #         <div><b>Notes:</b></div>
+  #         <div>______________________________________________</div>
+  #         <div>______________________________________________</div>
+  #       </section>
+
+  #     page_size: ${page_size}
+  #     save_path: workspace/harmony/kdp
+  #     filename: ${filename}
+  #     mode: append
+
+  # - name: generate_monthly_summaries
+  #   type: tool
+  #   agent: PdfAgent
+  #   loop:
+  #     var: index
+  #     count: 12
+  #   input:
+  #     content: |
+  #       {{ style }}
+  #       <section>
+  #         <div class="section-tab" style="top: 90mm; background-color: #a9aaa9;"></div>
+  #         <div class="header-row">
+  #           <img src="workspace/harmony/images/logo2.png" alt="Logo">
+  #           <div>Monthly Blood Sugar Summary <span class="highlight-number">{{ index }}</span></div>
+  #         </div>
+
+  #         <div class="form-block">
+  #           <div class="form-block-header">
+  #             <div class="form-block-cell">Month</div>
+  #             <div class="form-block-cell"># of days tracked</div>
+  #             <div class="form-block-cell">Average fasting glucose</div>
+  #           </div>
+  #           <div class="form-block-row">
+  #             <div class="form-block-cell">&nbsp;</div>
+  #             <div class="form-block-cell">&nbsp;</div>
+  #             <div class="form-block-cell">&nbsp;</div>
+  #           </div>
+  #         </div>
+
+  #         <div class="form-block">
+  #           <div class="form-block-header">
+  #             <div class="form-block-cell">Highest reading (date & value)</div>
+  #             <div class="form-block-cell">Lowest reading (date & value)</div>
+  #           </div>
+  #           <div class="form-block-row">
+  #             <div class="form-block-cell">&nbsp;</div>
+  #             <div class="form-block-cell">&nbsp;</div>
+  #           </div>
+  #         </div>
+
+  #         <div class="form-block">
+  #           <div class="form-block-header">
+  #             <div class="form-block-cell">Average post-meal reading</div>
+  #             <div class="form-block-cell"># of readings in target range</div>
+  #             <div class="form-block-cell"># of readings above target</div>
+  #           </div>
+  #           <div class="form-block-row">
+  #             <div class="form-block-cell">&nbsp;</div>
+  #             <div class="form-block-cell">&nbsp;</div>
+  #             <div class="form-block-cell">&nbsp;</div>
+  #           </div>
+  #         </div>
+
+  #         <div class="form-block">
+  #           <div class="form-block-header">
+  #             <div class="form-block-cell">Lifestyle Factors (Diet, Exercise, Stress)</div>
+  #           </div>
+  #           <div class="form-block-row">
+  #             <div class="form-block-cell">&nbsp;</div>
+  #           </div>
+  #         </div>
+
+  #         <div class="form-block">
+  #           <div class="form-block-header">
+  #             <div class="form-block-cell">Most Common Disruptors</div>
+  #           </div>
+  #           <div class="form-block-row">
+  #             <div class="form-block-cell">Skipped meals, Stress, Lack of exercise, Illness, Overeating, Poor sleep, Med changes, Other: ____________</div>
+  #           </div>
+  #         </div>
+
+  #         <div class="monthly-summary">
+  #           <div><b>Strategies That Helped:</b></div>
+  #           <div>______________________________________________</div>
+  #           <div><b>Observations or Insights:</b></div>
+  #           <div>______________________________________________</div>
+  #           <div>______________________________________________</div>
+  #         </div>
+  #       </section>
+
+  #     page_size: ${page_size}
+  #     save_path: workspace/harmony/kdp
+  #     filename: ${filename}
+  #     mode: append
+
+  # - name: generate_notes
+  #   type: tool
+  #   agent: PdfAgent
+  #   loop:
+  #     var: index
+  #     count: 2
+  #   input:
+  #     content: |
+  #       {{ style }}
+  #       <section>
+  #         <div class="section-tab" style="top: 120mm; background-color: #a9a9aa;"></div>
+  #         <div class="header-row">
+  #           <img src="workspace/harmony/images/logo2.png" alt="Logo">
+  #           <div>Notes</div><br/><br/>
+  #         </div>
+  #           <div>______________________________________________</div>
+  #           <div>______________________________________________</div>
+  #           <div>______________________________________________</div>
+  #           <div>______________________________________________</div>
+  #           <div>______________________________________________</div>
+  #           <div>______________________________________________</div>
+  #           <div>______________________________________________</div>
+  #           <div>______________________________________________</div>
+  #           <div>______________________________________________</div>
+  #           <div>______________________________________________</div>
+  #           <div>______________________________________________</div>
+  #           <div>______________________________________________</div>
+  #           <div>______________________________________________</div>
+  #           <div>______________________________________________</div>
+  #           <div>______________________________________________</div>
+  #           <div>______________________________________________</div>
+  #           <div>______________________________________________</div>
+  #       </section>
+  #     page_size: ${page_size}
+  #     save_path: workspace/harmony/kdp
+  #     filename: ${filename}
+  #     mode: append
+
+
+  # - name: generate_about publisher
+  #   type: tool
+  #   agent: PdfAgent
+  #   input:
+  #     content: |
+  #        {{ style }}
+  #         <section>
+  #           <div class="section-tab"></div>
+  #           <h2>About the Publisher</h2>
+  #             <p>
+  #               Harmony Health is dedicated to empowering individuals on their personal wellness journeys through thoughtfully designed planners, trackers, and health journals. Each Harmony Health publication is created with care to support mindfulness, symptom management, and self-awareness—one page at a time.
+  #             </p>
+  #             <p>
+  #               Whether you are tracking migraines, sleep, blood sugar, mood, or overall well-being, our tools are designed to help you recognize patterns, make informed decisions, and take small daily steps toward a healthier life.
+  #             </p>
+  #         </section>
+  #     page_size: ${page_size}
+  #     save_path: workspace/harmony/kdp
+  #     filename: ${filename}
+  #     mode: append
+  #     add_page_number: False
