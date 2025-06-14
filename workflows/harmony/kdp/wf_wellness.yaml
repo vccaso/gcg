@@ -5,14 +5,14 @@ include_vars: vars/vars.yaml
 vars:
   model: ModelOllama
   link_google_font: <link href="https://fonts.googleapis.com/css2?family=Lora&display=swap" rel="stylesheet">
-  book_title: "Harmony Health: Mood & Mental Health Tracker"
-  book_subtitle: Covers emotional journaling, mood ratings, mental health patterns, and lifestyle triggers.
-  inspirational_phrase: $file:workspace/harmony/kdp/mood_mental/inspirational.txt
+  book_title: "Harmony Health: Daily Wellness Journal"
+  book_subtitle: A guided space to track habits, gratitude, self-care, and progress.
+  inspirational_phrase: $file:workspace/harmony/kdp/wellness/inspirational.txt
   inspirational_author: Harmony Health
-  filename: mood_mental.pdf
-  save_path: workspace/harmony/kdp/mood_mental
-  filepath_keywords: workspace/harmony/kdp/mood_mental/keywords.txt
-  filepath: workspace/harmony/kdp/mood_mental/inspirational.txt
+  filename: wellness.pdf
+  save_path: workspace/harmony/kdp/wellness
+  filepath_keywords: workspace/harmony/kdp/wellness/keywords.txt
+  filepath: workspace/harmony/kdp/wellness/inspirational.txt
 
 
 include:
@@ -210,7 +210,7 @@ steps:
     agent: PdfAgent
     loop:
       var: index
-      count: 90
+      count: 1
     input:
       content: |
         {{ style }}
@@ -299,7 +299,7 @@ steps:
     agent: PdfAgent
     loop:
       var: index
-      count: 12
+      count: 1
     input:
       content: |
         {{ style }}

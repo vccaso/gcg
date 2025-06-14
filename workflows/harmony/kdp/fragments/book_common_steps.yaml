@@ -21,7 +21,7 @@ steps:
           </div>
         </section>
       page_size: ${page_size}
-      save_path: workspace/harmony/kdp
+      save_path: ${save_path}
       filename: ${filename}
       add_page_number: False
 
@@ -42,7 +42,7 @@ steps:
             </div>
         </section>
       page_size: ${page_size}
-      save_path: workspace/harmony/kdp
+      save_path: ${save_path}
       filename: ${filename}
       mode: append
       add_page_number: False
