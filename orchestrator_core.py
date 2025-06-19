@@ -27,6 +27,7 @@ from agents.validators.script_feedback_validator_agent import ScriptFeedbackVali
 from agents.images.image_analysis_agent import ImageAnalysisAgent
 from models.openai.model_gpt_image_1 import ModelGptImage1
 from agents.construct.requirement_agent import RequirementAgent
+from agents.construct.material_estimator_agent import MaterialEstimatorAgent
 
 from config import debug
 from prompt_loader import PromptLoader
@@ -248,6 +249,8 @@ def get_ai_agent(llm, agent_name, namespace="", name="default"):
         return AngularAppAgent(llm,prompt_template)  
     if agent_name == "RequirementAgent":
         return RequirementAgent(llm,prompt_template)   
+    if agent_name == "MaterialEstimatorAgent":
+        return MaterialEstimatorAgent(llm,prompt_template)
     if agent_name == "GoCRUDDataAgent":
         return GoCRUDDataAgent(llm,prompt_template)   
     if agent_name == "ScriptFeedbackValidatorAgent":

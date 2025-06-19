@@ -36,6 +36,7 @@ from agents.notify.slack_agent import SlackAgent
 from agents.utils.camera_capture_agent import CameraCaptureAgent
 from agents.utils.pdf_agent import PdfAgent
 from agents.construct.requirement_agent import RequirementAgent
+from agents.construct.material_estimator_agent import MaterialEstimatorAgent
 
 # ✅ Agent registry for loading agents dynamically
 AGENT_REGISTRY = {
@@ -73,7 +74,8 @@ AGENT_REGISTRY = {
     "SlackAgent": SlackAgent,
     "CameraCaptureAgent": CameraCaptureAgent,
     "PdfAgent": PdfAgent,
-    "RequirementAgent": RequirementAgent
+    "RequirementAgent": RequirementAgent,
+    "MaterialEstimatorAgent": MaterialEstimatorAgent
 }
 
 # ✅ Agent catalog for UI display
@@ -445,6 +447,18 @@ AGENT_CATALOG = {
             "Ideal for initiating planning and estimation workflows in construction or renovation contexts."
         ],
         "tags": ["AI", "construction", "planning"]
+    },
+   "MaterialEstimatorAgent": {
+        "type": "AI",
+        "short_description": "Estimates materials required for a construction project based on structured requirements.",
+        "detailed_description": [
+            "Analyzes structured YAML construction requirements and calculates the materials needed.",
+            "Considers room dimensions, fixtures, smart components, and custom features.",
+            "Outputs a list of materials with estimated quantities and optional waste buffers.",
+            "Supports early-stage planning, budgeting, and procurement processes."
+        ],
+        "tags": ["AI", "construction", "estimation", "materials"]
     }
+
 
 }

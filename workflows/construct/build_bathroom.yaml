@@ -10,49 +10,52 @@ vars:
   requeriments_gpt4: workspace/construct/requirements_gpt4.txt
   requeriments_gpt35: workspace/construct/requirements_gpt35.txt
   requeriments_ollama: workspace/construct/requirements_ollama.txt
+  materials_gpt4: workspace/construct/materials_gpt4.txt
 
 steps:
-  - name: parse_requirements_gpt4
+  # - name: parse_requirements_gpt4
+  #   type: ai
+  #   agent: RequirementAgent
+  #   namespace: construct
+  #   model: ModelGpt4Turbo
+  #   input:
+  #     description: ${{project_desc}}
+  #     location: ${{state}}, ${{city}}
+  #     save_to_file: true
+  #     file_name: ${requeriments_gpt4}
+
+  # - name: parse_requirements_ollama
+  #   type: ai
+  #   agent: RequirementAgent
+  #   model: ModelOllama
+  #   namespace: construct
+  #   input:
+  #     description: ${{project_desc}}
+  #     location: ${{state}}, ${{city}}
+  #     save_to_file: true
+  #     file_name: ${requeriments_ollama}
+
+  # - name: parse_requirements_gpt35
+  #   type: ai
+  #   agent: RequirementAgent
+  #   model: ModelGpt35Turbo
+  #   namespace: construct
+  #   template_name: default
+  #   input:
+  #     description: ${{project_desc}}
+  #     location: ${{state}}, ${{city}}
+  #     save_to_file: true
+  #     file_name: ${requeriments_gpt35}
+ 
+  - name: estimate_materials
     type: ai
-    agent: RequirementAgent
+    agent: MaterialEstimatorAgent
     namespace: construct
     model: ModelGpt4Turbo
     input:
-      description: ${{project_desc}}
-      location: ${{state}}, ${{city}}
+      requirements: "$file:workspace/requirements/requirements_gpt4.txt"
       save_to_file: true
-      file_name: ${requeriments_gpt4}
-
-  - name: parse_requirements_ollama
-    type: ai
-    agent: RequirementAgent
-    model: ModelOllama
-    namespace: construct
-    input:
-      description: ${{project_desc}}
-      location: ${{state}}, ${{city}}
-      save_to_file: true
-      file_name: ${requeriments_ollama}
-
-  - name: parse_requirements_gpt35
-    type: ai
-    agent: RequirementAgent
-    model: ModelGpt35Turbo
-    namespace: construct
-    template_name: default
-    input:
-      description: ${{project_desc}}
-      location: ${{state}}, ${{city}}
-      save_to_file: true
-      file_name: ${requeriments_gpt35}
-
-  # - name: estimate_materials
-  #   type: ai
-  #   agent: construct.MaterialEstimatorAgent
-  #   model: openai.ModelGpt4Turbo
-  #   prompt_template: default
-  #   input:
-  #     requirements: "{{ parse_requirements.requirements_yaml }}"
+      file_name: ${materials_gpt4}
 
   # - name: estimate_costs
   #   type: ai

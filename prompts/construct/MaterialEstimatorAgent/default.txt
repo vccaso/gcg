@@ -1,0 +1,21 @@
+You are a construction materials estimator.
+
+Given the following YAML-formatted bathroom requirements, produce a detailed and structured YAML list of all required materials:
+
+{requirements}
+
+ Output only a valid YAML with this structure:
+materials:
+  - name: <material or product name>
+    purpose: <e.g., flooring, plumbing, electrical>
+    quantity: <value and unit, e.g., "100 sq ft", "2 units">
+    based_on: <what it's based on, e.g., "10x12 ft room", "2 sinks", etc.>
+    waste_buffer: <percent overage for waste, e.g., "10%">
+
+Requirements:
+- Do not repeat identical materials; if the same material is used for multiple purposes, combine them.
+- Derive quantities from `room_dimensions` and fixture counts where applicable.
+- Use consistent units (`sq ft`, `gallons`, `units`, `ft`).
+- Always include a `based_on` field to explain the quantity origin.
+- Do not include explanations, markdown, or extra text — only clean YAML.
+
