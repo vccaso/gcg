@@ -26,6 +26,7 @@ from agents.validators.script_structure_validator_agent import ScriptStructureVa
 from agents.validators.script_feedback_validator_agent import ScriptFeedbackValidatorAgent
 from agents.images.image_analysis_agent import ImageAnalysisAgent
 from models.openai.model_gpt_image_1 import ModelGptImage1
+from agents.construct.requirement_agent import RequirementAgent
 
 from config import debug
 from prompt_loader import PromptLoader
@@ -231,9 +232,9 @@ def get_model(model_name: str, temperature):
     return MODEL_REGISTRY[model_name](temperature)
 
 
-def get_ai_agent(llm, agent_name, name="default"):
+def get_ai_agent(llm, agent_name, namespace="", name="default"):
     prompt_loader = PromptLoader()
-    prompt_template = prompt_loader.load_prompt(agent_name, name)
+    prompt_template = prompt_loader.load_prompt(agent_name, namespace, name)
     
     if agent_name == "OrchestratorAgent":
         return OrchestratorAgent(llm, prompt_template)
@@ -245,6 +246,8 @@ def get_ai_agent(llm, agent_name, name="default"):
         return GoCRUDAgent(llm=llm, prompt_template=prompt_template)
     if agent_name=="AngularAppAgent":   
         return AngularAppAgent(llm,prompt_template)  
+    if agent_name == "RequirementAgent":
+        return RequirementAgent(llm,prompt_template)   
     if agent_name == "GoCRUDDataAgent":
         return GoCRUDDataAgent(llm,prompt_template)   
     if agent_name == "ScriptFeedbackValidatorAgent":
@@ -374,9 +377,10 @@ def run_workflow(workflow_path, streamlit_mode=False):
             if step_type == "ai":
                 template_name = local_step.get("template_name", "default")
                 temperature = local_step.get("temperature", 0.2)
+                namespace = local_step.get("namespace", "")
                 model = local_step["model"]
                 llm = get_model(model, temperature)
-                agent = get_ai_agent(llm, agent_name, template_name)
+                agent = get_ai_agent(llm, agent_name, namespace, template_name)
                 if not streamlit_mode:
                     print(f"▶️ {local_name} using {agent_name}")
                 output = agent.run(**inputs)

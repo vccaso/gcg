@@ -4,13 +4,13 @@ class PromptLoader:
     def __init__(self, base_path="prompts"):
         self.base_path = base_path
 
-    def load_prompt(self, agent: str, name: str = "default") -> str:
+    def load_prompt(self, agent: str, namespace: str = "", name: str = "default") -> str:
         """
         Load a prompt template file by agent and template name.
         """
-        file_path = os.path.join(self.base_path, agent, f"{name}.txt")
+        file_path = os.path.join(self.base_path, namespace, agent, f"{name}.txt")
         if not os.path.exists(file_path):
-            raise FileNotFoundError(f"Prompt '{name}.txt' not found for agent '{agent}'")
+            raise FileNotFoundError(f"Prompt '{name}.txt' not found for agent '{agent}'. file_path:'{file_path}")
         with open(file_path, "r", encoding="utf-8") as f:
             return f.read()
 

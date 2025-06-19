@@ -35,6 +35,7 @@ from agents.notify.webhook_agent import WebhookAgent
 from agents.notify.slack_agent import SlackAgent
 from agents.utils.camera_capture_agent import CameraCaptureAgent
 from agents.utils.pdf_agent import PdfAgent
+from agents.construct.requirement_agent import RequirementAgent
 
 # ✅ Agent registry for loading agents dynamically
 AGENT_REGISTRY = {
@@ -71,7 +72,8 @@ AGENT_REGISTRY = {
     "WebhookAgent": WebhookAgent,
     "SlackAgent": SlackAgent,
     "CameraCaptureAgent": CameraCaptureAgent,
-    "PdfAgent": PdfAgent
+    "PdfAgent": PdfAgent,
+    "RequirementAgent": RequirementAgent
 }
 
 # ✅ Agent catalog for UI display
@@ -433,5 +435,16 @@ AGENT_CATALOG = {
             "Useful for generating KDP-ready or report-style documents."
         ],
         "tags": ["PDF", "Export", "Document", "Tool"]
-}
+    },
+    "RequirementAgent": {
+        "type": "AI",
+        "short_description": "Extracts structured build requirements for construction projects.",
+        "detailed_description": [
+            "Parses unstructured project descriptions into structured YAML requirements.",
+            "Captures room dimensions, fixtures, smart features, accessibility, and permit needs.",
+            "Ideal for initiating planning and estimation workflows in construction or renovation contexts."
+        ],
+        "tags": ["AI", "construction", "planning"]
+    }
+
 }
