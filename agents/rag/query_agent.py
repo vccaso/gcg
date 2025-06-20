@@ -17,10 +17,10 @@ class RAGQueryAgent(BaseAgent):
         self.client = chromadb.PersistentClient(path=os.path.join(self.storage_path))
         self.collection = self.client.get_collection(name=self.collection_name, embedding_function=ef)
 
-    def run(self, user_query: str) -> str:
+    def run(self, user_query: str, top_k: int = 3) -> str:
         try:
             # Retrieve top 3 documents
-            result = self.collection.query(query_texts=[user_query], n_results=3)
+            result = self.collection.query(query_texts=[user_query], n_results=top_k)
             docs = result["documents"][0]
             docs = result.get("documents", [[]])[0]
             if not docs:

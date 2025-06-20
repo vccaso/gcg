@@ -1,0 +1,350 @@
+- id: tile-backer-001
+  text: "Use cement board instead of drywall behind tile in wet areas."
+  tags: [tiles, bathroom, waterproofing]
+  source: "Tile Handbook"
+  context: "Best practices for wet-zone wall prep"
+- id: shower-clearance-001
+  text: "Building code requires a minimum of 30 inches x 30 inches for shower enclosures."
+  tags: [shower, clearance, code]
+  source: "International Residential Code (IRC)"
+  context: "Shower sizing compliance"
+- id: sink-spacing-001
+  text: "A double-sink vanity should have at least 36 inches between centers for user comfort."
+  tags: [sink, spacing, vanity]
+  source: "Bath Design Handbook"
+  context: "Fixture layout best practices"
+- id: gfi-outlets-001
+  text: "All bathroom electrical outlets must be GFCI-protected according to NEC 210.8."
+  tags: [electrical, safety, NEC]
+  source: "National Electrical Code (NEC)"
+  context: "Electrical safety regulations"
+- id: vent-fan-001
+  text: "Bathrooms without windows must have a mechanical ventilation fan rated at least 50 CFM."
+  tags: [ventilation, code]
+  source: "ASHRAE 62.2"
+  context: "Bathroom ventilation compliance"
+- id: toilet-spacing-001
+  text: "Provide at least 15 inches from the toilet centerline to adjacent walls or fixtures."
+  tags: [toilet, spacing]
+  source: "NKBA Guidelines"
+  context: "Toilet clearance standards"
+- id: tub-weight-001
+  text: "Freestanding tubs over 400 lbs filled weight require floor joist reinforcement."
+  tags: [tub, structural]
+  source: "Plumbing Structural Code Guide"
+  context: "Load-bearing requirements"
+- id: smart-lighting-001
+  text: "Smart lighting fixtures in bathrooms should be IP44-rated or higher for splash zones."
+  tags: [smart, lighting, IP-rating]
+  source: "Smart Lighting Certification"
+  context: "Safety for smart installations"
+- id: waterproofing-membrane-001
+  text: "Apply a waterproofing membrane behind tile in all shower wall areas up to 72 inches."
+  tags: [waterproofing, tile, shower]
+  source: "ANSI A118.10"
+  context: "Shower water barrier requirements"
+- id: mirror-height-001
+  text: "Install mirrors at a height where the center is approximately 60 inches from the floor."
+  tags: [mirror, accessibility]
+  source: "Universal Design Guide"
+  context: "Ergonomic fixture placement"
+- id: radiant-floor-001
+  text: "Radiant floor heating systems should include an uncoupling membrane and dedicated thermostat."
+  tags: [flooring, heating, smart]
+  source: "Heated Flooring Install Manual"
+  context: "Smart comfort system standards"
+- id: accessibility-showerslip-001
+  text: "Shower floors should have a non-slip surface with a maximum 1:12 slope for drainage."
+  tags: [shower, accessibility, safety]
+  source: "ADA Guidelines"
+  context: "Bathroom floor safety"
+- id: grab-bar-001
+  text: "Grab bars must support 250 lbs and be installed 33–36 inches above the floor."
+  tags: [accessibility, safety, fixtures]
+  source: "ADA Standards"
+  context: "Support fixtures"
+- id: door-width-001
+  text: "Bathroom doors should be at least 32 inches wide clear opening for wheelchair access."
+  tags: [accessibility, door]
+  source: "Universal Design Guide"
+  context: "Entrance clearance"
+- id: exhaust-interlock-001
+  text: "Ventilation fans should turn on with lights or be timer-interlocked to run 20 minutes post-use."
+  tags: [ventilation, code]
+  source: "Energy Code ASHRAE"
+  context: "Fan operation"
+- id: gfci-shower-001
+  text: "Shower lighting requires GFCI protection if within 5 ft of the shower edge."
+  tags: [electrical, safety]
+  source: "NEC 410.10(D)"
+  context: "Shower lighting safety"
+- id: slope-floor-001
+  text: "Shower floors must slope 1/4 inch per foot toward the drain."
+  tags: [plumbing, slope]
+  source: "Plumbing Code IRC P2701.3"
+  context: "Drainage slope"
+- id: ventilation-rate-001
+  text: "Bathrooms of 100 sq ft require at least 100 CFM continuous or 5 air changes/hour."
+  tags: [ventilation, code]
+  source: "ASHRAE 62.2"
+  context: "Air quality"
+- id: flange-fit-001
+  text: "Toilet flange must be installed level with the finished floor surface."
+  tags: [plumbing, install]
+  source: "Plumbing Installation Guide"
+  context: "Toilet installation"
+- id: moisture-barrier-floor-001
+  text: "Install a moisture barrier under vinyl flooring in shower wet zones."
+  tags: [flooring, waterproofing]
+  source: "Flooring Guidelines"
+  context: "Moisture management"
+- id: fire-rating-door-001
+  text: "If the bathroom leads to an attached garage, the door must be 20-minute fire-rated."
+  tags: [fire-safety, door]
+  source: "IRC Section R302.5"
+  context: "Safety barrier"
+- id: tile-grout-spacing-001
+  text: "Floor tiles should have a minimum grout joint width of 1/8 inch to allow for expansion."
+  tags: [tile, flooring, spacing]
+  source: "Tile Council of North America"
+  context: "Tile installation standards"
+- id: waterproofing-curb-height-001
+  text: "Shower curbs must be at least 2 inches above the drain height to prevent overflow."
+  tags: [shower, waterproofing]
+  source: "IRC P2709.9"
+  context: "Water containment"
+- id: vanity-depth-clearance-001
+  text: "Maintain at least 21 inches clearance in front of a bathroom vanity for usability."
+  tags: [vanity, layout]
+  source: "NKBA Planning Guidelines"
+  context: "Fixture clearance"
+- id: mirror-outlet-distance-001
+  text: "Electrical outlets must be at least 1 foot away from bathroom mirrors unless GFCI protected."
+  tags: [electrical, safety]
+  source: "NEC 406.8(C)"
+  context: "Outlet placement"
+- id: sink-height-standard-001
+  text: "Bathroom sinks are typically installed with the rim 34 inches above the finished floor."
+  tags: [sink, ergonomics]
+  source: "Universal Design Guide"
+  context: "Fixture height"
+- id: tub-fill-clearance-001
+  text: "Tub spouts should be installed at least 4 inches above the tub rim to prevent backflow."
+  tags: [tub, plumbing]
+  source: "UPC 608.4"
+  context: "Backflow prevention"
+- id: smart-exhaust-control-001
+  text: "Smart exhaust fans should include humidity sensors and manual override switches."
+  tags: [smart, ventilation]
+  source: "Smart HVAC Standards"
+  context: "Automation and control"
+- id: junction-box-height-001
+  text: "Bathroom electrical junction boxes must be mounted 48 inches above floor to switch center."
+  tags: [electrical, code]
+  source: "NEC 314.27"
+  context: "Electrical layout"
+- id: waterproof-lighting-rating-001
+  text: "Luminaires inside showers must be rated for wet locations and marked as suitable for damp areas."
+  tags: [lighting, waterproofing]
+  source: "NEC 410.10(D)"
+  context: "Shower lighting"
+- id: heated-floor-clearance-001
+  text: "Avoid installing radiant floor heating under permanent fixtures like tubs or cabinets."
+  tags: [flooring, heating, safety]
+  source: "Radiant Heating Install Guide"
+  context: "Installation best practices"
+- id: insulation-bathroom-wall-001
+  text: "Exterior bathroom walls must be insulated to at least R-13 to meet energy efficiency codes."
+  tags: [insulation, energy, wall]
+  source: "IECC Code"
+  context: "Thermal envelope compliance"
+- id: shower-door-clearance-001
+  text: "Shower doors must have at least 24 inches of unobstructed opening space for egress."
+  tags: [shower, door, clearance]
+  source: "IRC R307.2"
+  context: "Shower access code"
+- id: toilet-paper-holder-spacing-001
+  text: "Install toilet paper holders 26 inches above the floor and 8 inches in front of the toilet bowl edge."
+  tags: [accessibility, fixture, toilet]
+  source: "ADA Bathroom Layout Guide"
+  context: "Ergonomic accessory placement"
+- id: lighting-circuit-001
+  text: "Bathroom lighting must be on a separate 15-amp circuit from receptacles."
+  tags: [electrical, lighting]
+  source: "NEC 210.11(C)(3)"
+  context: "Circuit design"
+- id: tile-substrate-001
+  text: "Substrates for tile must be clean, flat, and meet deflection standards of L/360 minimum."
+  tags: [tile, substrate]
+  source: "TCNA Handbook"
+  context: "Tile support structure"
+- id: bathroom-ceiling-height-001
+  text: "Bathrooms must have a minimum ceiling height of 6 feet 8 inches."
+  tags: [ceiling, building code]
+  source: "IRC R305.1"
+  context: "Clearance and comfort"
+- id: sink-supply-valve-access-001
+  text: "Shutoff valves for sink water supply must be readily accessible and not concealed behind walls."
+  tags: [plumbing, sink, maintenance]
+  source: "UPC 606.3"
+  context: "Fixture maintenance"
+- id: fan-duct-material-001
+  text: "Bathroom fan ducts must be made of metal or smooth-wall PVC and vented to the exterior."
+  tags: [ventilation, duct, code]
+  source: "IRC M1507.2"
+  context: "Vent system compliance"
+- id: cabinet-clearance-001
+  text: "Wall cabinets above sinks must have a minimum vertical clearance of 18 inches."
+  tags: [cabinet, sink, clearance]
+  source: "Kitchen and Bath Guidelines"
+  context: "Safety and usability"
+- id: led-fixtures-dimming-001
+  text: "Smart LED fixtures in bathrooms should support dimming and be compatible with occupancy sensors."
+  tags: [lighting, smart, automation]
+  source: "Smart Lighting Design Standards"
+  context: "Energy efficiency and control"
+- id: exhaust-fan-noise-rating-001
+  text: "Bathroom exhaust fans should not exceed a noise rating of 1.5 sones for comfort."
+  tags: [ventilation, comfort, noise]
+  source: "Home Ventilation Institute (HVI)"
+  context: "User comfort in small spaces"
+- id: tile-edge-protection-001
+  text: "Use edge protection trim on all exposed tile edges for durability and clean finish."
+  tags: [tile, finish, protection]
+  source: "TCNA Guidelines"
+  context: "Edge detail requirements"
+- id: caulk-tub-gap-001
+  text: "Maintain a 1/8-inch gap between tub and wall tile and fill with flexible silicone caulk."
+  tags: [plumbing, waterproofing]
+  source: "ANSI A108.01"
+  context: "Movement accommodation"
+- id: mirror-condensation-control-001
+  text: "Smart mirrors should include anti-fog heaters or ventilation control to minimize condensation."
+  tags: [mirror, smart, HVAC]
+  source: "Smart Mirror Installation Guide"
+  context: "Humidity mitigation"
+- id: shower-niche-waterproofing-001
+  text: "Shower niches must be fully waterproofed and slope outward slightly to prevent pooling."
+  tags: [shower, waterproofing, niche]
+  source: "ANSI A118.10"
+  context: "Recessed storage safety"
+- id: lavatory-min-clearance-001
+  text: "Provide a minimum of 30 inches clear width for single lavatory access."
+  tags: [sink, clearance]
+  source: "ADA Standards"
+  context: "Bathroom access requirements"
+- id: floor-drain-slope-001
+  text: "Bathroom floors with floor drains must slope at least 1/4 inch per foot toward the drain."
+  tags: [plumbing, drainage]
+  source: "UPC 408.5"
+  context: "Water evacuation design"
+- id: outlet-number-code-001
+  text: "At least one GFCI outlet must be installed within 3 feet of each basin in the bathroom."
+  tags: [electrical, outlets]
+  source: "NEC 210.52(D)"
+  context: "Power access regulation"
+- id: vanity-light-height-001
+  text: "Vanity lights should be installed with center 75–80 inches above the floor for optimal illumination."
+  tags: [lighting, vanity]
+  source: "NKBA Lighting Guide"
+  context: "Ergonomic fixture layout"
+- id: cabinet-pull-clearance-001
+  text: "Cabinet pulls should be at least 2 inches from adjacent surfaces for grip clearance."
+  tags: [cabinet, hardware]
+  source: "Cabinetry Best Practices"
+  context: "User accessibility"
+- id: tub-deck-support-001
+  text: "Deck-mounted tubs must be supported by the structure beneath and not rely solely on the rim."
+  tags: [tub, structure]
+  source: "Plumbing Structural Guidelines"
+  context: "Support and safety"
+- id: waterproof-backboard-001
+  text: "Cement board or foam board is required behind tile in wet zones; drywall is not permitted."
+  tags: [tile, backer, waterproofing]
+  source: "ANSI A108.11"
+  context: "Wet area wall preparation"
+- id: plumbing-access-panel-001
+  text: "Install access panels behind fixtures with concealed valves or mechanical joints."
+  tags: [plumbing, maintenance]
+  source: "UPC 402.10"
+  context: "Serviceability and inspection"
+- id: temperature-limit-valve-001
+  text: "Showers must be equipped with a temperature-limiting mixing valve to prevent scalding."
+  tags: [shower, safety]
+  source: "UPC 413.1"
+  context: "Water safety control"
+- id: radiant-thermostat-location-001
+  text: "Place radiant floor thermostats outside the shower zone and away from direct HVAC flow."
+  tags: [smart, thermostat, HVAC]
+  source: "Radiant Heating Controls Manual"
+  context: "Efficient sensor placement"
+- id: vanity-mirror-spacing-001
+  text: "Leave at least 5 inches between the top of the vanity faucet and bottom of the mirror."
+  tags: [vanity, mirror, spacing]
+  source: "Bathroom Design Standards"
+  context: "Mirror and faucet coordination"
+- id: smart-switch-location-001
+  text: "Install smart switches outside the wet zone, ideally near the bathroom entrance."
+  tags: [smart, electrical]
+  source: "Smart Home Wiring Guide"
+  context: "Control location for safety"
+- id: towel-bar-height-001
+  text: "Mount towel bars 48 inches above finished floor for general access and usability."
+  tags: [accessories, layout]
+  source: "Universal Fixture Layout"
+  context: "Towel fixture standards"
+- id: shower-mixing-valve-depth-001
+  text: "Set shower mixing valves at a depth allowing finished wall flush alignment with trim."
+  tags: [shower, plumbing]
+  source: "Shower Valve Install Manual"
+  context: "Trim installation depth"
+- id: steam-shower-venting-001
+  text: "Steam showers must include a sloped ceiling and exterior-rated vent fan with a timer."
+  tags: [shower, HVAC, moisture]
+  source: "Steam Shower Construction Guide"
+  context: "Moisture control for sealed enclosures"
+- id: cabinet-anchor-code-001
+  text: "Wall cabinets must be anchored into at least one wall stud using 2-inch screws."
+  tags: [cabinet, mounting, structure]
+  source: "Cabinetry Installation Manual"
+  context: "Safe storage attachment"
+- id: underlayment-type-flooring-001
+  text: "Use cement-based underlayment for tile, and foam-based for vinyl plank installations."
+  tags: [flooring, underlayment]
+  source: "Manufacturer Installation Guide"
+  context: "Subfloor compatibility"
+- id: power-outlet-height-001
+  text: "Receptacle outlets should be mounted 42 inches above the floor near the sink."
+  tags: [electrical, layout]
+  source: "NEC Design Guidelines"
+  context: "Power accessibility"
+- id: accessibility-turning-radius-001
+  text: "Bathrooms must have a minimum 5-foot turning radius for wheelchair accessibility."
+  tags: [accessibility, code]
+  source: "ADA Compliance Manual"
+  context: "Maneuvering space"
+- id: faucet-handle-clearance-001
+  text: "Faucet handles must be operable with one hand and not require tight grasping or twisting."
+  tags: [sink, accessibility]
+  source: "ADA Fixture Guidelines"
+  context: "Accessible controls"
+- id: light-fixture-rating-shower-001
+  text: "Shower ceiling lights must be IC-rated and listed for damp or wet locations."
+  tags: [lighting, safety]
+  source: "NEC Article 410"
+  context: "Shower light compliance"
+- id: recessed-niche-depth-001
+  text: "Niches must be framed to a minimum of 3.5 inches depth to hold standard bottles."
+  tags: [shower, storage]
+  source: "Bathroom Storage Design"
+  context: "Practical niche requirements"
+- id: electrical-separation-plumbing-001
+  text: "Maintain at least 6 inches separation between electrical wiring and plumbing pipes."
+  tags: [electrical, plumbing, safety]
+  source: "NEC 300.5"
+  context: "Safety separation standards"
+- id: heated-towel-bar-circuit-001
+  text: "Heated towel bars must be on a dedicated circuit and include a shutoff timer."
+  tags: [smart, electrical, comfort]
+  source: "Smart Bathroom Fixtures Guide"
+  context: "Energy control and safety"

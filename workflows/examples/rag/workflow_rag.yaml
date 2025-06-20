@@ -1,69 +1,99 @@
 name: chat example
 description: this workflow chat wiht local model
 
+vars:
+  rag_data_path: data/construct/construct_rules.yaml
+  rag_storage_path: data/construct/
+  rag_collection: construct_rules
+
 steps:
+  - name: index_rules
+    type: rag
+    agent: RAGDatabaseBuilderAgent
+    collection_name: ${rag_collection}
+    storage_path: ${rag_storage_path}
+    input:
+      source_files:
+        - ${rag_data_path}
+
+  - name: retrieve_construction_info_toilet
+    type: rag
+    agent: RAGQueryAgent
+    collection_name: ${rag_collection}
+    storage_path: ${rag_storage_path}
+    input:
+      user_query: "What are the spacing requirements for a toilet?"
+      top_k: 3
+
+  - name: retrieve_construction_info_light
+    type: rag
+    agent: RAGQueryAgent
+    collection_name: ${rag_collection}
+    storage_path: ${rag_storage_path}
+    input:
+      user_query: "Tell me about bathroom lights?"
+      top_k: 3
+
+  # - name: build_vector_store
+  #   type: rag
+  #   agent: RAGDatabaseBuilderAgent
+  #   input:
+  #     source_files:
+  #       - docs/manual.pdf
+  #       - docs/README.md
+  #     collection_name: "product_docs"
+  #     storage_backend: "chroma"
 
 
-- name: build_vector_store
-  type: rag
-  agent: RAGDatabaseBuilderAgent
-  input:
-    source_files:
-      - docs/manual.pdf
-      - docs/README.md
-    collection_name: "product_docs"
-    storage_backend: "chroma"
+  # - name: update_knowledge
+  #   type: rag
+  #   agent: RAGDatabaseUpdaterAgent
+  #   input:
+  #     collection_name: "product_docs"
+  #     new_docs:
+  #       - changelog.txt
+  #     storage_backend: "qdrant"
 
 
-- name: update_knowledge
-  type: rag
-  agent: RAGDatabaseUpdaterAgent
-  input:
-    collection_name: "product_docs"
-    new_docs:
-      - changelog.txt
-    storage_backend: "qdrant"
+  # - name: generate_answer
+  #   type: rag
+  #   agent: RAGQueryAgent
+  #   input:
+  #     collection_name: "product_docs"
+  #     user_query: "How does the permission system work?"
+  #     storage_backend: "memory"
 
 
-- name: generate_answer
-  type: rag
-  agent: RAGQueryAgent
-  input:
-    collection_name: "product_docs"
-    user_query: "How does the permission system work?"
-    storage_backend: "memory"
+  # - name: attach_shared_rag
+  #   type: rag
+  #   agent: RAGAttachAgent
+  #   input:
+  #     collection_name: "company_knowledge"
+  #     alias: "shared_rag"
+  #     storage_backend: "file"
 
 
-- name: attach_shared_rag
-  type: rag
-  agent: RAGAttachAgent
-  input:
-    collection_name: "company_knowledge"
-    alias: "shared_rag"
-    storage_backend: "file"
+  # - name: attach_shared_rag
+  #   type: rag
+  #   agent: RAGAttachAgent
+  #   input:
+  #     collection_name: "company_knowledge"
+  #     alias: "shared_rag"
+  #     storage_backend: "file"
 
 
-- name: attach_shared_rag
-  type: rag
-  agent: RAGAttachAgent
-  input:
-    collection_name: "company_knowledge"
-    alias: "shared_rag"
-    storage_backend: "file"
+  # - name: ingest_docs
+  #   type: rag
+  #   agent: RAGDatabaseBuilderAgent
+  #   input:
+  #     source_files: ["docs/setup.pdf"]
+  #     collection_name: "setup_docs"
+  #     storage_backend: "file"
 
-
-- name: ingest_docs
-  type: rag
-  agent: RAGDatabaseBuilderAgent
-  input:
-    source_files: ["docs/setup.pdf"]
-    collection_name: "setup_docs"
-    storage_backend: "file"
-
-- name: ask_question
-  type: rag
-  agent: RAGQueryAgent
-  input:
-    collection_name: "setup_docs"
-    user_query: "How do I deploy this to Kubernetes?"
-    storage_backend: "file"
+  # - name: ask_question
+  #   type: rag
+  #   agent: RAGQueryAgent
+  #   input:
+  #     collection_name: "setup_docs"
+  #     user_query: "How do I deploy this to Kubernetes?"
+  #     storage_backend: "file"
