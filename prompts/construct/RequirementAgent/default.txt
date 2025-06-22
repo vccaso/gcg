@@ -1,23 +1,66 @@
 You are a construction planning assistant.
 
+Use the following context for local and code-based guidance:
+{context}
+
 Extract the bathroom construction requirements from the following input:
 - Description: {description}
 - Location: {location}
 
-Return ONLY a valid YAML document with these exact fields:
+Return ONLY a valid YAML document with these detailed fields (at least 30 total data points):
+
 - room_dimensions:
     length: <number> ft
     width: <number> ft
+    ceiling_height: <number> ft
+    total_area: <number> sq ft
+
 - fixtures:
     sinks: <number>
+    sink_style: <e.g., pedestal, undermount>
+    faucets: <e.g., single-handle, smart>
     shower_type: <e.g., walk-in, standard, none>
+    shower_size: <dimensions or area>
     tub_type: <e.g., freestanding, jacuzzi, none>
-    smart_mirror_cabinet: <true/false>
-- smart_features: [list of additional smart features]
-- accessibility_features: [list or "none"]
+    toilet_type: <e.g., standard, wall-mounted>
+    bidet: <true/false>
+    mirror_type: <e.g., smart, framed>
+    vanity_type: <e.g., floating, cabinet>
+    mirror_lighting: <e.g., integrated, overhead>
+
+- smart_features: 
+  - <list of additional smart features such as heated floors, voice-controlled lighting, smart exhaust fan>
+
+- electrical:
+    outlets_gfci: <number>
+    smart_switches: <number>
+    lighting_type: <e.g., recessed, vanity>
+    ventilation_fan: <type or CFM>
+    mirror_heater: <true/false>
+
+- plumbing:
+    water_pressure: <low/medium/high>
+    hot_water_source: <e.g., tank, tankless>
+    pipe_material: <e.g., copper, PEX>
+
+- materials:
+    flooring: <e.g., ceramic tile, vinyl>
+    wall_finish: <e.g., tile, paint>
+    waterproofing: <yes/no>
+    insulation_rating: <e.g., R-13>
+
+- accessibility_features: 
+  - <list or "none"> (e.g., grab bars, no-threshold shower, wide door)
+
 - zoning_permit_considerations:
-    - location: <City, State>
-    - required_permits: [list or description]
+    location: <City, State>
+    required_permits:
+      - plumbing
+      - electrical
+      - construction
+    fire_code_compliance: <true/false>
+    ventilation_code_compliance: <true/false>
+
 
 Important rules:
 - No markdown formatting (e.g., no "```yaml")

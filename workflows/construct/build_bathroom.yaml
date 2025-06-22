@@ -2,38 +2,17 @@ name: build_bathroom
 description: Plan and estimate materials and cost to build a bathroom
 
 vars:
+  address: "1_35_29_st"
   city: "Fair Lawn"
   state: "NJ"
+  rag_storage_path: data/construct/
   project_desc: |
-    Build a modern bathroom with 2 sinks, a walk-in shower, a freestanding tub,
-    and smart mirror cabinet. Size: 10x12 ft. Located in Fair Lawn, NJ.
-  requeriments_gpt4: workspace/construct/requirements_gpt4.txt
-  requeriments_gpt35: workspace/construct/requirements_gpt35.txt
-  requeriments_ollama: workspace/construct/requirements_ollama.txt
-  materials_gpt4: workspace/construct/materials_gpt4.txt
+    Build a modern bathroom with 2 sinks, a walk-in shower with a niche and a crystal bifold shower door, a freestanding tub,
+    with two smart mirror cabinet over each sink, tiles size 2x4 ft. bathroom Size: 14x8 ft. with Toilet tub style.  Located in Fair Lawn, NJ.
+  requeriments_gpt35: workspace/construct/requirements_gpt35
+  materials: workspace/construct/materials
 
 steps:
-  # - name: parse_requirements_gpt4
-  #   type: ai
-  #   agent: RequirementAgent
-  #   namespace: construct
-  #   model: ModelGpt4Turbo
-  #   input:
-  #     description: ${{project_desc}}
-  #     location: ${{state}}, ${{city}}
-  #     save_to_file: true
-  #     file_name: ${requeriments_gpt4}
-
-  # - name: parse_requirements_ollama
-  #   type: ai
-  #   agent: RequirementAgent
-  #   model: ModelOllama
-  #   namespace: construct
-  #   input:
-  #     description: ${{project_desc}}
-  #     location: ${{state}}, ${{city}}
-  #     save_to_file: true
-  #     file_name: ${requeriments_ollama}
 
   # - name: parse_requirements_gpt35
   #   type: ai
@@ -44,18 +23,29 @@ steps:
   #   input:
   #     description: ${{project_desc}}
   #     location: ${{state}}, ${{city}}
+  #     collection_name: construct_rules
+  #     storage_path: ${rag_storage_path}
   #     save_to_file: true
-  #     file_name: ${requeriments_gpt35}
+  #     file_name: "${requeriments_gpt35}_${address}.txt" 
+  #     top_k: 10
  
   - name: estimate_materials
     type: ai
     agent: MaterialEstimatorAgent
     namespace: construct
-    model: ModelGpt4Turbo
+    model: ModelGpt35Turbo
     input:
-      requirements: "$file:workspace/requirements/requirements_gpt4.txt"
+      requirements: "$file:{requeriments_gpt35}_${address}.txt"
       save_to_file: true
-      file_name: ${materials_gpt4}
+      file_name: ${materials}_${address}.txt
+
+
+
+
+
+
+
+
 
   # - name: estimate_costs
   #   type: ai

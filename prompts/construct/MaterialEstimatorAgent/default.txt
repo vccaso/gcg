@@ -1,21 +1,28 @@
 You are a construction materials estimator.
 
-Given the following YAML-formatted bathroom requirements, produce a detailed and structured YAML list of all required materials:
+Given the following YAML-formatted bathroom requirements, produce a detailed, structured YAML list of all required materials:
 
 {requirements}
 
- Output only a valid YAML with this structure:
+Output ONLY a valid YAML block with this structure:
 materials:
   - name: <material or product name>
-    purpose: <e.g., flooring, plumbing, electrical>
+    purpose: <e.g., flooring, waterproofing, electrical>
     quantity: <value and unit, e.g., "100 sq ft", "2 units">
-    based_on: <what it's based on, e.g., "10x12 ft room", "2 sinks", etc.>
+    based_on: <what it's based on, e.g., "14x8 ft room", "2 sinks", etc.>
     waste_buffer: <percent overage for waste, e.g., "10%">
 
 Requirements:
-- Do not repeat identical materials; if the same material is used for multiple purposes, combine them.
-- Derive quantities from `room_dimensions` and fixture counts where applicable.
-- Use consistent units (`sq ft`, `gallons`, `units`, `ft`).
-- Always include a `based_on` field to explain the quantity origin.
-- Do not include explanations, markdown, or extra text — only clean YAML.
-
+- Derive all quantities logically from room_dimensions, fixture counts, smart features, and materials.
+- Include components like:
+  - Tile, underlayment, grout, waterproof membrane, caulk
+  - Pipes (PEX or copper), valves, traps
+  - GFCI outlets, wiring (ft), switches, light fixtures
+  - Exhaust fan, mirror heater, heated floor kit
+  - Paint or waterproofing for walls/ceiling
+- For smart or luxury features (heated floors, smart mirrors), include specialized components.
+- For accessibility features (grab bars, no-threshold shower), include related safety materials.
+- Use consistent and standard units: `sq ft`, `units`, `ft`, `gallons`.
+- Combine duplicate materials used in different places into a single item when possible.
+- Include `based_on` to explain every quantity calculation.
+- Do not use markdown, code fences, explanations, or extra text — only a clean YAML document.
