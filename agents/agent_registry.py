@@ -37,6 +37,7 @@ from agents.utils.camera_capture_agent import CameraCaptureAgent
 from agents.utils.pdf_agent import PdfAgent
 from agents.construct.requirement_agent import RequirementAgent
 from agents.construct.material_estimator_agent import MaterialEstimatorAgent
+from agents.construct.planner_agent import ProjectPlannerAgent
 
 # ✅ Agent registry for loading agents dynamically
 AGENT_REGISTRY = {
@@ -75,7 +76,8 @@ AGENT_REGISTRY = {
     "CameraCaptureAgent": CameraCaptureAgent,
     "PdfAgent": PdfAgent,
     "RequirementAgent": RequirementAgent,
-    "MaterialEstimatorAgent": MaterialEstimatorAgent
+    "MaterialEstimatorAgent": MaterialEstimatorAgent,
+    "ProjectPlannerAgent": ProjectPlannerAgent
 }
 
 # ✅ Agent catalog for UI display
@@ -458,7 +460,19 @@ AGENT_CATALOG = {
             "Supports early-stage planning, budgeting, and procurement processes."
         ],
         "tags": ["AI", "construction", "estimation", "materials"]
+    },
+    "ProjectPlannerAgent": {
+        "type": "AI",
+        "short_description": "Generates a comprehensive project plan from objectives, scope, and constraints.",
+        "detailed_description": [
+            "Takes structured project information — including objectives, scope, constraints, team composition, and timelines — and generates a detailed plan.",
+            "Outlines milestones, dependencies, deliverables, risks, and resource allocation.",
+            "Supports planning for software, construction, research, or mixed-domain projects.",
+            "Enables early-stage alignment between stakeholders, budget planning, and execution strategy."
+        ],
+        "tags": ["AI", "planning", "project-management", "workflow"]
     }
+
 
 
 }

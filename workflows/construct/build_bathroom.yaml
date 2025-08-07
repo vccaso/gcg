@@ -14,32 +14,49 @@ vars:
 
 steps:
 
-  # - name: parse_requirements_gpt35
-  #   type: ai
-  #   agent: RequirementAgent
-  #   model: ModelGpt35Turbo
-  #   namespace: construct
-  #   template_name: default
-  #   input:
-  #     description: ${{project_desc}}
-  #     location: ${{state}}, ${{city}}
-  #     collection_name: construct_rules
-  #     storage_path: ${rag_storage_path}
-  #     save_to_file: true
-  #     file_name: "${requeriments_gpt35}_${address}.txt" 
-  #     top_k: 10
+  - name: parse_requirements_gpt35
+    type: ai
+    agent: RequirementAgent
+    model: ModelGpt4Turbo
+    namespace: construct
+    template_name: default
+    input:
+      description: ${{project_desc}}
+      location: ${{state}}, ${{city}}
+      collection_name: construct_rules
+      storage_path: ${rag_storage_path}
+      save_to_file: true
+      file_name: "${requeriments_gpt35}_${address}.txt" 
+      top_k: 10
  
   - name: estimate_materials
     type: ai
     agent: MaterialEstimatorAgent
     namespace: construct
-    model: ModelGpt35Turbo
+    model: ModelGpt4Turbo
     input:
       requirements: "$file:{requeriments_gpt35}_${address}.txt"
       save_to_file: true
       file_name: ${materials}_${address}.txt
 
 
+  - name: plan_bathroom_project
+    type: ai
+    agent: ProjectPlannerAgent
+    # model: ModelGpt35Turbo
+    model: ModelGpt4Turbo
+    namespace: construct
+    input:
+      objectives: "Design and construct a modern bathroom with specified fixtures and smart features."
+      scope: "Full interior bathroom build including plumbing, electrical, tiling, and fixture installation."
+      constraints: "Budget $25,000; completion in 8 weeks; must comply with NJ building codes."
+      team: "General contractor, plumber, electrician, tiler, interior designer."
+      timeline: "Start: 2025-09-01; End: 2025-10-27"
+      deliverables: "Completed bathroom, final inspection approval, as-built documentation."
+      context: "${{project_desc}}"
+      notes: "Include energy-efficient and water-saving fixtures where possible."
+      save_to_file: true
+      file_name: "workspace/construct/project_plan_${address}.txt"
 
 
 

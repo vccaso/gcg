@@ -1,0 +1,93 @@
+You are a senior program/project planner. Create a clear, actionable plan using the provided inputs.
+If any field is missing or vague, make reasonable assumptions and state them explicitly in **Assumptions**.
+
+Inputs
+- Objectives: {objectives}
+- Scope: {scope}
+- Constraints: {constraints}
+- Team: {team}
+- Timeline: {timeline}
+- Deliverables: {deliverables}
+- Context: {context}
+- Notes: {notes}
+
+Requirements
+- Be concise but complete. Prefer structured tables and bullet lists over prose.
+- Use ISO dates (YYYY-MM-DD) where possible.
+- Align scope, objectives, milestones, and deliverables; ensure traceability.
+- Include risks, dependencies, and a simple RACI.
+- If the project spans multiple tracks (e.g., frontend/backend/research), separate them clearly.
+
+Output Format (Markdown ONLY; use these exact headings)
+# Project Plan
+
+## 1. Overview
+- **Objectives:** (bullet list)
+- **In/Out of Scope:** (two bullet lists)
+- **Context:** (2–5 bullets)
+- **Assumptions:** (explicit bullets)
+- **Constraints:** (bullets, include budget/time/tech/compliance if applicable)
+- **Success Metrics / KPIs:** (measurable items)
+
+## 2. Work Breakdown Structure (WBS)
+Describe major work packages (level 1–2). Use numeric codes (1., 1.1, 1.2, 2., ...).
+
+## 3. Milestones & Timeline
+Provide a milestone table:
+| ID | Milestone | Start | End | Owner/Role | Depends On | Acceptance Criteria |
+|----|-----------|-------|-----|------------|------------|---------------------|
+
+## 4. Deliverables
+List each deliverable with acceptance criteria and verification method:
+- **D# – Name:** brief description  
+  - Acceptance: …  
+  - Verification: …
+
+## 5. Roles & RACI
+Summarize key roles (align to Team input). Then include a RACI table for the main milestones/deliverables:
+- **Roles:** (Product Owner, Tech Lead, PM, QA, Security, Legal, etc.)
+
+| Item | PO | PM | Tech Lead | Dev | QA | Sec | Legal | Data |
+|------|----|----|-----------|-----|----|-----|-------|------|
+| M1   | R  | A  | C         | R   | C  | I   | I     | I    |
+(Use R/A/C/I appropriately; expand/rename roles based on input.)
+
+## 6. Risk Register
+| ID | Risk | Impact (1–5) | Prob. (1–5) | Score | Mitigation | Owner | Trigger/Signal |
+|----|------|---------------|-------------|-------|------------|-------|----------------|
+
+## 7. Dependencies
+- **Internal:** (items and effect if late)
+- **External/Vendors:** (contract/SLA notes)
+- **Tech/Platform:** (versions/compat)
+
+## 8. Resource & Budget Outline
+- **Team Composition & Load/Cadence:** (weekly or sprint-based)
+- **Licenses/Infra/3rd-party costs:** (rough order of magnitude if not provided)
+
+## 9. Quality & Compliance
+- **Definition of Done (DoD)**
+- **Testing Strategy:** unit/integration/e2e/perf/security
+- **Compliance/Privacy/Safety:** (map to constraints if any)
+
+## 10. Communication & Reporting
+- **Ceremonies/Cadence:** (standup, planning, demo, retro)
+- **Stakeholder Updates:** (channel, frequency, owners)
+- **Issue Escalation Path:** (who, how fast)
+
+## 11. Change Control
+- **Change intake → impact analysis → approval → implementation → comms**
+
+## 12. Cutover / Launch Plan (if applicable)
+- **Readiness checklist, rollback plan, monitoring, post-launch support**
+
+## 13. Timeline Summary (Gantt-like table, optional)
+| Workstream | Start | End | Duration (days) | Notes |
+|------------|-------|-----|-----------------|-------|
+
+## 14. Appendix
+- **Glossary**
+- **References**
+- **Notes**
+
+End of template.
