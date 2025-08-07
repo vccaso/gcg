@@ -1269,397 +1269,1306 @@ steps:
       mode: append
       add_page_number: False
 
-  # - name: generate_how_tu_use
-  #   type: tool
-  #   agent: PdfAgent
-  #   input:
-  #     content: |
-  #       {{ style }}
-  #       <section>
-  #         <div class="section-tab"></div>
-  #         <h2 style="margin-top: 80px;">How to Use This Book</h2>
-  #         <p><b>The Harmony Health: Sleep Tracker</b> is designed to help you better understand your sleep patterns, improve nightly rest, and support your overall well-being. Whether you're aiming to build a consistent routine, identify what disrupts your sleep, or simply track your progress, this journal offers a simple, guided space for daily reflection. You can use this book every morning or evening — whatever fits best with your routine.</p>
-  #       </section>
-  #     page_size: ${page_size}
-  #     save_path: workspace/harmony/kdp
-  #     filename: ${filename}
-  #     mode: append
+  - name: generate_how_tu_use
+    type: tool
+    agent: PdfAgent
+    input:
+      content: |
+        {{ style }}
+        <section>
+          <div class="section-tab"></div>
+          <h2 style="margin-top: 80px;">How to Use This Book</h2>
+          <p>
+            <b>The Harmony Health: Blood Sugar & Diabetes Tracker</b> is designed to help you monitor your glucose levels, understand the impact of food, medications, and habits, and support your journey toward better daily and long-term health. Whether you're managing diabetes, prediabetes, or simply aiming to maintain healthy blood sugar, this journal provides a simple, structured way to track key health indicators and reflect on your patterns.
+            <br/><br/>
+            Use this book daily to record fasting and post-meal readings, medication use, meals, physical activity, and other health notes. Monthly summaries will help you identify trends, make informed decisions, and set achievable goals for your well-being.
+          </p>
+        </section>
+      page_size: ${page_size}
+      save_path: workspace/harmony/kdp
+      filename: ${filename}
+      mode: append
 
-  # - name: generate_Inside
-  #   type: tool
-  #   agent: PdfAgent
-  #   input:
-  #     content: |
-  #       {{ style }}
-  #       <section>
-  #         <div class="section-tab"></div>
-  #         <h2>What's Inside:</h2>
-  #         <ul>
-  #           <li><b>Daily Sleep Logs:</b> 90+ pages to record sleep/wake times, sleep quality, habits, and morning reflections<br/></li>
-  #           <li><b>Monthly Summaries:</b> Pages to review trends, reflect on habits, and set goals for better rest<br/></li>
-  #           <li><b>Sleep Quality & Disruption Checklist:</b> Track factors like screen time, caffeine, stress, or waking during the night<br/></li>
-  #           <li><b>Dream & Mood Notes:</b> Space to log dreams and monitor emotional patterns or next-day effects<br/></li>
-  #           <li><b>Notes Section:</b> Extra pages at the end for general reflections, personal strategies, or observations about your sleep journey</li>
-  #         </ul>
-  #       </section>
-  #     page_size: ${page_size}
-  #     save_path: workspace/harmony/kdp
-  #     filename: ${filename}
-  #     mode: append
+  - name: generate_Inside
+    type: tool
+    agent: PdfAgent
+    input:
+      content: |
+        {{ style }}
+        <section>
+          <div class="section-tab"></div>
+          <h2>What's Inside:</h2>
+          <ul>
+            <li><b>Daily Blood Sugar Logs:</b> 90+ pages to record glucose readings, meals, medications, activity, and symptoms<br/></li>
+            <li><b>Monthly Summaries:</b> Pages to review glucose trends, reflect on habits, and set goals for improved control<br/></li>
+            <li><b>Meal & Medication Tracking:</b> Space to note carbs, insulin doses, timing, and effectiveness of treatments<br/></li>
+            <li><b>Lifestyle & Mood Notes:</b> Track physical activity, hydration, energy, and stress alongside daily health logs<br/></li>
+            <li><b>Notes Section:</b> Extra pages at the end for personal insights, doctor questions, or long-term observations</li>
+          </ul>
+        </section>
+      page_size: ${page_size}
+      save_path: workspace/harmony/kdp
+      filename: ${filename}
+      mode: append
 
-  # - name: generate_filling_daily
-  #   type: tool
-  #   agent: PdfAgent
-  #   input:
-  #     content: |
-  #       {{ style }}
-  #       <section>
-  #         <div class="section-tab"></div>
-  #         <h2>Filling Out a Daily Log</h2>
-  #         <p>
-  #         Each page of the Harmony Health: Sleep Tracker is designed to help you understand not just how long you sleep, but how well you sleep — and how your habits, environment, and emotions may affect your rest. Completing a log each morning (or right before bed) builds valuable awareness over time.
-  #         </p>
-  #         <p>Each daily log includes the following fields:</p>
-  #         <ul>
-  #           <li><b>Date:</b> Record the date of the night you're tracking.</li>
-  #           <li><b>Sleep & Wake Times:</b> Time you went to bed: When you got into bed (even if you didn't fall asleep right away).</li>
-  #           <li><b>Time you fell asleep (if known):</b> Estimate how long it took you to fall asleep.</li>
-  #           <li><b>Time you woke up:</b>  The first time you fully woke up for the day.</li>
-  #           <li><b>Time you got out of bed:</b> Helpful if you lay in bed after waking.</li>
-  #           <li><b>Total Sleep Duration</b> Estimate your total time asleep (subtract time awake during the night).</li>
-  #           <li><b>Sleep Quality Rating (1-10 or stars)</b> Rate how restful your sleep felt — not just how long you slept, but how good the rest was.</li>
-  #           <li><b>Sleep Interruptions:</b> Check any boxes that apply and note unusual events like:</li>
-  #           <li><b></b>Waking up multiple times, Vivid dreams or nightmares, Physical discomfort, Noise/light disruption</li>
-  #           <li><b>Evening Habits:</b> Note any activities before bed that could have helped or hurt your sleep (e.g., screen time, meditation, caffeine, alcohol, late meals).</li>
-  #           <li><b>Morning Mood & Energy</b> How did you feel when you woke up?</li>
-  #           <li><b>Mood:</b>calm, anxious, neutral, happy? </li>
-  #           <li><b>Energy level:</b>low, average, high?</li>
-  #           <li><b>Dream Notes (optional)</b> Write down any dreams you remember — helpful for those monitoring mental health or subconscious patterns.</li>
-  #           <li><b>Reflection / Sleep Goal Check-In</b> Briefly reflect: Did you follow a bedtime routine? Meet your sleep goal? What would you change tonight?</li>
-  #           <li><b></b> </li>
-  #         </ul><br/>
-  #         <h2>Tip</h2>
-  #         <p>You don't need to be perfect — the value of this tracker is in small, honest insights over time. A few weeks of consistent tracking can reveal habits, triggers, and solutions that lead to deeper, healthier sleep.</p>
-  #       </section>              
-  #     page_size: ${page_size}
-  #     save_path: workspace/harmony/kdp
-  #     filename: ${filename}
-  #     mode: append
+  - name: generate_filling_daily
+    type: tool
+    agent: PdfAgent
+    input:
+      content: |
+        {{ style }}
+        <section>
+          <div class="section-tab"></div>
+          <h2>Filling Out a Daily Log</h2>
+          <p>
+            Each page of the <b>Harmony Health: Blood Sugar & Diabetes Tracker</b> is designed to help you monitor key aspects of your glucose health. Tracking your blood sugar readings, meals, medications, and lifestyle habits consistently gives you a clearer understanding of what affects your levels — and how to manage them more effectively.
+          </p>
 
-  # - name: generate_filling_monthly
-  #   type: tool
-  #   agent: PdfAgent
-  #   input:
-  #     content: |
-  #       {{ style }}
-  #       <section>
-  #         <div class="section-tab"></div>
-  #         <h2>Using Monthly Summaries</h2>
-  #         <p>
-  #           The Monthly Summary is where you step back and look at your sleep habits over the past few weeks. It helps you spot trends, identify what's working, and set small changes for better rest. Complete this page at the end of each month using the information from your daily logs.
-  #         </p>
-  #         <p>Here's how to use each part of the Monthly Summary:</p>
-  #         <ul>
-  #           <li><b>Month:</b> Write the name of the month you're summarizing (e.g., June 2025).</li>
-  #           <li><b>Number of Nights Tracked:</b> Count how many days you filled in your daily sleep log.</li>
-  #           <li><b>Average Hours Slept:</b> Review your daily totals and estimate your average sleep per night. This gives a clearer picture than a few “good” or “bad” nights.</li>
-  #           <li><b>Best & Worst Nights:</b> Pick one night you slept well and one night that was disrupted. Note the date and any key differences (e.g., routine, stress level, screen use).</li>
-  #           <li><b>Most Common Disruptors:</b>Check off any recurring issues that interfered with your sleep: </li>
-  #           <li><b></b>Stress, Screens before bed,  Diet or caffeine,Environmental noise or light, Irregular bedtime</li>
-  #           <li><b>Sleep Habits That Helped:</b> Write down any routines or habits that made a noticeable difference (e.g., reading before bed, blackout curtains, earlier dinner).</li>
-  #           <li><b>Observations or Insights:</b> This is space for personal reflection. Did your energy change? Were weekends different from weekdays? Did your mood improve with better sleep?</li>
-  #           <li><b>Goals for Next Month</b> Set 1-3 simple, realistic goals like:</li>
-  #           <li><b></b>  “Go to bed by 10:30 PM”,“Limit phone use after 9 PM”,“Track sleep 5 nights a week”</li>
-  #         </ul>
-  #         <h2>Tip</h2>
-  #         <p>
-  #           Don't worry if your month wasn't perfect. The real power of this tracker is in building awareness and making gradual improvements you can stick with.
-  #         </p>
-  #       </section>
-  #     page_size: ${page_size}
-  #     save_path: workspace/harmony/kdp
-  #     filename: ${filename}
-  #     mode: append
+          <p>Each daily log includes the following fields:</p>
+          <ul>
+            <li><b>Date:</b> Record the date for the day you're tracking.</li>
+            <li><b>Blood Sugar Readings:</b> Record your readings at multiple points (fasting, before and after meals, bedtime).</li>
+            <li><b>Meals & Carbohydrates:</b> Briefly note what you ate and estimate the carbs (if applicable).</li>
+            <li><b>Medications or Insulin:</b> Write the name, dosage, and time taken.</li>
+            <li><b>Hydration:</b> Check whether you drank enough water and log approximate intake.</li>
+            <li><b>Physical Activity:</b> Type of movement and how long you exercised.</li>
+            <li><b>Mood & Energy:</b> How you felt physically and emotionally during the day.</li>
+            <li><b>Symptoms:</b> Note any signs of low/high blood sugar (dizziness, fatigue, shakiness, etc.).</li>
+            <li><b>Reflection or Notes:</b> Use this space to add any extra context, such as stress, illness, or changes in medication or routine.</li>
+          </ul>
+          <br/>
+          <h2>Tip</h2>
+          <p>
+            You don't have to fill out every section perfectly every day — this tracker is about noticing patterns over time. Even a few consistent weeks of honest entries can help you understand your body, improve your habits, and feel more in control of your health.
+          </p>
+        </section>
+           
+      page_size: ${page_size}
+      save_path: workspace/harmony/kdp
+      filename: ${filename}
+      mode: append
 
-
-  # - name: generate_tips
-  #   type: tool
-  #   agent: PdfAgent
-  #   input:
-  #     content: |
-  #       {{ style }}
-  #       <section>
-  #         <div class="section-tab"></div>
-  #         <h2>Tips for Getting the Most Out of This Tracker</h2>
-  #         <ul>
-  #           <li><b>Be consistent</b> — tracking even a few nights each week can reveal patterns and help you improve your sleep over time.</li>
-  #           <li><b>Fill out your log as soon as you wake up</b> — fresh memories help ensure more accurate notes about sleep quality, dreams, and mood.</li>
-  #           <li><b>Use symbols or color coding</b> — for example: 🌙 for peaceful sleep, 😴 for fatigue, 🔆 for waking early, ☕ for caffeine late in the day.</li>
-  #           <li><b>Reflect honestly</b> — your notes are for you, so feel free to include both good nights and rough ones without judgment.</li>
-  #           <li><b>Review your monthly summaries</b> — look for recurring habits or disruptions that may be helping or hurting your rest.</li>
-  #           <li><b>Pair your sleep tracking with self-care</b> — like journaling, meditation, or setting a wind-down routine to reinforce good habits.</li>
-  #           <li><b>Celebrate small wins</b> — even one extra hour of sleep or a smoother morning is a step forward. This tracker is about awareness and gentle progress.</li>
-  #         </ul>
-  #       </section>
-  #     page_size: ${page_size}
-  #     save_path: workspace/harmony/kdp
-  #     filename: ${filename}
-  #     mode: append
-
-  # - name: generate_dayly_logs
-  #   type: tool
-  #   agent: PdfAgent
-  #   loop:
-  #     var: index
-  #     count: 90
-  #   input:
-  #     content: |
-  #       {{ style }}
-  #       <section>
-  #         <div class="section-tab" style="top: 60mm; background-color: #aaa9a9;"></div>
-  #         <div class="header-row">
-  #           <img src="workspace/harmony/images/logo2.png" alt="Logo">
-  #           <div>Daily Sleep Tracking <span class="highlight-number">{{ index }}</span></div>
-  #         </div>
-
-  #         <div class="form-block">
-  #           <div class="form-block-header">
-  #             <div class="form-block-cell">Date</div>
-  #             <div class="form-block-cell">Sleep Duration</div>
-  #           </div>
-  #           <div class="form-block-row">
-  #             <div class="form-block-cell">&nbsp;</div>
-  #             <div class="form-block-cell">&nbsp;</div>
-  #           </div>
-  #         </div>
-
-  #         <div class="form-block">
-  #           <div class="form-block-header">
-  #             <div class="form-block-cell">Time you went to bed</div>
-  #             <div class="form-block-cell">Time you fell asleep</div>
-  #           </div>
-  #           <div class="form-block-row">
-  #             <div class="form-block-cell">&nbsp;</div>
-  #             <div class="form-block-cell">&nbsp;</div>
-  #           </div>
-  #         </div>
-          
-  #         <div class="form-block">
-  #           <div class="form-block-header">
-  #             <div class="form-block-cell">Woke up Time</div>
-  #             <div class="form-block-cell">got out of bed</div>
-  #           </div>
-  #           <div class="form-block-row">
-  #             <div class="form-block-cell">&nbsp;</div>
-  #             <div class="form-block-cell">&nbsp;</div>
-  #           </div>
-  #         </div>
-
-  #         <div class="pain-scale-table">
-  #           <div class="pain-scale-header">
-  #             <div class="pain-scale-cell-header">Sleep Quality (1-10):</div>
-  #           </div>
-  #           <div class="pain-scale-row-single">
-  #             <div class="pain-scale-cell-numbers">
-  #               <div class="pain-scale-numbers">
-  #                 <span>[ ] 1</span><span>[ ] 2</span><span>[ ] 3</span><span>[ ] 4</span><span>[ ] 5</span>
-  #                 <span>[ ] 6</span><span>[ ] 7</span><span>[ ] 8</span><span>[ ] 9</span><span>[ ] 10</span>
-  #               </div>
-  #             </div>
-  #           </div>
-  #         </div>
-
-  #         <div class="pain-scale-table">
-  #           <div class="pain-scale-header">
-  #             <div class="pain-scale-cell-header">Sleep Interruptions</div>
-  #             <div class="pain-scale-cell-header">Pre-Sleep Habits</div>
-  #           </div>
-  #           <div class="pain-scale-row-single">
-  #             <div class="pain-scale-cell-numbers">
-  #               <div class="pain-scale-numbers">
-  #                 <span>[ ] Woke up during the night</span>
-  #                 <span>[ ] Trouble falling asleep</span>
-  #                 <span>[ ] Vivid dreams / nightmares</span>
-  #                 <span>[ ] Got up to use bathroom</span>
-  #                 <span>[ ] Burning</span>
-  #                 <span>[ ] Pressure/Squeezing</span>
-  #                 <span>[ ] Cramping</span>
-  #                 <span>[ ] Electric/Shock-like</span>
-  #                 <span>[ ] Shooting</span>
-  #                 <span>[ ] Radiating</span>
-  #                 <span>[ ] Aching</span>
-  #               </div>
-  #             </div>
-  #             <div class="pain-scale-cell-numbers">
-  #               <div class="pain-scale-numbers">
-  #                 <span>[ ] Caffeine after 5pm? </span>
-  #                 <span>[ ] Screen time before bed?</span>
-  #                 <span>[ ] Other ____________</span>
-  #               </div>
-  #             </div>
-  #           </div>
-  #         </div>
-
-  #         <div class="form-block">
-  #           <div class="form-block-header">
-  #             <div class="form-block-cell">Relaxation routine?</div>
-  #             <div class="form-block-cell">Morning Mood</div>
-  #             <div class="form-block-cell">Energy</div>
-  #           </div>
-  #           <div class="form-block-row">
-  #             <div class="form-block-cell">meditation, warm bath, reading</div>
-  #             <div class="form-block-cell" style="font-size:14pt;">😊 😐 😩</div>
-  #             <div class="form-block-cell">1- 10</div>
-  #           </div>
-  #         </div>
-  #         <div><b>Sleep Goal Reflection:</b></div>
-  #         <div>_____________________________________________</div>
-  #       </section>
-  #     page_size: ${page_size}
-  #     save_path: workspace/harmony/kdp
-  #     filename: ${filename}
-  #     mode: append
-
-  # - name: generate_monthly_summaries
-  #   type: tool
-  #   agent: PdfAgent
-  #   loop:
-  #     var: index
-  #     count: 12
-  #   input:
-  #     content: |
-  #       {{ style }}
-  #       <section>
-  #         <div class="section-tab" style="top: 90mm; background-color: #a9aaa9;"></div>
-  #         <div class="header-row">
-  #           <img src="workspace/harmony/images/logo2.png" alt="Logo">
-  #           <div>Monthly Sleep Summary <span class="highlight-number">{{ index }}</span></div>
-  #         </div>
-  #         <div class="form-block">
-  #           <div class="form-block-header">
-  #             <div class="form-block-cell">Month</div>
-  #             <div class="form-block-cell"># of nights tracked:</div>
-  #             <div class="form-block-cell">Average hours slept/night</div>
-  #           </div>
-  #           <div class="form-block-row">
-  #             <div class="form-block-cell">&nbsp;</div>
-  #             <div class="form-block-cell">&nbsp;</div>
-  #             <div class="form-block-cell">&nbsp;</div>
-  #           </div>
-  #         </div>
-  #         <div class="form-block">
-  #           <div class="form-block-header">
-  #             <div class="form-block-cell">Best night (date & duration)</div>
-  #             <div class="form-block-cell">Most interrupted night</div>
-  #           </div>
-  #           <div class="form-block-row">
-  #             <div class="form-block-cell">&nbsp;</div>
-  #             <div class="form-block-cell">&nbsp;</div>
-  #           </div>
-  #         </div>
-  #         <div class="form-block">
-  #           <div class="form-block-header">
-  #             <div class="form-block-cell">Average sleep quality</div>
-  #             <div class="form-block-cell">Average morning energy level</div>
-  #             <div class="form-block-cell">Average mood upon waking</div>
-  #           </div>
-  #           <div class="form-block-row">
-  #             <div class="form-block-cell">&nbsp;</div>
-  #             <div class="form-block-cell">&nbsp;</div>
-  #             <div class="form-block-cell">&nbsp;</div>
-  #           </div>
-  #         </div>
-  #         <div class="form-block">
-  #           <div class="form-block-header">
-  #             <div class="form-block-cell">Lifestyle Factors</b> (Sleep, Diet, Stress)</div>
-  #           </div>
-  #           <div class="form-block-row">
-  #             <div class="form-block-cell">&nbsp;</div>
-  #           </div>
-  #         </div>
-  #         <div class="form-block">
-  #           <div class="form-block-header">
-  #             <div class="form-block-cell"> Most Common Disruptors</b></div>
-  #           </div>
-  #           <div class="form-block-row">
-  #             <div class="form-block-cell">Stress, Caffeine or food late,Blue light/screens, Noise or light, Inconsistent bedtime, Physical discomfort, Other: _____________</div>
-  #           </div>
-  #         </div>
-  #         <div class="monthly-summary">
-  #           <div><b>Sleep Habits That Helped:</b></div>
-  #           <div>______________________________________________</div>
-  #           <div><b>Observations or Insights:</b></div>
-  #           <div>______________________________________________</div>
-  #           <div><b>Sleep Goals for Next Month:</b></div>
-  #           <div>______________________________________________</div>
-  #           <div>______________________________________________</div>
-  #         </div>
-  #       </section>
-  #     page_size: ${page_size}
-  #     save_path: workspace/harmony/kdp
-  #     filename: ${filename}
-  #     mode: append
-
-  # - name: generate_notes
-  #   type: tool
-  #   agent: PdfAgent
-  #   loop:
-  #     var: index
-  #     count: 2
-  #   input:
-  #     content: |
-  #       {{ style }}
-  #       <section>
-  #         <div class="section-tab" style="top: 120mm; background-color: #a9a9aa;"></div>
-  #         <div class="header-row">
-  #           <img src="workspace/harmony/images/logo2.png" alt="Logo">
-  #           <div>Notes</div><br/><br/>
-  #         </div>
-  #           <div>______________________________________________</div>
-  #           <div>______________________________________________</div>
-  #           <div>______________________________________________</div>
-  #           <div>______________________________________________</div>
-  #           <div>______________________________________________</div>
-  #           <div>______________________________________________</div>
-  #           <div>______________________________________________</div>
-  #           <div>______________________________________________</div>
-  #           <div>______________________________________________</div>
-  #           <div>______________________________________________</div>
-  #           <div>______________________________________________</div>
-  #           <div>______________________________________________</div>
-  #           <div>______________________________________________</div>
-  #           <div>______________________________________________</div>
-  #           <div>______________________________________________</div>
-  #           <div>______________________________________________</div>
-  #           <div>______________________________________________</div>
-  #       </section>
-  #     page_size: ${page_size}
-  #     save_path: workspace/harmony/kdp
-  #     filename: ${filename}
-  #     mode: append
+  - name: generate_filling_monthly
+    type: tool
+    agent: PdfAgent
+    input:
+      content: |
+        {{ style }}
+        <section>
+          <div class="section-tab"></div>
+          <h2>Using Monthly Summaries</h2>
+          <p>
+            The Monthly Summary is where you step back and look at your blood sugar management over the past few weeks. It helps you spot trends, identify what's working, and set small changes to better support your health. Complete this page at the end of each month using the information from your daily logs.
+          </p>
+          <p>Here's how to use each part of the Monthly Summary:</p>
+          <ul>
+            <li><b>Month:</b> Write the name of the month you're reviewing (e.g., June 2025).</li>
+            <li><b>Number of Days Tracked:</b> Count how many days you completed a daily blood sugar log.</li>
+            <li><b>Average Fasting Glucose:</b> Calculate your typical fasting value over the month. This provides a big-picture indicator of glucose control.</li>
+            <li><b>Highest & Lowest Readings:</b> Note the date and value for the highest and lowest blood sugar readings of the month. Try to identify what contributed to each.</li>
+            <li><b>Readings In/Out of Range:</b> Estimate how often your levels were within your target range versus above or below.</li>
+            <li><b>Most Common Disruptors:</b> Check off any repeating factors that may have caused spikes or lows:</li>
+            <li><b></b>Stress, Skipped meals, Poor sleep, Illness, Med changes, Overeating, Lack of exercise</li>
+            <li><b>Helpful Habits or Strategies:</b> List any routines, tools, or approaches that improved your glucose control (e.g., walking after meals, low-carb breakfast, hydration).</li>
+            <li><b>Observations or Insights:</b> Reflect on anything you noticed this month — how you felt, what helped, what didn't, or patterns you didn't expect.</li>
+            <li><b>Goals for Next Month:</b> Set 1-3 clear and realistic goals like:</li>
+            <li><b></b>“Log meals more consistently”, “Walk 15 minutes daily”, “Avoid late-night snacking”</li>
+          </ul>
+          <h2>Tip</h2>
+          <p>
+            Don't stress if every day wasn't perfect. This tracker is here to help you build long-term awareness, not just track numbers. Focus on progress, not perfection.
+          </p>
+        </section>
+      page_size: ${page_size}
+      save_path: workspace/harmony/kdp
+      filename: ${filename}
+      mode: append
 
 
-  # - name: generate_about publisher
-  #   type: tool
-  #   agent: PdfAgent
-  #   input:
-  #     content: |
-  #        {{ style }}
-  #         <section>
-  #           <div class="section-tab"></div>
-  #           <h2>About the Publisher</h2>
-  #             <p>
-  #               Harmony Health is dedicated to empowering individuals on their personal wellness journeys through thoughtfully designed planners, trackers, and health journals. Each Harmony Health publication is created with care to support mindfulness, symptom management, and self-awareness—one page at a time.
-  #             </p>
-  #             <p>
-  #               Whether you are tracking migraines, sleep, blood sugar, mood, or overall well-being, our tools are designed to help you recognize patterns, make informed decisions, and take small daily steps toward a healthier life.
-  #             </p>
-  #         </section>
-  #     page_size: ${page_size}
-  #     save_path: workspace/harmony/kdp
-  #     filename: ${filename}
-  #     mode: append
-  #     add_page_number: False
+  - name: generate_tips
+    type: tool
+    agent: PdfAgent
+    input:
+      content: |
+        {{ style }}
+        <section>
+          <div class="section-tab"></div>
+          <h2>Tips for Getting the Most Out of This Tracker</h2>
+          <ul>
+            <li><b>Be consistent</b> — even a few weeks of logging can uncover patterns and help you better manage your blood sugar.</li>
+            <li><b>Record readings as soon as possible</b> — tracking values in the moment helps avoid missed or inaccurate entries.</li>
+            <li><b>Use symbols or color coding</b> — for example: 🍎 for healthy meals, 💉 for insulin, ⚠️ for spikes, 💧 for hydration.</li>
+            <li><b>Reflect honestly</b> — include both highs and lows; this is your space to understand what’s really happening day to day.</li>
+            <li><b>Review monthly summaries</b> — use them to adjust routines, eating habits, or medication timing with your healthcare provider.</li>
+            <li><b>Pair tracking with self-care</b> — stress management, hydration, and movement can positively impact your readings too.</li>
+            <li><b>Celebrate progress</b> — more in-range days, consistent tracking, or healthier habits all deserve acknowledgment. Progress builds confidence.</li>
+          </ul>
+        </section>
+      page_size: ${page_size}
+      save_path: workspace/harmony/kdp
+      filename: ${filename}
+      mode: append
+
+  - name: generate_dayly_logs
+    type: tool
+    agent: PdfAgent
+    loop:
+      var: index
+      count: 90
+    input:
+      content: |
+        {{ style }}
+        <section>
+          <div class="section-tab" style="top: 60mm; background-color: #aaa9a9;"></div>
+          <div class="header-row">
+            <img src="workspace/harmony/images/logo2.png" alt="Logo">
+            <div>Daily Blood Sugar Track <span class="highlight-number">{{ index }}</span></div>
+          </div>
+
+          <div class="form-block">
+            <div class="form-block-header">
+              <div class="form-block-cell">Date</div>
+              <div class="form-block-cell">Physical Activity</div>
+              <div class="form-block-cell">Duration (min)</div>
+            </div>
+            <div class="form-block-row">
+              <div class="form-block-cell">&nbsp;</div>
+              <div class="form-block-cell">&nbsp;</div>
+              <div class="form-block-cell">&nbsp;</div>
+            </div>
+          </div>
+
+          <div class="form-block">
+            <div class="form-block-row">
+              <div class="form-block-cell-h"><b>Glucose</div>
+            </div>
+            <div class="form-block-row">
+              <div class="form-block-cell-h"><b>Fasting Before Breakfast</b></div>
+              <div class="form-block-cell" style="width:190px;">&nbsp;</div>
+            </div>
+            <div class="form-block-row">
+              <div class="form-block-cell-h"><b>Before Lunch</b></div>
+              <div class="form-block-cell">&nbsp;</div>
+            </div>
+            <div class="form-block-row">
+              <div class="form-block-cell-h"><b>After Lunch</b></div>
+              <div class="form-block-cell">&nbsp;</div>
+            </div>
+            <div class="form-block-row">
+              <div class="form-block-cell-h"><b>Before Dinner</b></div>
+              <div class="form-block-cell">&nbsp;</div>
+            </div>
+            <div class="form-block-row">
+              <div class="form-block-cell-h"><b>After Dinner</b></div>
+              <div class="form-block-cell">&nbsp;</div>
+            </div>
+            <div class="form-block-row">
+              <div class="form-block-cell-h"><b>Bedtime / Overnight</b></div>
+              <div class="form-block-cell">&nbsp;</div>
+            </div>
+            <div class="form-block-row">
+              <div class="form-block-cell-h"><b>Total Carbs Today (Estimate)</b></div>
+              <div class="form-block-cell">&nbsp;</div>
+            </div>
+          </div>
+
+          <div class="pain-scale-table">
+            <div class="pain-scale-header">
+              <div class="pain-scale-cell-header">Medications / Insulin</div>
+              <div class="pain-scale-cell-header">Hydration</div>
+            </div>
+            <div class="pain-scale-row-single">
+              <div class="pain-scale-cell-numbers">
+                <div class="pain-scale-numbers">
+                  <span>Name:</span> ____________________
+                  <span>Dose:</span> ____________________
+                  <span>Time:</span> ____________________
+                </div>
+              </div>
+              <div class="pain-scale-cell-numbers">
+                <div class="pain-scale-numbers">
+                  <span>[ ] Drank enough water</span>
+                  <span>Amount (ml/L): _______________</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="form-block">
+            <div class="form-block-header">
+              <div class="form-block-cell">Mood</div>
+              <div class="form-block-cell">Energy Level</div>
+              <div class="form-block-cell">Symptoms</div>
+            </div>
+            <div class="form-block-row">
+              <div class="form-block-cell" style="font-size:14pt;">😊 😐 😩</div>
+              <div class="form-block-cell">1-10</div>
+              <div class="form-block-cell">Dizzy, Shaky, Fatigue,<br/> Blurred Vision, etc.</div>
+            </div>
+          </div>
+
+          <div><b>Notes:</b></div>
+          <div>______________________________________________</div>
+          <div>______________________________________________</div>
+        </section>
+
+      page_size: ${page_size}
+      save_path: workspace/harmony/kdp
+      filename: ${filename}
+      mode: append
+
+  - name: generate_monthly_summaries
+    type: tool
+    agent: PdfAgent
+    loop:
+      var: index
+      count: 12
+    input:
+      content: |
+        {{ style }}
+        <section>
+          <div class="section-tab" style="top: 90mm; background-color: #a9aaa9;"></div>
+          <div class="header-row">
+            <img src="workspace/harmony/images/logo2.png" alt="Logo">
+            <div>Monthly Blood Sugar Summary <span class="highlight-number">{{ index }}</span></div>
+          </div>
+
+          <div class="form-block">
+            <div class="form-block-header">
+              <div class="form-block-cell">Month</div>
+              <div class="form-block-cell"># of days tracked</div>
+              <div class="form-block-cell">Average fasting glucose</div>
+            </div>
+            <div class="form-block-row">
+              <div class="form-block-cell">&nbsp;</div>
+              <div class="form-block-cell">&nbsp;</div>
+              <div class="form-block-cell">&nbsp;</div>
+            </div>
+          </div>
+
+          <div class="form-block">
+            <div class="form-block-header">
+              <div class="form-block-cell">Highest reading (date & value)</div>
+              <div class="form-block-cell">Lowest reading (date & value)</div>
+            </div>
+            <div class="form-block-row">
+              <div class="form-block-cell">&nbsp;</div>
+              <div class="form-block-cell">&nbsp;</div>
+            </div>
+          </div>
+
+          <div class="form-block">
+            <div class="form-block-header">
+              <div class="form-block-cell">Average post-meal reading</div>
+              <div class="form-block-cell"># of readings in target range</div>
+              <div class="form-block-cell"># of readings above target</div>
+            </div>
+            <div class="form-block-row">
+              <div class="form-block-cell">&nbsp;</div>
+              <div class="form-block-cell">&nbsp;</div>
+              <div class="form-block-cell">&nbsp;</div>
+            </div>
+          </div>
+
+          <div class="form-block">
+            <div class="form-block-header">
+              <div class="form-block-cell">Lifestyle Factors (Diet, Exercise, Stress)</div>
+            </div>
+            <div class="form-block-row">
+              <div class="form-block-cell">&nbsp;</div>
+            </div>
+          </div>
+
+          <div class="form-block">
+            <div class="form-block-header">
+              <div class="form-block-cell">Most Common Disruptors</div>
+            </div>
+            <div class="form-block-row">
+              <div class="form-block-cell">Skipped meals, Stress, Lack of exercise, Illness, Overeating, Poor sleep, Med changes, Other: ____________</div>
+            </div>
+          </div>
+
+          <div class="monthly-summary">
+            <div><b>Strategies That Helped:</b></div>
+            <div>______________________________________________</div>
+            <div><b>Observations or Insights:</b></div>
+            <div>______________________________________________</div>
+            <div>______________________________________________</div>
+          </div>
+        </section>
+
+      page_size: ${page_size}
+      save_path: workspace/harmony/kdp
+      filename: ${filename}
+      mode: append
+
+  - name: generate_notes
+    type: tool
+    agent: PdfAgent
+    loop:
+      var: index
+      count: 2
+    input:
+      content: |
+        {{ style }}
+        <section>
+          <div class="section-tab" style="top: 120mm; background-color: #a9a9aa;"></div>
+          <div class="header-row">
+            <img src="workspace/harmony/images/logo2.png" alt="Logo">
+            <div>Notes</div><br/><br/>
+          </div>
+            <div>______________________________________________</div>
+            <div>______________________________________________</div>
+            <div>______________________________________________</div>
+            <div>______________________________________________</div>
+            <div>______________________________________________</div>
+            <div>______________________________________________</div>
+            <div>______________________________________________</div>
+            <div>______________________________________________</div>
+            <div>______________________________________________</div>
+            <div>______________________________________________</div>
+            <div>______________________________________________</div>
+            <div>______________________________________________</div>
+            <div>______________________________________________</div>
+            <div>______________________________________________</div>
+            <div>______________________________________________</div>
+            <div>______________________________________________</div>
+            <div>______________________________________________</div>
+        </section>
+      page_size: ${page_size}
+      save_path: workspace/harmony/kdp
+      filename: ${filename}
+      mode: append
+
+
+  - name: generate_about publisher
+    type: tool
+    agent: PdfAgent
+    input:
+      content: |
+         {{ style }}
+          <section>
+            <div class="section-tab"></div>
+            <h2>About the Publisher</h2>
+              <p>
+                Harmony Health is dedicated to empowering individuals on their personal wellness journeys through thoughtfully designed planners, trackers, and health journals. Each Harmony Health publication is created with care to support mindfulness, symptom management, and self-awareness—one page at a time.
+              </p>
+              <p>
+                Whether you are tracking migraines, sleep, blood sugar, mood, or overall well-being, our tools are designed to help you recognize patterns, make informed decisions, and take small daily steps toward a healthier life.
+              </p>
+          </section>
+      page_size: ${page_size}
+      save_path: workspace/harmony/kdp
+      filename: ${filename}
+      mode: append
+      add_page_number: False
+===
+harmony/kdp/wf_mood_mental.yaml
+===
+name: pdf Blood Sugar Tracker notebook
+description: this workflow is to create a pdf Sleep Tracker notebook to publish in kdp
+  
+include_vars: vars/vars.yaml
+vars:
+  model: ModelOllama
+  link_google_font: <link href="https://fonts.googleapis.com/css2?family=Lora&display=swap" rel="stylesheet">
+  book_title: "Harmony Health: Mood & Mental Health Tracker"
+  book_subtitle: Covers emotional journaling, mood ratings, mental health patterns, and lifestyle triggers.
+  inspirational_phrase: $file:workspace/harmony/kdp/mood_mental/inspirational.txt
+  inspirational_author: Harmony Health
+  filename: mood_mental.pdf
+  save_path: workspace/harmony/kdp/mood_mental
+  filepath_keywords: workspace/harmony/kdp/mood_mental/keywords.txt
+  filepath: workspace/harmony/kdp/mood_mental/inspirational.txt
+
+
+include:
+  - fragments/book_common_steps.yaml
+
+steps:
+
+  - name: generate_description_and_keywords
+    type: ai
+    agent: ChatAgent
+    model: ModelGpt35Turbo
+    template_name: harmony_kdp_01
+    when: "{{ not os.path.exists(filepath_keywords) }}"
+    input:
+      question: "The book title is '{{ book_title }}' and the subtitle '{{ book_subtitle }}'."
+      save_to_file: true
+      file_name: ${filepath_keywords}
+
+  - name: generate_inspirational_phrase
+    type: ai
+    agent: ChatAgent
+    model: ModelGpt35Turbo
+    template_name: inspirational_quote
+    when: "{{ not os.path.exists(filepath) }}"
+    input:
+      question: "A book titled '{{ book_title }}' that helps readers find strength during illness"
+      save_to_file: true
+      file_name: ${filepath}
+
+  - name: generate_index
+    type: tool
+    agent: PdfAgent
+    input:
+      content: |
+        {{ style }}
+        <section>
+          <h2>Index</h2>
+          <div class="index-entry"><span>How to Use This Book</span><span>4</span></div>
+          <div class="index-entry"><span>What's Inside</span><span>5</span></div>
+          <div class="index-entry"><span>Filling Out a Daily Log</span><span>6</span></div>
+          <div class="index-entry"><span>Using Monthly Summaries</span><span>8</span></div>
+          <div class="index-entry"><span>Tips for Getting the Most Out of This Tracker</span><span>10</span></div>
+          <div class="index-entry"><span>Daily Log</span><span>11</span></div>
+          <div class="index-entry"><span>Monthly Summary</span><span>101</span></div>
+          <div class="index-entry"><span>Notes</span><span>113</span></div>
+          <div class="index-entry"><span>About the publisher</span><span>115</span></div>
+        </section>
+      page_size: ${page_size}
+      save_path: ${save_path}
+      filename: ${filename}
+      mode: append
+      add_page_number: False
+
+  - name: generate_how_tu_use
+    type: tool
+    agent: PdfAgent
+    input:
+      content: |
+        {{ style }}
+        <section>
+          <div class="section-tab"></div>
+          <h2 style="margin-top: 80px;">How to Use This Book</h2>
+          <p>
+            <b>The Harmony Health: Mood & Mental Health Tracker</b> is designed to help you better understand your emotions, recognize triggers, and support your mental and emotional well-being. Whether you're managing stress, building self-awareness, or simply cultivating more balance in your daily life, this journal provides a safe, structured space for reflection and growth.
+            <br/><br/>
+            Use this book daily to log your mood, energy, emotional patterns, triggers, and self-care actions. You'll also find space to record gratitude, affirmations, and journal notes. At the end of each month, complete the Monthly Summary to reflect on patterns, track your progress, and set goals for your mental wellness journey.
+          </p>
+        </section>
+      page_size: ${page_size}
+      save_path: ${save_path}
+      filename: ${filename}
+      mode: append
+
+  - name: generate_Inside
+    type: tool
+    agent: PdfAgent
+    input:
+      content: |
+        {{ style }}
+        <section>
+          <div class="section-tab"></div>
+          <h2>What's Inside:</h2>
+          <ul>
+            <li><b>Daily Mood & Mental Health Logs:</b> 90+ pages to track mood, emotions, triggers, energy levels, and self-care habits<br/></li>
+            <li><b>Monthly Summaries:</b> Pages to reflect on emotional patterns, stressors, and self-care effectiveness<br/></li>
+            <li><b>Trigger & Emotion Checklists:</b> Identify common influences on your mood and recurring emotional states<br/></li>
+            <li><b>Gratitude & Affirmation Prompts:</b> Space to build daily resilience and reinforce positive thought patterns<br/></li>
+            <li><b>Notes Section:</b> Extra pages at the end for reflections, journal entries, therapy insights, or mental wellness goals</li>
+          </ul>
+        </section>
+      page_size: ${page_size}
+      save_path: ${save_path}
+      filename: ${filename}
+      mode: append
+
+  - name: generate_filling_daily
+    type: tool
+    agent: PdfAgent
+    input:
+      content: |
+        {{ style }}
+        <section>
+          <div class="section-tab"></div>
+          <h2>Filling Out a Daily Log</h2>
+          <p>
+            Each page of the <b>Harmony Health: Mood & Mental Health Tracker</b> is designed to help you better understand your emotional state, thought patterns, and the habits that support (or challenge) your mental well-being. Use this tracker daily, either in the morning to set intentions or in the evening to reflect on your experiences.
+          </p>
+
+          <p>Each daily log includes the following fields:</p>
+          <ul>
+            <li><b>Date:</b> Record the current day for reference and progress tracking.</li>
+            <li><b>Mood Check-In:</b> Rate your overall mood on a scale of 1-10 or with emojis that best match how you feel.</li>
+            <li><b>Energy Level:</b> Log your energy on a 1-10 scale or note highs and lows throughout the day.</li>
+            <li><b>Dominant Emotions:</b> Identify key feelings experienced (e.g., joy, stress, calm, frustration) to spot recurring emotional patterns.</li>
+            <li><b>Triggers or Influences:</b> Note any events, habits, or environments that affected your mood (positive or negative).</li>
+            <li><b>Self-Care Activities:</b> Track actions that supported your well-being like journaling, exercise, rest, or therapy.</li>
+            <li><b>Reflection or Notes:</b> Use this space to write about anything meaningful—wins, struggles, or things you're working through.</li>
+            <li><b>Gratitude or Affirmation:</b> Add one short thought of appreciation or a positive statement to carry forward.</li>
+          </ul>
+          <br/>
+          <h2>Tip</h2>
+          <p>
+            This journal is a safe space—there are no wrong entries. Use it with compassion, and over time, you'll begin to see patterns and insights that can guide your mental health journey. Even small, honest entries can lead to meaningful growth.
+          </p>
+        </section>    
+      page_size: ${page_size}
+      save_path: ${save_path}
+      filename: ${filename}
+      mode: append
+
+  - name: generate_filling_monthly
+    type: tool
+    agent: PdfAgent
+    input:
+      content: |
+        {{ style }}
+        <section>
+          <div class="section-tab"></div>
+          <h2>Using Monthly Summaries</h2>
+          <p>
+            The Monthly Summary is your opportunity to reflect on your emotional well-being across the past few weeks. This section helps you identify patterns, track emotional triggers, highlight progress, and define meaningful goals for the next month. Fill it out at the end of each month using insights from your daily logs.
+          </p>
+
+          <p>Here's how to use each part of the Monthly Summary:</p>
+          <ul>
+            <li><b>Month:</b> Write the name of the month you're reviewing (e.g., July 2025).</li>
+            <li><b>Number of Days Tracked:</b> Count how many daily entries you completed during the month.</li>
+            <li><b>Average Mood:</b> Estimate your overall mood level for the month on a scale of 1-10, or choose a word that best summarizes how you felt most of the time.</li>
+            <li><b>Average Energy Level:</b> Use your daily entries to calculate a general sense of your energy over the month.</li>
+            <li><b>Most Common Emotions:</b> List 2-3 feelings that came up the most often (positive or negative).</li>
+            <li><b>Frequent Triggers or Stressors:</b> Reflect on what commonly affected your mood — like work stress, sleep issues, screen time, or lack of routine.</li>
+            <li><b>Self-Care Habits That Helped:</b> Write down the strategies that helped improve your emotional state (e.g., journaling, therapy, time in nature).</li>
+            <li><b>Key Insights or Observations:</b> Think about what stood out this month — maybe your mood improved on weekends, or certain triggers repeated. This is a space for free reflection.</li>
+            <li><b>Mental Health Goals for Next Month:</b> Set 1-3 small, supportive goals that you feel ready to try, such as “go to bed earlier,” “talk to a friend weekly,” or “track my mood daily.”</li>
+          </ul>
+
+          <h2>Tip</h2>
+          <p>
+            This summary isn't about judgment — it's about growth. Even difficult months can teach you something valuable. Be kind to yourself and use what you discover to take one small step forward next month.
+          </p>
+        </section>
+
+      page_size: ${page_size}
+      save_path: ${save_path}
+      filename: ${filename}
+      mode: append
+
+
+  - name: generate_tips
+    type: tool
+    agent: PdfAgent
+    input:
+      content: |
+        {{ style }}
+        <section>
+          <div class="section-tab"></div>
+          <h2>Tips for Getting the Most Out of This Tracker</h2>
+          <ul>
+            <li><b>Be consistent</b> — even a few days a week of tracking can reveal emotional patterns and improve self-awareness.</li>
+            <li><b>Write honestly and without judgment</b> — this journal is for you, so don't be afraid to note both highs and lows.</li>
+            <li><b>Use symbols or color coding</b> — for example: 💬 for talking to a friend, 🧘 for meditation, 🌧️ for low mood, 🌞 for good energy.</li>
+            <li><b>Look for trends</b> — your monthly summary will help you connect the dots between triggers, emotions, and energy levels.</li>
+            <li><b>Pair logging with a calming ritual</b> — such as journaling before bed, during morning coffee, or after therapy.</li>
+            <li><b>Don't aim for perfection</b> — the goal is progress and awareness, not flawless entries every day.</li>
+            <li><b>Celebrate your growth</b> — noting positive shifts, coping strategies, or even one better day can build confidence and motivation.</li>
+          </ul>
+        </section>
+      page_size: ${page_size}
+      save_path: ${save_path}
+      filename: ${filename}
+      mode: append
+
+  - name: generate_dayly_logs
+    type: tool
+    agent: PdfAgent
+    loop:
+      var: index
+      count: 90
+    input:
+      content: |
+        {{ style }}
+          <section>
+            <div class="section-tab" style="top: 60mm; background-color: #aaa9a9;"></div>
+            <div class="header-row">
+              <img src="workspace/harmony/images/logo2.png" alt="Logo">
+              <div>Daily Log <span class="highlight-number">{{ index }}</span></div>
+            </div>
+
+            <div class="form-block">
+              <div class="form-block-header">
+                <div class="form-block-cell">Date</div>
+                <div class="form-block-cell">Mood (1-10 or emoji)</div>
+                <div class="form-block-cell">Energy Level</div>
+              </div>
+              <div class="form-block-row">
+                <div class="form-block-cell">&nbsp;</div>
+                <div class="form-block-cell" style="font-size:14pt;">😊 😐 😢 😠 😴</div>
+                <div class="form-block-cell">1-10</div>
+              </div>
+            </div>
+
+            <div class="form-block">
+              <div class="form-block-header">
+                <div class="form-block-cell">Dominant Emotions</div>
+                <div class="form-block-cell">Triggers or Influences</div>
+              </div>
+              <div class="form-block-row">
+                <div class="form-block-cell">Joy, Calm, Stress, Sadness, Anxiety, Frustration, Gratitude, etc.</div>
+                <div class="form-block-cell">Work, Sleep, Food, Relationships, Social Media, Environment, Unknown</div>
+              </div>
+            </div>
+
+            <div class="form-block">
+              <div class="form-block-header">
+                <div class="form-block-cell">Activities</div>
+              </div>
+              <div class="form-block-row">
+                <div class="form-block-cell">
+                  <span>[ ] Journaling </span>
+                  <span>[ ] Meditation </span>
+                  <span>[ ] Exercise </span>
+                  <span>[ ] Creative outlet </span>
+                  <span>[ ] Alone time </span>
+                  <span>[ ] Social support</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-block">
+              <div class="form-block-header">
+                <div class="form-block-cell">Gratitude or Affirmation</div>
+              </div>
+              <div class="form-block-row">
+                <div class="form-block-cell">Today I'm grateful for...<br/>
+                _____________________________________________________<br/>
+                _____________________________________________________<br/>
+                A thought I want to carry into tomorrow is...
+                _____________________________________________________<br/>
+                _____________________________________________________</div>
+              </div>
+            </div>
+            <div class="form-block">
+              <div class="form-block-header">
+                <div class="form-block-cell">Reflection / Notes</div>
+              </div>
+              <div class="form-block-row">
+                <div class="form-block-cell">_____________________________________________________<br/>
+                _____________________________________________________<br/>
+                _____________________________________________________<br/>
+                _____________________________________________________<br/>
+                _____________________________________________________<br/>
+                _____________________________________________________</div>
+              </div>
+            </div>
+          </section>
+
+      page_size: ${page_size}
+      save_path: ${save_path}
+      filename: ${filename}
+      mode: append
+
+  - name: generate_monthly_summaries
+    type: tool
+    agent: PdfAgent
+    loop:
+      var: index
+      count: 12
+    input:
+      content: |
+        {{ style }}
+        <section>
+          <div class="section-tab" style="top: 90mm; background-color: #aaa9a9;"></div>
+          <div class="header-row">
+            <img src="workspace/harmony/images/logo2.png" alt="Logo">
+            <div>Monthly Summary <span class="highlight-number">{{ index }}</span></div>
+          </div>
+
+          <div class="form-block">
+            <div class="form-block-header">
+              <div class="form-block-cell">Month</div>
+              <div class="form-block-cell"># of Days Tracked</div>
+              <div class="form-block-cell">Average Mood (1-10)</div>
+            </div>
+            <div class="form-block-row">
+              <div class="form-block-cell">&nbsp;</div>
+              <div class="form-block-cell">&nbsp;</div>
+              <div class="form-block-cell">&nbsp;</div>
+            </div>
+          </div>
+
+          <div class="form-block">
+            <div class="form-block-header">
+              <div class="form-block-cell">Average Energy Level</div>
+              <div class="form-block-cell">Most Common Emotions</div>
+            </div>
+            <div class="form-block-row">
+              <div class="form-block-cell">1-10</div>
+              <div class="form-block-cell">e.g., calm, anxious, grateful</div>
+            </div>
+          </div>
+
+          <div class="form-block">
+            <div class="form-block-header">
+              <div class="form-block-cell">Frequent Triggers or Stressors</div>
+            </div>
+            <div class="form-block-row">
+              <div class="form-block-cell">e.g., work stress, poor sleep, social isolation</div>
+            </div>
+          </div>
+
+          <div class="form-block">
+            <div class="form-block-header">
+              <div class="form-block-cell">Self-Care Habits That Helped</div>
+            </div>
+            <div class="form-block-row">
+              <div class="form-block-cell">e.g., journaling, mindfulness, exercise</div>
+            </div>
+          </div>
+
+          <div class="form-block">
+            <div class="form-block-header">
+              <div class="form-block-cell">Key Insights or Observations</div>
+            </div>
+            <div class="form-block-row">
+              <div class="form-block-cell">_____________________________________________________<br/>
+              _____________________________________________________<br/>
+              _____________________________________________________<br/>
+              _____________________________________________________
+              </div>
+            </div>
+          </div>
+
+          <div class="form-block">
+            <div class="form-block-header">
+              <div class="form-block-cell">Mental Health Goals for Next Month</div>
+            </div>
+            <div class="form-block-row">
+              <div class="form-block-cell">e.g., Journal more often, reduce phone use at night, connect with a friend<br/>
+               _____________________________________________________<br/>
+               _____________________________________________________<br/>
+               _____________________________________________________<br/>
+               _____________________________________________________<br/>
+               _____________________________________________________<br/>
+               _____________________________________________________
+              </div>
+            </div>
+          </div>
+        </section>
+
+
+      page_size: ${page_size}
+      save_path: ${save_path}
+      filename: ${filename}
+      mode: append
+
+  - name: generate_notes
+    type: tool
+    agent: PdfAgent
+    loop:
+      var: index
+      count: 2
+    input:
+      content: |
+        {{ style }}
+        <section>
+          <div class="section-tab" style="top: 120mm; background-color: #a9a9aa;"></div>
+          <div class="header-row">
+            <img src="workspace/harmony/images/logo2.png" alt="Logo">
+            <div>Notes</div><br/><br/>
+          </div>
+            <div>______________________________________________</div>
+            <div>______________________________________________</div>
+            <div>______________________________________________</div>
+            <div>______________________________________________</div>
+            <div>______________________________________________</div>
+            <div>______________________________________________</div>
+            <div>______________________________________________</div>
+            <div>______________________________________________</div>
+            <div>______________________________________________</div>
+            <div>______________________________________________</div>
+            <div>______________________________________________</div>
+            <div>______________________________________________</div>
+            <div>______________________________________________</div>
+            <div>______________________________________________</div>
+            <div>______________________________________________</div>
+            <div>______________________________________________</div>
+            <div>______________________________________________</div>
+        </section>
+      page_size: ${page_size}
+      save_path: ${save_path}
+      filename: ${filename}
+      mode: append
+
+
+  - name: generate_about publisher
+    type: tool
+    agent: PdfAgent
+    input:
+      content: |
+         {{ style }}
+          <section>
+            <div class="section-tab"></div>
+            <h2>About the Publisher</h2>
+              <p>
+                Harmony Health is dedicated to empowering individuals on their personal wellness journeys through thoughtfully designed planners, trackers, and health journals. Each Harmony Health publication is created with care to support mindfulness, symptom management, and self-awareness—one page at a time.
+              </p>
+              <p>
+                Whether you are tracking migraines, sleep, blood sugar, mood, or overall well-being, our tools are designed to help you recognize patterns, make informed decisions, and take small daily steps toward a healthier life.
+              </p>
+          </section>
+      page_size: ${page_size}
+      save_path: ${save_path}
+      filename: ${filename}
+      mode: append
+      add_page_number: False
+===
+harmony/kdp/wf_wellness.yaml
+===
+name: pdf Blood Sugar Tracker notebook
+description: this workflow is to create a pdf Sleep Tracker notebook to publish in kdp
+  
+include_vars: vars/vars.yaml
+vars:
+  model: ModelOllama
+  link_google_font: <link href="https://fonts.googleapis.com/css2?family=Lora&display=swap" rel="stylesheet">
+  book_title: "Harmony Health: Daily Wellness Journal"
+  book_subtitle: A guided space to track habits, gratitude, self-care, and progress.
+  inspirational_phrase: $file:workspace/harmony/kdp/wellness/inspirational.txt
+  inspirational_author: Harmony Health
+  filename: wellness.pdf
+  save_path: workspace/harmony/kdp/wellness
+  filepath_keywords: workspace/harmony/kdp/wellness/keywords.txt
+  filepath: workspace/harmony/kdp/wellness/inspirational.txt
+
+
+include:
+  - fragments/book_common_steps.yaml
+
+steps:
+
+  - name: generate_description_and_keywords
+    type: ai
+    agent: ChatAgent
+    model: ModelGpt35Turbo
+    template_name: harmony_kdp_01
+    when: "{{ not os.path.exists(filepath_keywords) }}"
+    input:
+      question: "The book title is '{{ book_title }}' and the subtitle '{{ book_subtitle }}'."
+      save_to_file: true
+      file_name: ${filepath_keywords}
+
+  - name: generate_inspirational_phrase
+    type: ai
+    agent: ChatAgent
+    model: ModelGpt35Turbo
+    template_name: inspirational_quote
+    when: "{{ not os.path.exists(filepath) }}"
+    input:
+      question: "A book titled '{{ book_title }}' that helps readers find strength during illness"
+      save_to_file: true
+      file_name: ${filepath}
+
+  - name: generate_index
+    type: tool
+    agent: PdfAgent
+    input:
+      content: |
+        {{ style }}
+        <section>
+          <h2>Index</h2>
+          <div class="index-entry"><span>How to Use This Book</span><span>4</span></div>
+          <div class="index-entry"><span>What's Inside</span><span>5</span></div>
+          <div class="index-entry"><span>Filling Out a Daily Log</span><span>6</span></div>
+          <div class="index-entry"><span>Using Monthly Summaries</span><span>8</span></div>
+          <div class="index-entry"><span>Tips for Getting the Most Out of This Tracker</span><span>10</span></div>
+          <div class="index-entry"><span>Daily Log</span><span>11</span></div>
+          <div class="index-entry"><span>Monthly Summary</span><span>101</span></div>
+          <div class="index-entry"><span>Notes</span><span>113</span></div>
+          <div class="index-entry"><span>About the publisher</span><span>115</span></div>
+        </section>
+      page_size: ${page_size}
+      save_path: ${save_path}
+      filename: ${filename}
+      mode: append
+      add_page_number: False
+
+  - name: generate_how_tu_use
+    type: tool
+    agent: PdfAgent
+    input:
+      content: |
+        {{ style }}
+        <section>
+          <div class="section-tab"></div>
+          <h2 style="margin-top: 80px;">How to Use This Book</h2>
+          <p>
+            <b>The Harmony Health: Mood & Mental Health Tracker</b> is designed to help you better understand your emotions, recognize triggers, and support your mental and emotional well-being. Whether you're managing stress, building self-awareness, or simply cultivating more balance in your daily life, this journal provides a safe, structured space for reflection and growth.
+            <br/><br/>
+            Use this book daily to log your mood, energy, emotional patterns, triggers, and self-care actions. You'll also find space to record gratitude, affirmations, and journal notes. At the end of each month, complete the Monthly Summary to reflect on patterns, track your progress, and set goals for your mental wellness journey.
+          </p>
+        </section>
+      page_size: ${page_size}
+      save_path: ${save_path}
+      filename: ${filename}
+      mode: append
+
+  - name: generate_Inside
+    type: tool
+    agent: PdfAgent
+    input:
+      content: |
+        {{ style }}
+        <section>
+          <div class="section-tab"></div>
+          <h2>What's Inside:</h2>
+          <ul>
+            <li><b>Daily Mood & Mental Health Logs:</b> 90+ pages to track mood, emotions, triggers, energy levels, and self-care habits<br/></li>
+            <li><b>Monthly Summaries:</b> Pages to reflect on emotional patterns, stressors, and self-care effectiveness<br/></li>
+            <li><b>Trigger & Emotion Checklists:</b> Identify common influences on your mood and recurring emotional states<br/></li>
+            <li><b>Gratitude & Affirmation Prompts:</b> Space to build daily resilience and reinforce positive thought patterns<br/></li>
+            <li><b>Notes Section:</b> Extra pages at the end for reflections, journal entries, therapy insights, or mental wellness goals</li>
+          </ul>
+        </section>
+      page_size: ${page_size}
+      save_path: ${save_path}
+      filename: ${filename}
+      mode: append
+
+  - name: generate_filling_daily
+    type: tool
+    agent: PdfAgent
+    input:
+      content: |
+        {{ style }}
+        <section>
+          <div class="section-tab"></div>
+          <h2>Filling Out a Daily Log</h2>
+          <p>
+            Each page of the <b>Harmony Health: Mood & Mental Health Tracker</b> is designed to help you better understand your emotional state, thought patterns, and the habits that support (or challenge) your mental well-being. Use this tracker daily, either in the morning to set intentions or in the evening to reflect on your experiences.
+          </p>
+
+          <p>Each daily log includes the following fields:</p>
+          <ul>
+            <li><b>Date:</b> Record the current day for reference and progress tracking.</li>
+            <li><b>Mood Check-In:</b> Rate your overall mood on a scale of 1-10 or with emojis that best match how you feel.</li>
+            <li><b>Energy Level:</b> Log your energy on a 1-10 scale or note highs and lows throughout the day.</li>
+            <li><b>Dominant Emotions:</b> Identify key feelings experienced (e.g., joy, stress, calm, frustration) to spot recurring emotional patterns.</li>
+            <li><b>Triggers or Influences:</b> Note any events, habits, or environments that affected your mood (positive or negative).</li>
+            <li><b>Self-Care Activities:</b> Track actions that supported your well-being like journaling, exercise, rest, or therapy.</li>
+            <li><b>Reflection or Notes:</b> Use this space to write about anything meaningful—wins, struggles, or things you're working through.</li>
+            <li><b>Gratitude or Affirmation:</b> Add one short thought of appreciation or a positive statement to carry forward.</li>
+          </ul>
+          <br/>
+          <h2>Tip</h2>
+          <p>
+            This journal is a safe space—there are no wrong entries. Use it with compassion, and over time, you'll begin to see patterns and insights that can guide your mental health journey. Even small, honest entries can lead to meaningful growth.
+          </p>
+        </section>    
+      page_size: ${page_size}
+      save_path: ${save_path}
+      filename: ${filename}
+      mode: append
+
+  - name: generate_filling_monthly
+    type: tool
+    agent: PdfAgent
+    input:
+      content: |
+        {{ style }}
+        <section>
+          <div class="section-tab"></div>
+          <h2>Using Monthly Summaries</h2>
+          <p>
+            The Monthly Summary is your opportunity to reflect on your emotional well-being across the past few weeks. This section helps you identify patterns, track emotional triggers, highlight progress, and define meaningful goals for the next month. Fill it out at the end of each month using insights from your daily logs.
+          </p>
+
+          <p>Here's how to use each part of the Monthly Summary:</p>
+          <ul>
+            <li><b>Month:</b> Write the name of the month you're reviewing (e.g., July 2025).</li>
+            <li><b>Number of Days Tracked:</b> Count how many daily entries you completed during the month.</li>
+            <li><b>Average Mood:</b> Estimate your overall mood level for the month on a scale of 1-10, or choose a word that best summarizes how you felt most of the time.</li>
+            <li><b>Average Energy Level:</b> Use your daily entries to calculate a general sense of your energy over the month.</li>
+            <li><b>Most Common Emotions:</b> List 2-3 feelings that came up the most often (positive or negative).</li>
+            <li><b>Frequent Triggers or Stressors:</b> Reflect on what commonly affected your mood — like work stress, sleep issues, screen time, or lack of routine.</li>
+            <li><b>Self-Care Habits That Helped:</b> Write down the strategies that helped improve your emotional state (e.g., journaling, therapy, time in nature).</li>
+            <li><b>Key Insights or Observations:</b> Think about what stood out this month — maybe your mood improved on weekends, or certain triggers repeated. This is a space for free reflection.</li>
+            <li><b>Mental Health Goals for Next Month:</b> Set 1-3 small, supportive goals that you feel ready to try, such as “go to bed earlier,” “talk to a friend weekly,” or “track my mood daily.”</li>
+          </ul>
+
+          <h2>Tip</h2>
+          <p>
+            This summary isn't about judgment — it's about growth. Even difficult months can teach you something valuable. Be kind to yourself and use what you discover to take one small step forward next month.
+          </p>
+        </section>
+
+      page_size: ${page_size}
+      save_path: ${save_path}
+      filename: ${filename}
+      mode: append
+
+
+  - name: generate_tips
+    type: tool
+    agent: PdfAgent
+    input:
+      content: |
+        {{ style }}
+        <section>
+          <div class="section-tab"></div>
+          <h2>Tips for Getting the Most Out of This Tracker</h2>
+          <ul>
+            <li><b>Be consistent</b> — even a few days a week of tracking can reveal emotional patterns and improve self-awareness.</li>
+            <li><b>Write honestly and without judgment</b> — this journal is for you, so don't be afraid to note both highs and lows.</li>
+            <li><b>Use symbols or color coding</b> — for example: 💬 for talking to a friend, 🧘 for meditation, 🌧️ for low mood, 🌞 for good energy.</li>
+            <li><b>Look for trends</b> — your monthly summary will help you connect the dots between triggers, emotions, and energy levels.</li>
+            <li><b>Pair logging with a calming ritual</b> — such as journaling before bed, during morning coffee, or after therapy.</li>
+            <li><b>Don't aim for perfection</b> — the goal is progress and awareness, not flawless entries every day.</li>
+            <li><b>Celebrate your growth</b> — noting positive shifts, coping strategies, or even one better day can build confidence and motivation.</li>
+          </ul>
+        </section>
+      page_size: ${page_size}
+      save_path: ${save_path}
+      filename: ${filename}
+      mode: append
+
+  - name: generate_dayly_logs
+    type: tool
+    agent: PdfAgent
+    loop:
+      var: index
+      count: 1
+    input:
+      content: |
+        {{ style }}
+          <section>
+            <div class="section-tab" style="top: 60mm; background-color: #aaa9a9;"></div>
+            <div class="header-row">
+              <img src="workspace/harmony/images/logo2.png" alt="Logo">
+              <div>Daily Log <span class="highlight-number">{{ index }}</span></div>
+            </div>
+
+            <div class="form-block">
+              <div class="form-block-header">
+                <div class="form-block-cell">Date</div>
+                <div class="form-block-cell">Mood (1-10 or emoji)</div>
+                <div class="form-block-cell">Energy Level</div>
+              </div>
+              <div class="form-block-row">
+                <div class="form-block-cell">&nbsp;</div>
+                <div class="form-block-cell" style="font-size:14pt;">😊 😐 😢 😠 😴</div>
+                <div class="form-block-cell">1-10</div>
+              </div>
+            </div>
+
+            <div class="form-block">
+              <div class="form-block-header">
+                <div class="form-block-cell">Dominant Emotions</div>
+                <div class="form-block-cell">Triggers or Influences</div>
+              </div>
+              <div class="form-block-row">
+                <div class="form-block-cell">Joy, Calm, Stress, Sadness, Anxiety, Frustration, Gratitude, etc.</div>
+                <div class="form-block-cell">Work, Sleep, Food, Relationships, Social Media, Environment, Unknown</div>
+              </div>
+            </div>
+
+            <div class="form-block">
+              <div class="form-block-header">
+                <div class="form-block-cell">Activities</div>
+              </div>
+              <div class="form-block-row">
+                <div class="form-block-cell">
+                  <span>[ ] Journaling </span>
+                  <span>[ ] Meditation </span>
+                  <span>[ ] Exercise </span>
+                  <span>[ ] Creative outlet </span>
+                  <span>[ ] Alone time </span>
+                  <span>[ ] Social support</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-block">
+              <div class="form-block-header">
+                <div class="form-block-cell">Gratitude or Affirmation</div>
+              </div>
+              <div class="form-block-row">
+                <div class="form-block-cell">Today I'm grateful for...<br/>
+                _____________________________________________________<br/>
+                _____________________________________________________<br/>
+                A thought I want to carry into tomorrow is...
+                _____________________________________________________<br/>
+                _____________________________________________________</div>
+              </div>
+            </div>
+            <div class="form-block">
+              <div class="form-block-header">
+                <div class="form-block-cell">Reflection / Notes</div>
+              </div>
+              <div class="form-block-row">
+                <div class="form-block-cell">_____________________________________________________<br/>
+                _____________________________________________________<br/>
+                _____________________________________________________<br/>
+                _____________________________________________________<br/>
+                _____________________________________________________<br/>
+                _____________________________________________________</div>
+              </div>
+            </div>
+          </section>
+
+      page_size: ${page_size}
+      save_path: ${save_path}
+      filename: ${filename}
+      mode: append
+
+  - name: generate_monthly_summaries
+    type: tool
+    agent: PdfAgent
+    loop:
+      var: index
+      count: 1
+    input:
+      content: |
+        {{ style }}
+        <section>
+          <div class="section-tab" style="top: 90mm; background-color: #aaa9a9;"></div>
+          <div class="header-row">
+            <img src="workspace/harmony/images/logo2.png" alt="Logo">
+            <div>Monthly Summary <span class="highlight-number">{{ index }}</span></div>
+          </div>
+
+          <div class="form-block">
+            <div class="form-block-header">
+              <div class="form-block-cell">Month</div>
+              <div class="form-block-cell"># of Days Tracked</div>
+              <div class="form-block-cell">Average Mood (1-10)</div>
+            </div>
+            <div class="form-block-row">
+              <div class="form-block-cell">&nbsp;</div>
+              <div class="form-block-cell">&nbsp;</div>
+              <div class="form-block-cell">&nbsp;</div>
+            </div>
+          </div>
+
+          <div class="form-block">
+            <div class="form-block-header">
+              <div class="form-block-cell">Average Energy Level</div>
+              <div class="form-block-cell">Most Common Emotions</div>
+            </div>
+            <div class="form-block-row">
+              <div class="form-block-cell">1-10</div>
+              <div class="form-block-cell">e.g., calm, anxious, grateful</div>
+            </div>
+          </div>
+
+          <div class="form-block">
+            <div class="form-block-header">
+              <div class="form-block-cell">Frequent Triggers or Stressors</div>
+            </div>
+            <div class="form-block-row">
+              <div class="form-block-cell">e.g., work stress, poor sleep, social isolation</div>
+            </div>
+          </div>
+
+          <div class="form-block">
+            <div class="form-block-header">
+              <div class="form-block-cell">Self-Care Habits That Helped</div>
+            </div>
+            <div class="form-block-row">
+              <div class="form-block-cell">e.g., journaling, mindfulness, exercise</div>
+            </div>
+          </div>
+
+          <div class="form-block">
+            <div class="form-block-header">
+              <div class="form-block-cell">Key Insights or Observations</div>
+            </div>
+            <div class="form-block-row">
+              <div class="form-block-cell">_____________________________________________________<br/>
+              _____________________________________________________<br/>
+              _____________________________________________________<br/>
+              _____________________________________________________
+              </div>
+            </div>
+          </div>
+
+          <div class="form-block">
+            <div class="form-block-header">
+              <div class="form-block-cell">Mental Health Goals for Next Month</div>
+            </div>
+            <div class="form-block-row">
+              <div class="form-block-cell">e.g., Journal more often, reduce phone use at night, connect with a friend<br/>
+               _____________________________________________________<br/>
+               _____________________________________________________<br/>
+               _____________________________________________________<br/>
+               _____________________________________________________<br/>
+               _____________________________________________________<br/>
+               _____________________________________________________
+              </div>
+            </div>
+          </div>
+        </section>
+
+
+      page_size: ${page_size}
+      save_path: ${save_path}
+      filename: ${filename}
+      mode: append
+
+  - name: generate_notes
+    type: tool
+    agent: PdfAgent
+    loop:
+      var: index
+      count: 2
+    input:
+      content: |
+        {{ style }}
+        <section>
+          <div class="section-tab" style="top: 120mm; background-color: #a9a9aa;"></div>
+          <div class="header-row">
+            <img src="workspace/harmony/images/logo2.png" alt="Logo">
+            <div>Notes</div><br/><br/>
+          </div>
+            <div>______________________________________________</div>
+            <div>______________________________________________</div>
+            <div>______________________________________________</div>
+            <div>______________________________________________</div>
+            <div>______________________________________________</div>
+            <div>______________________________________________</div>
+            <div>______________________________________________</div>
+            <div>______________________________________________</div>
+            <div>______________________________________________</div>
+            <div>______________________________________________</div>
+            <div>______________________________________________</div>
+            <div>______________________________________________</div>
+            <div>______________________________________________</div>
+            <div>______________________________________________</div>
+            <div>______________________________________________</div>
+            <div>______________________________________________</div>
+            <div>______________________________________________</div>
+        </section>
+      page_size: ${page_size}
+      save_path: ${save_path}
+      filename: ${filename}
+      mode: append
+
+
+  - name: generate_about publisher
+    type: tool
+    agent: PdfAgent
+    input:
+      content: |
+         {{ style }}
+          <section>
+            <div class="section-tab"></div>
+            <h2>About the Publisher</h2>
+              <p>
+                Harmony Health is dedicated to empowering individuals on their personal wellness journeys through thoughtfully designed planners, trackers, and health journals. Each Harmony Health publication is created with care to support mindfulness, symptom management, and self-awareness—one page at a time.
+              </p>
+              <p>
+                Whether you are tracking migraines, sleep, blood sugar, mood, or overall well-being, our tools are designed to help you recognize patterns, make informed decisions, and take small daily steps toward a healthier life.
+              </p>
+          </section>
+      page_size: ${page_size}
+      save_path: ${save_path}
+      filename: ${filename}
+      mode: append
+      add_page_number: False
 ===
 harmony/kdp/vars/vars.yaml
 ===
@@ -1821,6 +2730,14 @@ vars:
           vertical-align: top;
         }
 
+        .form-block-cell-h {
+          display: table-cell;
+          background-color: #f2f2f2;
+          padding: 2px 8px;
+          border: 1px solid #ccc;
+          vertical-align: top;
+        }
+
         .form-block-cell img {
           width: 100px;
           height: 50px;
@@ -1852,7 +2769,7 @@ steps:
           </div>
         </section>
       page_size: ${page_size}
-      save_path: workspace/harmony/kdp
+      save_path: ${save_path}
       filename: ${filename}
       add_page_number: False
 
@@ -1873,7 +2790,7 @@ steps:
             </div>
         </section>
       page_size: ${page_size}
-      save_path: workspace/harmony/kdp
+      save_path: ${save_path}
       filename: ${filename}
       mode: append
       add_page_number: False
@@ -2877,72 +3794,102 @@ examples/rag/workflow_rag.yaml
 name: chat example
 description: this workflow chat wiht local model
 
+vars:
+  rag_data_path: data/construct/construct_rules.yaml
+  rag_storage_path: data/construct/
+  rag_collection: construct_rules
+
 steps:
+  - name: index_rules
+    type: rag
+    agent: RAGDatabaseBuilderAgent
+    collection_name: ${rag_collection}
+    storage_path: ${rag_storage_path}
+    input:
+      source_files:
+        - ${rag_data_path}
+
+  - name: retrieve_construction_info_toilet
+    type: rag
+    agent: RAGQueryAgent
+    collection_name: ${rag_collection}
+    storage_path: ${rag_storage_path}
+    input:
+      user_query: "What are the spacing requirements for a toilet?"
+      top_k: 3
+
+  - name: retrieve_construction_info_light
+    type: rag
+    agent: RAGQueryAgent
+    collection_name: ${rag_collection}
+    storage_path: ${rag_storage_path}
+    input:
+      user_query: "Tell me about bathroom lights?"
+      top_k: 3
+
+  # - name: build_vector_store
+  #   type: rag
+  #   agent: RAGDatabaseBuilderAgent
+  #   input:
+  #     source_files:
+  #       - docs/manual.pdf
+  #       - docs/README.md
+  #     collection_name: "product_docs"
+  #     storage_backend: "chroma"
 
 
-- name: build_vector_store
-  type: rag
-  agent: RAGDatabaseBuilderAgent
-  input:
-    source_files:
-      - docs/manual.pdf
-      - docs/README.md
-    collection_name: "product_docs"
-    storage_backend: "chroma"
+  # - name: update_knowledge
+  #   type: rag
+  #   agent: RAGDatabaseUpdaterAgent
+  #   input:
+  #     collection_name: "product_docs"
+  #     new_docs:
+  #       - changelog.txt
+  #     storage_backend: "qdrant"
 
 
-- name: update_knowledge
-  type: rag
-  agent: RAGDatabaseUpdaterAgent
-  input:
-    collection_name: "product_docs"
-    new_docs:
-      - changelog.txt
-    storage_backend: "qdrant"
+  # - name: generate_answer
+  #   type: rag
+  #   agent: RAGQueryAgent
+  #   input:
+  #     collection_name: "product_docs"
+  #     user_query: "How does the permission system work?"
+  #     storage_backend: "memory"
 
 
-- name: generate_answer
-  type: rag
-  agent: RAGQueryAgent
-  input:
-    collection_name: "product_docs"
-    user_query: "How does the permission system work?"
-    storage_backend: "memory"
+  # - name: attach_shared_rag
+  #   type: rag
+  #   agent: RAGAttachAgent
+  #   input:
+  #     collection_name: "company_knowledge"
+  #     alias: "shared_rag"
+  #     storage_backend: "file"
 
 
-- name: attach_shared_rag
-  type: rag
-  agent: RAGAttachAgent
-  input:
-    collection_name: "company_knowledge"
-    alias: "shared_rag"
-    storage_backend: "file"
+  # - name: attach_shared_rag
+  #   type: rag
+  #   agent: RAGAttachAgent
+  #   input:
+  #     collection_name: "company_knowledge"
+  #     alias: "shared_rag"
+  #     storage_backend: "file"
 
 
-- name: attach_shared_rag
-  type: rag
-  agent: RAGAttachAgent
-  input:
-    collection_name: "company_knowledge"
-    alias: "shared_rag"
-    storage_backend: "file"
+  # - name: ingest_docs
+  #   type: rag
+  #   agent: RAGDatabaseBuilderAgent
+  #   input:
+  #     source_files: ["docs/setup.pdf"]
+  #     collection_name: "setup_docs"
+  #     storage_backend: "file"
 
-
-- name: ingest_docs
-  type: rag
-  agent: RAGDatabaseBuilderAgent
-  input:
-    source_files: ["docs/setup.pdf"]
-    collection_name: "setup_docs"
-    storage_backend: "file"
-
-- name: ask_question
-  type: rag
-  agent: RAGQueryAgent
-  input:
-    collection_name: "setup_docs"
-    user_query: "How do I deploy this to Kubernetes?"
-    storage_backend: "file"
+  # - name: ask_question
+  #   type: rag
+  #   agent: RAGQueryAgent
+  #   input:
+  #     collection_name: "setup_docs"
+  #     user_query: "How do I deploy this to Kubernetes?"
+  #     storage_backend: "file"
 
 ===
 examples/validators/wf_validator.yaml
@@ -2979,5 +3926,75 @@ steps:
         - impact
         - reflection
         - outro
+
+===
+construct/build_bathroom.yaml
+===
+name: build_bathroom
+description: Plan and estimate materials and cost to build a bathroom
+
+vars:
+  address: "1_35_29_st"
+  city: "Fair Lawn"
+  state: "NJ"
+  rag_storage_path: data/construct/
+  project_desc: |
+    Build a modern bathroom with 2 sinks, a walk-in shower with a niche and a crystal bifold shower door, a freestanding tub,
+    with two smart mirror cabinet over each sink, tiles size 2x4 ft. bathroom Size: 14x8 ft. with Toilet tub style.  Located in Fair Lawn, NJ.
+  requeriments_gpt35: workspace/construct/requirements_gpt35
+  materials: workspace/construct/materials
+
+steps:
+
+  # - name: parse_requirements_gpt35
+  #   type: ai
+  #   agent: RequirementAgent
+  #   model: ModelGpt35Turbo
+  #   namespace: construct
+  #   template_name: default
+  #   input:
+  #     description: ${{project_desc}}
+  #     location: ${{state}}, ${{city}}
+  #     collection_name: construct_rules
+  #     storage_path: ${rag_storage_path}
+  #     save_to_file: true
+  #     file_name: "${requeriments_gpt35}_${address}.txt" 
+  #     top_k: 10
+ 
+  - name: estimate_materials
+    type: ai
+    agent: MaterialEstimatorAgent
+    namespace: construct
+    model: ModelGpt35Turbo
+    input:
+      requirements: "$file:{requeriments_gpt35}_${address}.txt"
+      save_to_file: true
+      file_name: ${materials}_${address}.txt
+
+
+
+
+
+
+
+
+
+  # - name: estimate_costs
+  #   type: ai
+  #   agent: construct.CostEstimatorAgent
+  #   model: openai.ModelGpt4Turbo
+  #   prompt_template: default
+  #   input:
+  #     materials: "{{ estimate_materials.result }}"
+  #     location: ${{state}}, ${{city}}
+
+  # - name: generate_proposals
+  #   type: ai
+  #   agent: construct.ProposalGeneratorAgent
+  #   model: openai.ModelGpt4Turbo
+  #   prompt_template: default
+  #   input:
+  #     requirements: "{{ parse_requirements.requirements_yaml }}"
+  #     cost_estimate: "{{ estimate_costs.result }}"
 
 ===
