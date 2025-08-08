@@ -13,6 +13,7 @@ from models.openai.model_gpt_dalle_2 import ModelDalle2
 from models.local.model_mistral import ModelOllamaMistral
 from models.local.model_qwen3_8b import ModelQwen3_8b
 from models.local.model_llama31_claude import ModelLlama31Claude
+from models.openai.model_gpt_5 import ModelGpt5
 
 # Optional: if you expect to add more local models later
 
@@ -31,7 +32,8 @@ MODEL_REGISTRY = {
     "ModelDalle2": ModelDalle2,
     "ModelOllamaMistral": ModelOllamaMistral,
     "ModelQwen3_8b": ModelQwen3_8b,
-    "ModelLlama31Claude": ModelLlama31Claude
+    "ModelLlama31Claude": ModelLlama31Claude,
+    "ModelGpt5": ModelGpt5
 }
 
 # ✅ Model catalog for UI display
@@ -53,6 +55,16 @@ MODEL_CATALOG = {
             "Best choice for large, accurate code generation tasks."
         ],
         "tags": ["Local", "Coding", "LLM"]
+    },
+    "ModelGpt5": {
+        "short_description": "OpenAI's newest flagship model for state-of-the-art reasoning, code, and content generation.",
+        "detailed_description": [
+            "Most advanced general-purpose model currently available from OpenAI.",
+            "Excels at complex reasoning, nuanced text generation, and multi-step planning.",
+            "Ideal for high-accuracy structured code, logic-heavy workflows, and creative tasks.",
+            "Higher API cost but with improved efficiency and output quality compared to GPT-4 Turbo."
+        ],
+        "tags": ["OpenAI", "LLM"]
     },
     "ModelGpt4Turbo": {
         "short_description": "OpenAI's most powerful model for complex tasks and structured code.",
