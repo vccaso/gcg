@@ -45,8 +45,8 @@ steps:
     agent: ProjectPlannerAgent
     # model: ModelGpt35Turbo
     # model: ModelGpt4Turbo
-    # model: ModelGpt5
-    model: ModelOllama
+    model: ModelGpt5Nano
+    #model: ModelOllama
     namespace: construct
     input:
       objectives: "Design and construct a modern bathroom with specified fixtures and smart features."
@@ -58,7 +58,7 @@ steps:
       context: "${{project_desc}}"
       notes: "Include energy-efficient and water-saving fixtures where possible."
       save_to_file: true
-      file_name: "workspace/construct/project_plan_ollama_${address}.txt"
+      file_name: "workspace/construct/project_plan_gpt5_nano_${address}.txt"
 
 
 

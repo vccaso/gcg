@@ -13,7 +13,7 @@ from models.openai.model_gpt_dalle_2 import ModelDalle2
 from models.local.model_mistral import ModelOllamaMistral
 from models.local.model_qwen3_8b import ModelQwen3_8b
 from models.local.model_llama31_claude import ModelLlama31Claude
-from models.openai.model_gpt_5 import ModelGpt5
+from models.openai.model_gpt_5 import ModelGpt5, ModelGpt5Mini, ModelGpt5Nano
 
 # Optional: if you expect to add more local models later
 
@@ -33,7 +33,9 @@ MODEL_REGISTRY = {
     "ModelOllamaMistral": ModelOllamaMistral,
     "ModelQwen3_8b": ModelQwen3_8b,
     "ModelLlama31Claude": ModelLlama31Claude,
-    "ModelGpt5": ModelGpt5
+    "ModelGpt5": ModelGpt5,
+    "ModelGpt5Mini": ModelGpt5Mini,
+    "ModelGpt5Nano": ModelGpt5Nano
 }
 
 # ✅ Model catalog for UI display
@@ -63,6 +65,24 @@ MODEL_CATALOG = {
             "Excels at complex reasoning, nuanced text generation, and multi-step planning.",
             "Ideal for high-accuracy structured code, logic-heavy workflows, and creative tasks.",
             "Higher API cost but with improved efficiency and output quality compared to GPT-4 Turbo."
+        ],
+        "tags": ["OpenAI", "LLM"]
+    },
+    "ModelGpt5Mini": {
+        "short_description": "A smaller, faster variant of GPT-5 optimized for lower latency and cost.",
+        "detailed_description": [
+            "Delivers strong reasoning and generation performance in a lighter package.",
+            "Suitable for rapid prototyping, conversational agents, and moderate complexity tasks.",
+            "Lower API cost and faster responses than full GPT-5, with some trade-off in accuracy for complex reasoning."
+        ],
+        "tags": ["OpenAI", "LLM"]
+    },
+    "ModelGpt5Nano": {
+        "short_description": "The fastest and most lightweight GPT-5 variant for high-throughput, low-cost workloads.",
+        "detailed_description": [
+            "Designed for real-time applications and large-scale deployments.",
+            "Best for short-form content generation, quick drafting, and lightweight reasoning.",
+            "Lowest latency and cost in the GPT-5 family, with reduced depth for complex multi-step reasoning."
         ],
         "tags": ["OpenAI", "LLM"]
     },
